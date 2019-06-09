@@ -148,6 +148,12 @@ SOMOGY               Siófok                     4   2.666667    1   24         
 print("lucky number distribution")
 # suspects2.groupby(["lucky_nr"]).aggregate(len)
 
+plt.hist(digit_sum_extr.lucky_nr, bins=10)
+plt.title("\"Lucky number\" (most frequent last digit) distribution\n"
+          "just about everywhere - note that there's no 'zero' here.")
+plt.show()
+
+
 plt.hist(suspects2.lucky_nr, bins=10)
 plt.title("\"Lucky number\" (most frequent last digit) distribution\n"
           "among large enough towns - in which  a skewed digit\n"
