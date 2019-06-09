@@ -212,3 +212,54 @@ print("actually, this might be an underestimation at this point, as the\b"
       "should probably increase such deviations on the other hand.")
 
 # TODO: plot max/mean ratio by area size (voters)
+
+# I know what we need!
+# a likelihood estimate
+# well, and what about the last digit?
+# the count of the last digit is always n-(all others)
+
+# now if I only consider the
+# first 9
+
+# pick 63 digits from 10 possibilities
+# what are the odds that none of them is the #7th?
+# what are the odds that one of them is missing?
+
+"""
+Okay, let's try some Monte-Carlo-ish approach
+"""
+
+last_digit_pop = [int(x) for x in df.ld_Fidesz if not np.isnan(x)]
+
+np.random.seed(1234)
+
+# takes a couple of minutes, gives about 1.32% in 100k iterations,
+
+n = 0
+for i in range(100000):
+    s = np.random.choice(last_digit_pop, 63)
+    all_present = len(set(s)) == 10
+    if all_present:
+        n += 1
+    if i % 1000 == 0:
+        print(i, n, "%.2f %%" % ((i + 1 - n) / (i + 1) * 100))
+
+print(i, n, "%.2f %%" % ((i + 1 - n) / (i + 1) * 100))
+
+prob_from_general = (i + 1 - n) / (i + 1)
+
+print("whilst the above were estimations with possibly missing\n"
+      "statements of assumptions, given a simulation of \n"
+      "draws with replacement, the chance of the draw of the %d\n"
+      "weirdest areas' last digits being from the 'general'\n"
+      "sample is still found to be about %.2f %%" %
+      (len(suspects2), prob_from_general * 100))
+print("\nthis - if correct - still renders the numbers very\n"
+      "suspicious. []\n")
+print("even more so, since only the information that one of the\n"
+      "digits is completely missing from the sample was leveraged\n"
+      "however there are other frequency deviations from the mean\n"
+      "there as well, which should (I believe) further reduce\n"
+      "the odds of this configuration of occurrences appearing.")
+
+# what are the odds that all of them deviate, exactly ...?
