@@ -7,6 +7,7 @@ import pandas as pd
 import xlrd
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 filename = r'EP_2019_szavaz_k_ri_eredm_ny.xlsx'
 # filename = r'short.xlsx'
@@ -262,4 +263,88 @@ print("even more so, since only the information that one of the\n"
       "there as well, which should (I believe) further reduce\n"
       "the odds of this configuration of occurrences appearing.")
 
+
+# and then there's the potentially biasing effect of
+# sampling for skewed frequencies - how do you adjust for
+# that? simple - try to apply the full data processing to
+# the resampled data and see how that affects the occurrence
+# of completely missing digits in the data
+#
+# let's try to go for it (may get too slow though ...)
+def test_full_process_with_remodelled_data(df_to_copy):
+    df = df_to_copy.copy()
+    # there's a NaN-ful row, exclude that
+    df = df.loc[df.Megye.apply(type) == str]
+
+    hits = 0
+    misses = 0
+
+    start = datetime.now()
+    # gave a 4.0 percent chance - with 1000 iterations
+    # (TODO: despite the seed I may have seen inconsistent results?)
+    np.random.seed(4321)
+
+    def as_index(values):
+        # ensure it is ordered for reproducibility
+        # (sets have a slightly random order)
+        value_set_list = sorted(list(set(values)))
+        value_index_dict = dict(
+          zip(list(value_set_list), range(len(value_set_list)))
+        )
+        return [value_index_dict[v] for v in values]
+
+    # combining the typical aggregation key apparently gets
+    # things slightly faster
+    df["Megyepules"] = df.apply( \
+      lambda x: x.Telepules + "|" + x.Megye,
+      axis=1
+    )
+    df.Megyepules = as_index(df.Megyepules)
+
+    for i in range(1000):
+        df.ld_Fidesz = (
+            np.random.choice(last_digit_pop,
+                             len(df))
+        )
+
+        # repeat the full process
+        town_groups = \
+            df[
+                ["Megyepules", "ld_Fidesz"]
+            ].groupby(["Megyepules", "ld_Fidesz"])
+
+        county_town_digit_sums = town_groups.aggregate(len)
+
+        # max_to_min, min are not used - skip them for speed
+        digit_sum_extr = county_town_digit_sums \
+                         .groupby(["Megyepules"]) \
+                         .aggregate([max, 'mean',
+                                     # min,
+                                     sum, lucky_nr])
+        # digit_sum_extr["max_to_min"] = digit_sum_extr["max"] / digit_sum_extr["min"]
+        digit_sum_extr["max_to_mean"] = digit_sum_extr["max"] / digit_sum_extr["mean"]
+
+        # seems more selective than the next
+        suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= 1.5]
+        suspects2 = suspects2.loc[suspects2["sum"] >= 20]
+
+        if i % 10 == 0:
+            print(datetime.now() - start, i, hits, misses)
+
+        if len(set(suspects2.lucky_nr)) == 10:
+            misses += 1
+        else:
+            hits += 1
+
+    print("hits:", hits, "misses:", misses)
+    return hits / (hits + misses)
+
+
+P_mc = test_full_process_with_remodelled_data(df)
+print("percentage of hits (i.e. extreme digit \n"
+      "draws with at least one digit missing using\n"
+      "resampled actual data): %.2f %%" %
+      (P_mc * 100))
+
 # what are the odds that all of them deviate, exactly ...?
+#
