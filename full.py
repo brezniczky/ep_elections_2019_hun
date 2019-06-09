@@ -179,8 +179,8 @@ print("(incorrectly assuming that the digit distribution is uniform)")
 P = 0.9 ** len(suspects2)
 
 print("probability = %f %%" % (P * 100))
-print("this is a rough estimate of the probability that the odd\n"
-      "distribution of digits is just the matter of pure chance")
+print("this is a rough estimate of the probability that missing 7's\n"
+      "is just the matter of chance")
 print("in other words, a %.2f %% chance of a manipulation" % ((1 - P) * 100))
 
 
@@ -189,6 +189,26 @@ P7 = county_town_digit_sums.groupby(["ld_Fidesz"]).aggregate(sum)[7.0] / sum(cou
 P = (1 - P7) ** len(suspects2)
 
 print("probability = %f %%" % (P * 100))
-print("this is an improved estimate of the probability that the odd\n"
-      "distribution of digits is just the matter of pure chance")
+print("this is an improved estimate of the probability that missing 7's\n"
+      "is just the matter of pure chance")
 print("in other words, a %.2f %% chance of a manipulation" % ((1 - P) * 100))
+
+
+print("\n\nlet's check the probability of any digit disappearing\n"
+      "from the distibution of those in the suspicious areas")
+pop_last_digit_freqs = county_town_digit_sums.groupby(["ld_Fidesz"]).aggregate(sum)
+Pi = [pop_last_digit_freqs[float(i)] / sum(pop_last_digit_freqs) for i in range(10)]
+P = sum((1 - Pi[i]) ** len(suspects2) for i in range(10))
+
+print("probability = %f %%" % (P * 100))
+print("this is a super-improved estimate of the probability that any of the\n"
+      "digits missing from the top suspects' last digits is just the\n"
+      "matter of pure chance")
+print("in other words, a %.2f %% chance of a manipulation" % ((1 - P) * 100))
+
+print("actually, this might be an underestimation at this point, as the\b"
+      "other digits also deviate from their 'normal' frequencies - which is\n"
+      "completely unaccounted for. however, picking the most distorted areas\n"
+      "should probably increase such deviations on the other hand.")
+
+# TODO: plot max/mean ratio by area size (voters)
