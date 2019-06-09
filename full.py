@@ -14,8 +14,7 @@ print("file: %s" % filename)
 print("reading sheet names ...")
 xls = pd.ExcelFile(filename)
 print("found %d sheets" % len(xls.sheet_names))
-# # print(df['Occupation'])
-# print(df.keys())
+
 
 dfs = []
 
@@ -34,8 +33,6 @@ df.columns = [
     "MSZP", "MKKP", "Jobbik", "Fidesz", "Momentum", "DK", "Mi Hazank", "Munkaspart", "LMP"
 ]
 
-# print(df.head())
-
 columns = df.columns.copy()
 
 for column in columns[-10:]:
@@ -47,7 +44,6 @@ county_town_digit_sums = town_groups.aggregate(len)
 digit_sums = county_town_digit_sums.groupby(["ld_Fidesz"]).aggregate(len)
 
 def lucky_nr(occurances):
-    # thanks to https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
     digits = np.array([x[-1]
                        for x in
                        list(occurances.index)])
@@ -173,6 +169,7 @@ print(set(suspects2.lucky_nr))
 
 # so in these towns "7" was really disfavoured
 print("now let's examine the chance of 7 not being featured at all")
+print("(incorrectly assuming that the digit distribution is uniform)")
 
 # assume independent draws of 63 digits, where none of them is 7
 # thus there are 9 options
@@ -183,5 +180,15 @@ P = 0.9 ** len(suspects2)
 
 print("probability = %f %%" % (P * 100))
 print("this is a rough estimate of the probability that the odd\n"
+      "distribution of digits is just the matter of pure chance")
+print("in other words, a %.2f %% chance of a manipulation" % ((1 - P) * 100))
+
+
+print("\n\nlet's try to model the digit distribution now more accurately")
+P7 = county_town_digit_sums.groupby(["ld_Fidesz"]).aggregate(sum)[7.0] / sum(county_town_digit_sums)
+P = (1 - P7) ** len(suspects2)
+
+print("probability = %f %%" % (P * 100))
+print("this is an improved estimate of the probability that the odd\n"
       "distribution of digits is just the matter of pure chance")
 print("in other words, a %.2f %% chance of a manipulation" % ((1 - P) * 100))
