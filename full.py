@@ -276,10 +276,6 @@ def test_full_process_with_remodelled_data(df_to_copy):
     # there's a NaN-ful row, exclude that
     df = df.loc[df.Megye.apply(type) == str]
 
-    hits = 0
-    misses = 0
-
-    start = datetime.now()
     # gave a 4.0 percent chance - with 1000 iterations
     # (TODO: despite the seed I may have seen inconsistent results?)
     np.random.seed(4321)
@@ -300,6 +296,11 @@ def test_full_process_with_remodelled_data(df_to_copy):
       axis=1
     )
     df.Megyepules = as_index(df.Megyepules)
+
+    hits = 0
+    bulls = 0
+    misses = 0
+    start = datetime.now()
 
     for i in range(1000):
         df.ld_Fidesz = (
@@ -328,23 +329,36 @@ def test_full_process_with_remodelled_data(df_to_copy):
         suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= 1.5]
         suspects2 = suspects2.loc[suspects2["sum"] >= 20]
 
-        if i % 10 == 0:
-            print(datetime.now() - start, i, hits, misses)
-
         if len(set(suspects2.lucky_nr)) == 10:
             misses += 1
         else:
             hits += 1
+            digits_and_counts = \
+              np.unique(suspects2.lucky_nr, return_counts=True)
+            sorted_counts = sorted(digits_and_counts[1], reverse=True)
+            if (sorted_counts[0] +
+                sorted_counts[1] +
+                sorted_counts[2] >= 10 + 9 + 8):
 
-    print("hits:", hits, "misses:", misses)
-    return hits / (hits + misses)
+                    bulls += 1
 
+        if i % 5 == 0:
+            print(datetime.now() - start, i, hits, misses, bulls)
 
-P_mc = test_full_process_with_remodelled_data(df)
+    print("hits:", hits, "bull hits:", bulls, "misses:", misses)
+    return hits / (hits + misses), bulls / (hits + misses)
+
+P_mc, P_bull_mc = test_full_process_with_remodelled_data(df)
 print("percentage of hits (i.e. extreme digit \n"
       "draws with at least one digit missing using\n"
       "resampled actual data): %.2f %%" %
       (P_mc * 100))
+
+print("percentage of 'bull' hits (i.e. extreme digit \n"
+      "draws with at least one digit missing and three of\n"
+      "them occurring at least 27 times using\n"
+      "resampled actual data): %.2f %%" %
+      (P_bull_mc * 100))  # hello Pitbull MC!
 
 # what are the odds that all of them deviate, exactly ...?
 #
