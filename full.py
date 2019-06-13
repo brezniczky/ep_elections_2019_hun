@@ -273,32 +273,33 @@ np.random.seed(1234)
 
 # takes a couple of minutes, gives about 1.32% in 100k iterations,
 
-n = 0
-for i in range(100000):
-    s = np.random.choice(last_digit_pop, len(suspects2))
-    all_present = len(set(s)) == 10
-    if all_present:
-        n += 1
-    if i % 1000 == 0:
-        print(i, n, "%.2f %%" % ((i + 1 - n) / (i + 1) * 100))
+if input("Run full (slightly slow - say takes a minute) simulation? (Y/N)").lower() ==  "y":
+    n = 0
+    for i in range(100000):
+        s = np.random.choice(last_digit_pop, len(suspects2))
+        all_present = len(set(s)) == 10
+        if all_present:
+            n += 1
+        if i % 1000 == 0:
+            print(i, n, "%.2f %%" % ((i + 1 - n) / (i + 1) * 100))
 
-print(i, n, "%.2f %%" % ((i + 1 - n) / (i + 1) * 100))
+    print(i, n, "%.2f %%" % ((i + 1 - n) / (i + 1) * 100))
 
-prob_from_general = (i + 1 - n) / (i + 1)
+    prob_from_general = (i + 1 - n) / (i + 1)
 
-print("whilst the above were estimations with possibly missing\n"
-      "statements of assumptions, given a simulation of \n"
-      "draws with replacement, the chance of the draw of the %d\n"
-      "weirdest areas' last digits being from the 'general'\n"
-      "sample is still found to be about %.2f %%" %
-      (len(suspects2), prob_from_general * 100))
-print("\nthis - if correct - still renders the numbers very\n"
-      "suspicious. []\n")
-print("even more so, since only the information that one of the\n"
-      "digits is completely missing from the sample was leveraged\n"
-      "however there are other frequency deviations from the mean\n"
-      "there as well, which should (I believe) further reduce\n"
-      "the odds of this configuration of occurrences appearing.")
+    print("whilst the above were estimations with possibly missing\n"
+          "statements of assumptions, given a simulation of \n"
+          "draws with replacement, the chance of the draw of the %d\n"
+          "weirdest areas' last digits being from the 'general'\n"
+          "sample is still found to be about %.2f %%" %
+          (len(suspects2), prob_from_general * 100))
+    print("\nthis - if correct - still renders the numbers very\n"
+          "suspicious. []\n")
+    print("even more so, since only the information that one of the\n"
+          "digits is completely missing from the sample was leveraged\n"
+          "however there are other frequency deviations from the mean\n"
+          "there as well, which should (I believe) further reduce\n"
+          "the odds of this configuration of occurrences appearing.")
 
 
 # and then there's the potentially biasing effect of
@@ -439,7 +440,7 @@ more often than implied by pure chance.
 )
 
 
-def test_digit_geographic_correlation_stat(suspects):
+def get_overlaps(suspects):
     commons = []
 
     for i in range(len(suspects) - 1):
@@ -449,18 +450,26 @@ def test_digit_geographic_correlation_stat(suspects):
         top_digits2 = set([r2.lucky_nr, r2.lucky_nr2])
         common = top_digits1.intersection(top_digits2)
         commons += list(common)
+    return commons
+
+
+def test_digit_geographic_correlation_stat(suspects, printout=True):
+    """ Warning: to be removed in the next check-in.
+        Looks like I am unable to deal with calculating
+        the expected probability.
+    """
+    commons = get_overlaps(suspects)
 
     unique, counts = np.unique(commons, return_counts=True)
 
-    print(list(zip(unique, counts)))
-    print("Total number of digits in the intersections:", len(commons))
-
     missing_digit_count = 10 - len(unique)
     very_rare_digit_count = sum(counts == 1)
-    print("Missing digits:", missing_digit_count)
-    print("Digits occurring only once:", very_rare_digit_count)
-    print("Probability of this occurring randomly from %d "
-          "draws of 10 uniformly distributed digits:" % len(commons))
+    if printout:
+        print("Total number of digits in the intersections:", len(commons))
+        print("Missing digits:", missing_digit_count)
+        print("Digits occurring only once:", very_rare_digit_count)
+        print("Probability of this occurring randomly from %d "
+              "draws of 10 uniformly distributed digits:" % len(commons))
 
     nd0 = missing_digit_count
     nd1 = very_rare_digit_count
@@ -480,13 +489,19 @@ def test_digit_geographic_correlation_stat(suspects):
          (scipy.special.binom(n_draws, nd1)))
     total = (10 ** n_draws)
 
-    print("%.4f %%" % (adv / total * 100))
+    if printout:
+        print("%.4f %%" % (adv / total * 100))
+
+    return (adv / total)
 
 suspects2_unordered = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
 suspects2_unordered = suspects2_unordered.loc[suspects2_unordered["sum"] >= 20]
 
+
 test_digit_geographic_correlation_stat(suspects2_unordered)
 
+
+# I am probably messing something up. It's just unlikely that there would have been cheating all over the place
 
 """
 Missing digits: 7, 8, there's only one occurrence of a 6.
@@ -546,3 +561,107 @@ plt.scatter(digit_sum_extr["sum"], digit_sum_extr.max_to_mean, alpha=0.5)
 plt.scatter(suspects2["sum"], suspects2.max_to_mean, alpha=0.5)
 plt.show()
 """
+
+
+print("Further reassurance of that where it's skewed, it's not just randomly skewed....")
+
+
+n_resamples = 500
+
+# lower one constraint from 20 to 15, gain an opportunity to resample
+
+# probs = []
+# for i in range(n_resamples):
+#     # np.random.seed(5555 + i)  # 2.22 %
+#     # np.random.seed(4555 + i)  # 4.85 %
+#     suspects2_unordered = digit_sum_extr.loc[digit_sum_extr["sum"] >= 15]
+#     suspects2_unordered = suspects2_unordered[suspects2_unordered.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
+#     suspects2_unordered_keep_idx = sorted(np.random.choice(range(len(suspects2_unordered)), len(suspects2)))
+#     suspects2_unordered = suspects2_unordered.iloc[suspects2_unordered_keep_idx]
+
+#     probs.append(test_digit_geographic_correlation_stat(suspects2_unordered, printout=False))
+# print("""
+# The average probability of this data getting generated
+# from uniformly distributed digits using %d resamples:
+# %.2f %%""" % (n_resamples, np.mean(probs) * 100))
+
+
+# probs = []
+# for i in range(n_resamples):
+#     # np.random.seed(4555 + i)  # 0.02%
+#     np.random.seed(5555 + i)  # 0.03%
+#     suspects2_control = digit_sum_extr.loc[digit_sum_extr["sum"] >= 15]
+#     suspects2_control_keep_idx = np.random.choice(range(len(suspects2_control)), len(suspects2))
+#     suspects2_control = suspects2_control.iloc[suspects2_control_keep_idx]
+
+#     probs.append(test_digit_geographic_correlation_stat(suspects2_control, printout=False))
+# print("""
+# The average probability of data such as a randomly picked
+# sample from big enough electoral areas getting generated
+# from uniformly distributed digits using %d resamples:
+# %.2f %%""" % (n_resamples, np.mean(probs) * 100))
+
+
+
+""" This didn't work either: probably it's affected by that
+    out of 63 there was typically none or similar. Results
+    converging in very hectically.
+"""
+# n_resamples = 500
+
+# probs = []
+# counts = []
+# for i in range(n_resamples):
+#     # np.random.seed(4555 + i)  # 0.02%
+#     np.random.seed(5555 + i)  # 0.03%
+#     numbers1 = np.random.choice(range(10), len(suspects2))
+#     numbers2 = np.random.choice(range(10), len(suspects2))
+#     small_df = pd.DataFrame(dict(lucky_nr=numbers1, lucky_nr2=numbers2))
+#     prob = test_digit_geographic_correlation_stat(small_df, printout=False)
+#     probs.append(test_digit_geographic_correlation_stat(small_df, printout=False))
+#     counts.append(len(get_overlaps(small_df)))
+
+
+""" This seems to work (reasonably) quick and simple. """
+def count_overlaps_quick(numbers1, numbers2):
+    # had to be converted from "zipped object" for slicing
+    zipped = list(zip(numbers1, numbers2))
+
+    counts_per_row = [
+        len(set(act_row).intersection(set(next_row)))
+        for act_row, next_row in zip(zipped[:-1], zipped[1:])
+    ]
+    return sum(counts_per_row)
+
+
+def do_reference_draws(get_prob_for, weights=None):
+    for seed in [4444, 5555, 6666]:
+        probs = []
+        counts = []
+        np.random.seed(seed)
+        for i in range(n_resamples):
+            numbers1 = np.random.choice(range(10), len(suspects2), p=weights)
+            numbers2 = np.random.choice(range(10), len(suspects2), p=weights)
+
+            # small_df = pd.DataFrame(dict(lucky_nr=numbers1, lucky_nr2=numbers2))
+            counts.append(count_overlaps_quick(numbers1, numbers2))
+        prob = sum(np.array(counts) >= get_prob_for) / len(counts)
+        print("Seed: %d, chance of getting at least %d overlaps between %d number pairs is %.2f %%" %
+              (seed, get_prob_for, len(suspects2), prob * 100))
+
+n_resamples = 10000
+
+ref_count = \
+    count_overlaps_quick(
+        suspects2_unordered.lucky_nr,
+        suspects2_unordered.lucky_nr2
+    )
+
+print("Reference draws: uniform case")
+do_reference_draws(get_prob_for=ref_count)
+
+print("Reference draws: non-uniform case (zeroes are 20% more frequent than other digits)")
+do_reference_draws(get_prob_for=ref_count, weights=[12 / 102] + [10 / 102] * 9)
+
+print("Reference draws: non-uniform case (zeroes are 100% more frequent than other digits)")
+do_reference_draws(get_prob_for=ref_count, weights=[2 / 11] + [1 / 11] * 9)
