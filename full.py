@@ -8,24 +8,34 @@ import xlrd
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
-
-filename = r'EP_2019_szavaz_k_ri_eredm_ny.xlsx'
-# filename = r'short.xlsx'
-print("file: %s" % filename)
-print("reading sheet names ...")
-xls = pd.ExcelFile(filename)
-print("found %d sheets" % len(xls.sheet_names))
+import os.path
+import scipy.special
 
 
-dfs = []
+MAX_TO_MEAN_THRESHOLD = 1.5
 
-for name in xls.sheet_names:
-    print("reading", name)
-    df = pd.read_excel(filename, sheet_name=name)
-    print("read %d rows" % len(df))
-    dfs.append(df)
 
-df = pd.concat(dfs)
+if not os.path.exists("merged.csv"):
+    filename = r'EP_2019_szavaz_k_ri_eredm_ny.xlsx'
+    # filename = r'short.xlsx'
+    print("file: %s" % filename)
+    print("reading sheet names ...")
+    xls = pd.ExcelFile(filename)
+    print("found %d sheets" % len(xls.sheet_names))
+
+    dfs = []
+
+    for name in xls.sheet_names:
+        print("reading", name)
+        df = pd.read_excel(filename, sheet_name=name)
+        print("read %d rows" % len(df))
+        dfs.append(df)
+
+    df = pd.concat(dfs)
+    df.to_csv("merged.csv", index=False)
+else:
+    df = pd.read_csv("merged.csv")
+
 print("concatenated data frame has %d rows" % len(df))
 
 df.columns = [
@@ -44,26 +54,48 @@ county_town_digit_sums = town_groups.aggregate(len)
 
 digit_sums = county_town_digit_sums.groupby(["ld_Fidesz"]).aggregate(len)
 
-def lucky_nr(occurances):
+def lucky_nr(occurrances):
     digits = np.array([x[-1]
                        for x in
-                       list(occurances.index)])
-    counts = np.array(list(occurances))
+                       list(occurrances.index)])
+    counts = np.array(list(occurrances))
     return digits[counts==max(counts)][0]
 
-digit_sum_extr = county_town_digit_sums.groupby(["Megye", "Telepules"]).aggregate([max, 'mean', min, sum, lucky_nr])
+def lucky_nr2(occurrances):
+    digits = np.array([x[-1]
+                       for x in
+                       list(occurrances.index)])
+    counts = np.array(list(occurrances))
+    return digits[counts==sorted(counts)[1]][0] \
+           if len(occurrances) > 1 else None
+
+digit_sum_extr = \
+    county_town_digit_sums.groupby(["Megye", "Telepules"]) \
+    .aggregate([max, 'mean', min, sum, lucky_nr, lucky_nr2])
+
+
+def get_min_lucky(df):
+    return [a if np.isnan(b) else min(a, b)
+            for a, b in zip(df.lucky_nr, df.lucky_nr2)]
+
+
 digit_sum_extr["max_to_min"] = digit_sum_extr["max"] / digit_sum_extr["min"]
 digit_sum_extr["max_to_mean"] = digit_sum_extr["max"] / digit_sum_extr["mean"]
+digit_sum_extr["min_lucky"] = get_min_lucky(digit_sum_extr)
+
 
 suspects = digit_sum_extr.loc[(digit_sum_extr.max_to_min >= 2)]
+
+# it's also the number of electoral wards
 suspects = suspects.loc[suspects["sum"] >= 20]
 
 print("suspicious towns")
 print(suspects)
 print("total: %d suspicious towns" % len(suspects))
 
-suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= 1.5]
+suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
 suspects2 = suspects2.loc[suspects2["sum"] >= 20]
+
 
 print("suspicious towns based on max to mean digit occurrence ratio")
 
@@ -71,6 +103,11 @@ suspects2.sort_values(["max_to_mean"], ascending=[False], inplace=True)
 print(suspects2)
 suspects2.to_csv("suspects2.csv", encoding="utf8")
 
+suspects2.reset_index()
+
+suspects2.sort_values(["Megye", "lucky_nr", "Telepules"], ascending=[False, True, True], inplace=True)
+s2_alt_sort = suspects2.reset_index()[["Megye", "Telepules", "min_lucky", "lucky_nr", "lucky_nr2"]].sort_values(["Megye", "Telepules"])
+s2_alt_sort.to_csv("suspects2_alt_sort.csv", encoding="utf8")
 # max-min ratio versus sum plot
 
 """
@@ -238,7 +275,7 @@ np.random.seed(1234)
 
 n = 0
 for i in range(100000):
-    s = np.random.choice(last_digit_pop, 63)
+    s = np.random.choice(last_digit_pop, len(suspects2))
     all_present = len(set(s)) == 10
     if all_present:
         n += 1
@@ -326,7 +363,7 @@ def test_full_process_with_remodelled_data(df_to_copy):
         digit_sum_extr["max_to_mean"] = digit_sum_extr["max"] / digit_sum_extr["mean"]
 
         # seems more selective than the next
-        suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= 1.5]
+        suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
         suspects2 = suspects2.loc[suspects2["sum"] >= 20]
 
         if len(set(suspects2.lucky_nr)) == 10:
@@ -338,7 +375,7 @@ def test_full_process_with_remodelled_data(df_to_copy):
             sorted_counts = sorted(digits_and_counts[1], reverse=True)
             if (sorted_counts[0] +
                 sorted_counts[1] +
-                sorted_counts[2] >= 10 + 9 + 8):
+                sorted_counts[2] >= 27 / 63 * sum(sorted_counts)):
 
                     bulls += 1
 
@@ -348,17 +385,164 @@ def test_full_process_with_remodelled_data(df_to_copy):
     print("hits:", hits, "bull hits:", bulls, "misses:", misses)
     return hits / (hits + misses), bulls / (hits + misses)
 
-P_mc, P_bull_mc = test_full_process_with_remodelled_data(df)
-print("percentage of hits (i.e. extreme digit \n"
-      "draws with at least one digit missing using\n"
-      "resampled actual data): %.2f %%" %
-      (P_mc * 100))
 
-print("percentage of 'bull' hits (i.e. extreme digit \n"
-      "draws with at least one digit missing and three of\n"
-      "them occurring at least 27 times using\n"
-      "resampled actual data): %.2f %%" %
-      (P_bull_mc * 100))  # hello Pitbull MC!
+if input("Run full (slow) remodelling style simulation? (Y/N)").lower() ==  "y":
+  P_mc, P_bull_mc = test_full_process_with_remodelled_data(df)
+  print("percentage of hits (i.e. extreme digit \n"
+        "draws with at least one digit missing using\n"
+        "resampled actual data): %.2f %%" %
+        (P_mc * 100))
 
-# what are the odds that all of them deviate, exactly ...?
-#
+  print("percentage of 'bull' hits (i.e. extreme digit \n"
+        "draws with at least one digit missing and three of\n"
+        "them occurring at least 27/63 of the cases using\n"
+        "resampled actual data): %.2f %%" %
+        (P_bull_mc * 100))  # hello Pitbull MC!
+
+
+"""
+In fact the distribution is near-uniform for these suspects,
+so the above (costly) simulation is a peace of mind thing.
+"""
+
+
+"""
+We can - why not - instead examine something else:
+- take the top two last digits
+- check them out in "natural" order (close to geographic
+proximity)
+- the intersections are interesting:
+  - how many times is there an intersection (if both are
+    the same, count as 2)
+  - how many of these appearing are different digits?
+    (there are 8 digits appearing)
+  - how many of these only appear once?  (gives 1)
+
+  - what is the probability of this assuming an even
+    distribution?  (then we get a very small number)
+"""
+
+print("""
+Taking a look at the top two most frequent digits in the
+"natural" quasi-geographic ordering reveals a very potential
+location-dependent relationship in terms of last digits, in
+case of the most suspiciously looking settlements.
+
+In case of these areas chosen by size (number of electoral
+wards >= 20) and sufficiently skewed last digit distribution
+(most frequent is at least 1.5x as frequent as its
+expected frequency, the latter being number of electoral wards / 10),
+we find that the top two most frequent digits in these areas
+tend to correlate with those in the area that follows,
+more often than implied by pure chance.
+"""
+)
+
+
+def test_digit_geographic_correlation_stat(suspects):
+    commons = []
+
+    for i in range(len(suspects) - 1):
+        r1 = suspects.iloc[i]
+        r2 = suspects.iloc[i + 1]
+        top_digits1 = set([r1.lucky_nr, r1.lucky_nr2])
+        top_digits2 = set([r2.lucky_nr, r2.lucky_nr2])
+        common = top_digits1.intersection(top_digits2)
+        commons += list(common)
+
+    unique, counts = np.unique(commons, return_counts=True)
+
+    print(list(zip(unique, counts)))
+    print("Total number of digits in the intersections:", len(commons))
+
+    missing_digit_count = 10 - len(unique)
+    very_rare_digit_count = sum(counts == 1)
+    print("Missing digits:", missing_digit_count)
+    print("Digits occurring only once:", very_rare_digit_count)
+    print("Probability of this occurring randomly from %d "
+          "draws of 10 uniformly distributed digits:" % len(commons))
+
+    nd0 = missing_digit_count
+    nd1 = very_rare_digit_count
+    n_draws = len(commons)
+
+    # so (7 / 10) ** 31 * 32 / 19 * (10 * 9 * 8 / 3 / 2 / 1) * 3 * 100%
+
+    # P = n_okay / n_all
+    # the below conversion prevents possible overflows, Python integers
+    # are technically unbounded
+    nd0 = int(nd0)
+    nd1 = int(nd1)
+    n_draws = int(n_draws)
+
+    adv = ((10 - nd0 - nd1) ** (n_draws - nd1) *    # the "usual" digits
+         (scipy.special.factorial(nd1)) *
+         (scipy.special.binom(n_draws, nd1)))
+    total = (10 ** n_draws)
+
+    print("%.4f %%" % (adv / total * 100))
+
+suspects2_unordered = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
+suspects2_unordered = suspects2_unordered.loc[suspects2_unordered["sum"] >= 20]
+
+test_digit_geographic_correlation_stat(suspects2_unordered)
+
+
+"""
+Missing digits: 7, 8, there's only one occurrence of a 6.
+
+However, the distribution of "Fidesz"-last digits is very
+even, especially in case of larger districts.
+
+Note that zeroes are the most frequent above, however by
+nature of electoral data, they should come as the least
+frequent once zero electoral data rows are removed.
+
+(Unless there are no votes for a party, i.e. the value
+is zero, it has to reach up to "9", before they could turn to
+"10". It is left to verify but it's almost certain just due
+to the sheer size of the above, Fidesz had received votes
+in every ward. However, that it's the zero being the most
+frequent last digit, will not be leveraged below.)
+
+The probability of 2 digits missing from a draw of 32 is etc.
+(see above)
+"""
+
+print("""
+What this result underpins (letting alone graver concerns) is
+that the quality of the processing of votes is likely far
+from adequate, the numbers are unlikely to be accurate, since
+they seem to be subject to "human intervention", be it simple
+mistakes or intentional adjustments.
+
+The original motivation is to decide whether the flaws in
+human random number generation are reflected by the data,
+(some irregularities could be spotted by the eye), but
+obviously these may be different by people - what we find is
+there may be some areal cultural influence on how people
+err, forge, whatever.
+
+For instance, there is an unreasonable overrepresentation of
+zero digits in the Fidesz party vote counts in certain
+suspicious wards. These wards bear significance even in terms
+of their effect on the overall outcome simply due to their
+size or economic relevance (for instance, 18 of the 23
+districts of the capital are a bit odd - coincidence? ;) )
+
+The author is aware of local concerns about the cleanness of
+the electoral procedures in at least a few of these regions.
+
+Overall voter confidence in the government could greatly benefit
+from better processes and a closer supervision.
+""")
+
+# TODO: place BP districts on a votes vs. max_to_mean plot
+# such as the below
+"""
+# Plot this:
+# max_to_mean ratio against the number of votes in town
+plt.scatter(digit_sum_extr["sum"], digit_sum_extr.max_to_mean, alpha=0.5)
+plt.scatter(suspects2["sum"], suspects2.max_to_mean, alpha=0.5)
+plt.show()
+"""
