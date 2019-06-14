@@ -12,7 +12,21 @@ import os.path
 import scipy.special
 
 
+"""
+Tried:
+MMT; WT
+2.0; 20  -> hits: 11/20, ~ 6 %
+1.8; 19  -> hits: 15/33, ~ 35 %
+1.5; 20  -> hits: 33/63, ~ 1 %
+1.5; 15  -> hits: 61/107 ~ 0.01 %
+1.5; 10  -> hits: 68/120 ~ 0.01 % or less
+1.4; 20  -> hits: 33/71  ~ 5.3 %
+1.3; 20  -> hits: 33/72  ~ 6.5 %
+"""
+
+
 MAX_TO_MEAN_THRESHOLD = 1.5
+WARD_THRESHOLD = 20
 
 
 if not os.path.exists("merged.csv"):
@@ -52,7 +66,9 @@ for column in columns[-10:]:
 town_groups = df[["Megye", "Telepules", "ld_Fidesz"]].groupby(["Megye", "Telepules", "ld_Fidesz"])
 county_town_digit_sums = town_groups.aggregate(len)
 
+# TODO: digit_sums is unused
 digit_sums = county_town_digit_sums.groupby(["ld_Fidesz"]).aggregate(len)
+
 
 def lucky_nr(occurrances):
     digits = np.array([x[-1]
@@ -60,6 +76,7 @@ def lucky_nr(occurrances):
                        list(occurrances.index)])
     counts = np.array(list(occurrances))
     return digits[counts==max(counts)][0]
+
 
 def lucky_nr2(occurrances):
     """ 2nd most frequently occurring last digit """
@@ -70,11 +87,13 @@ def lucky_nr2(occurrances):
     return digits[counts==sorted(counts)[1]][0] \
            if len(occurrances) > 1 else None
 
+
 digit_sum_extr = \
     county_town_digit_sums.groupby(["Megye", "Telepules"]) \
     .aggregate([max, 'mean', min, sum, lucky_nr, lucky_nr2])
 
 
+# TODO: get_min_lucky() etc. are unused, remove
 def get_min_lucky(df):
     return [a if np.isnan(b) else min(a, b)
             for a, b in zip(df.lucky_nr, df.lucky_nr2)]
@@ -92,7 +111,7 @@ and have been removed from this script.
 """
 
 suspects2 = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
-suspects2 = suspects2.loc[suspects2["sum"] >= 20]
+suspects2 = suspects2.loc[suspects2["sum"] >= WARD_THRESHOLD]
 
 print("Suspicious areas based on max to mean digit occurrence ratio")
 
@@ -277,7 +296,7 @@ def get_overlaps(suspects):
 
 
 suspects2_unordered = digit_sum_extr.loc[digit_sum_extr.max_to_mean >= MAX_TO_MEAN_THRESHOLD]
-suspects2_unordered = suspects2_unordered.loc[suspects2_unordered["sum"] >= 20]
+suspects2_unordered = suspects2_unordered.loc[suspects2_unordered["sum"] >= WARD_THRESHOLD]
 
 overlaps = get_overlaps(suspects2_unordered)
 
