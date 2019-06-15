@@ -93,15 +93,8 @@ digit_sum_extr = \
     .aggregate([max, 'mean', min, sum, lucky_nr, lucky_nr2])
 
 
-# TODO: get_min_lucky() etc. are unused, remove
-def get_min_lucky(df):
-    return [a if np.isnan(b) else min(a, b)
-            for a, b in zip(df.lucky_nr, df.lucky_nr2)]
-
-
 digit_sum_extr["max_to_min"] = digit_sum_extr["max"] / digit_sum_extr["min"]
 digit_sum_extr["max_to_mean"] = digit_sum_extr["max"] / digit_sum_extr["mean"]
-digit_sum_extr["min_lucky"] = get_min_lucky(digit_sum_extr)
 
 
 """
