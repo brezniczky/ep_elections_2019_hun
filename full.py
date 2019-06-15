@@ -59,9 +59,11 @@ df.columns = [
     "MSZP", "MKKP", "Jobbik", "Fidesz", "Momentum", "DK", "Mi Hazank", "Munkaspart", "LMP"
 ]
 
-# TODO: revise this
-# There is a NAN line at the end, remove
-df.drop(np.where(np.isnan(df.Ervenyes))[0], inplace=True)
+# There is a mostly NAN line at the end of the Budapest sheet, remove it
+nan_line_idxs = np.where(np.isnan(df.Ervenyes))
+if len(nan_line_idxs) != 1 or (nan_line_idxs[0] != 1405):
+    raise Exception("Only a certain NaN line was expected, please check the data.")
+df.drop(nan_line_idxs[0], inplace=True)
 
 columns = df.columns.copy()
 
