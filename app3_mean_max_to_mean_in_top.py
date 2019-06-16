@@ -14,7 +14,6 @@ def simulate_mean_max_to_mean_of_top_dist(df_raw, actual_sum_max_to_mean, actual
     hits_max_to_mean = 0
     df = df_raw.copy()
     start = datetime.now()
-    print("N_ITERATIONS", N_ITERATIONS)
     for i in range(N_ITERATIONS):
         df.ld_Fidesz = np.random.choice(range(10), len(df))
 
