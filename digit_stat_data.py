@@ -52,6 +52,8 @@ def get_last_digit_stats(df):
     digit_stats = digit_sum_extr.ld_Fidesz
     digit_sum_extr["ld_Fidesz", "max_to_min"] = digit_stats["max"] / digit_stats["min"]
     digit_sum_extr["ld_Fidesz", "max_to_mean"] = digit_stats["max"] / digit_stats["mean"]
+    digit_sum_extr["ld_Fidesz", "max_less_min_to_mean"] = \
+        (digit_stats["max"] - digit_stats["min"]) / digit_stats["mean"]
 
     return county_town_digit_sums, digit_sum_extr
 
