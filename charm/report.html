@@ -13145,7 +13145,7 @@ Without focusing on the top 20, the likeliness increases to some sub-6% value.</
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A brief summary of the findings (about the likeliness of the "top 20" total last digit Fidesz votes entropy wandering this far from their typical values) where the Fidesz party has received at least 100 votes in each ward is as on the below chart.</p>
-<p>The histogram depicting the simulations' results does not seem to suggest that this is realistically a clean (distributionwise uniform) situation. The entropy drops fairly low, giving less than 6% in all examined cases, and particularly &lt; 4% for the top 20 candidates. This may however be down to a handful of settlements with highly obscure results.</p>
+<p>The histogram depicting the simulations' results does not seem to suggest that this is realistically a clean (distributionwise uniform) situation. The entropy drops fairly low, corresponding with a less than 6% probability in all examined cases, and particularly &lt; 2% for the top 20 candidates. This may however be down to a handful of settlements with highly obscure results.</p>
 <p>The relevant data/code can be found taking a look at the app5_... files.</p>
 
 </div>
@@ -13191,31 +13191,380 @@ Without focusing on the top 20, the likeliness increases to some sub-6% value.</
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
-<p>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
-
+<h3 id="Comparing-the-2018-and-2019-election-data">Comparing the 2018 and 2019 election data<a class="anchor-link" href="#Comparing-the-2018-and-2019-election-data">&#182;</a></h3><p>Using more data tends to allow to obtain a more detailed picture.</p>
+<p>A comparative analysis of the empiric last digit distributions of data from the two most recent elections did not identify repeat problems with a 95% 
+confidence, however, the suspects can be listed out in decreasing likeliness.</p>
+<h4 id="Top-suspects-for-irregularities-in-both-years">Top suspects for irregularities in both years<a class="anchor-link" href="#Top-suspects-for-irregularities-in-both-years">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">app6_comparative</span> <span class="k">as</span> <span class="nn">app6</span>
+
+<span class="p">(</span><span class="n">df_comparative</span><span class="p">,</span> <span class="n">suspects</span><span class="p">,</span> <span class="n">df_comparative_sorted_by_both</span><span class="p">,</span> <span class="n">suspects2</span><span class="p">)</span> <span class="o">=</span> <span class="n">app6</span><span class="o">.</span><span class="n">load_results</span><span class="p">()</span>
+
+<span class="n">suspects2</span><span class="p">[</span><span class="s2">&quot;p_both_incorr_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects2</span><span class="p">[</span><span class="s2">&quot;p_both_incorr&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="n">suspects2</span><span class="p">[[</span><span class="s2">&quot;Settlement&quot;</span><span class="p">,</span> <span class="s2">&quot;p_both_incorr_%&quot;</span><span class="p">]]</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Settlement</th>
+      <th>p_both_incorr_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Tata</td>
+      <td>94.916295</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Balatonfüred</td>
+      <td>93.350995</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Fót</td>
+      <td>90.833224</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Eger</td>
+      <td>83.660361</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Budapest XVI. kerület</td>
+      <td>74.931360</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Mezőtúr</td>
+      <td>74.402596</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Veresegyház</td>
+      <td>73.818450</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Berettyóújfalu</td>
+      <td>72.978528</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Vecsés</td>
+      <td>69.422220</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Dunaföldvár</td>
+      <td>67.401178</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Makó</td>
+      <td>66.886665</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Pécel</td>
+      <td>66.054720</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Pilisvörösvár</td>
+      <td>64.272912</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Komárom</td>
+      <td>59.571075</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Százhalombatta</td>
+      <td>58.267406</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Maglód</td>
+      <td>57.457110</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Budapest XXII. kerület</td>
+      <td>56.399285</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Nagykálló</td>
+      <td>54.872886</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Budapest II. kerület</td>
+      <td>54.797148</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Tiszaföldvár</td>
+      <td>53.281674</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Kisújszállás</td>
+      <td>52.070656</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Top-suspects-for-some-irregularity-in-at-least-one-of-the-years">Top suspects for some irregularity in at least one of the years<a class="anchor-link" href="#Top-suspects-for-some-irregularity-in-at-least-one-of-the-years">&#182;</a></h4><p>On the other hand, naturally, the number of cases where at least one of the results looks suspicious (i.e. it is significantly unlikely, &lt; 5%, that both would be 'regular'), is greater than that of the cases where only the 2019 results appeared odd (not detailed here), and yields a crisper view.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">suspects</span><span class="p">[</span><span class="s2">&quot;p_both_correct_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects</span><span class="p">[</span><span class="s2">&quot;p_both&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">suspects</span><span class="p">[[</span><span class="s2">&quot;Settlement&quot;</span><span class="p">,</span> <span class="s2">&quot;p_both_correct_%&quot;</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Settlement</th>
+      <th>p_both_correct_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Vecsés</td>
+      <td>0.012220</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Tata</td>
+      <td>0.036295</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Fót</td>
+      <td>0.083224</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Balatonfüred</td>
+      <td>0.110995</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Berettyóújfalu</td>
+      <td>0.138528</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Pécel</td>
+      <td>0.174720</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Eger</td>
+      <td>0.560361</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Budapest XV. kerület</td>
+      <td>0.817668</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Mezőkövesd</td>
+      <td>0.943138</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Dunaföldvár</td>
+      <td>1.091178</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Mezőtúr</td>
+      <td>1.402596</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Budapest XVI. kerület</td>
+      <td>1.451360</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Veresegyház</td>
+      <td>1.548450</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Maglód</td>
+      <td>1.587110</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Sopron</td>
+      <td>1.653652</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Budapest III. kerület</td>
+      <td>1.810160</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Budapest XVII. kerület</td>
+      <td>2.227400</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Gárdony</td>
+      <td>2.293241</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Pilisvörösvár</td>
+      <td>3.042912</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Makó</td>
+      <td>3.106665</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Nagykálló</td>
+      <td>3.322886</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Komárom</td>
+      <td>3.771075</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Oroszlány</td>
+      <td>3.779568</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Tiszaföldvár</td>
+      <td>4.391674</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Százhalombatta</td>
+      <td>4.817406</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
+<p>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
+
+</div>
+</div>
 </div>
     </div>
   </div>

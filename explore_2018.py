@@ -100,12 +100,5 @@ df_Fidesz_entr.sort_values(["prob_of_entr"], inplace=True)
 df_Fidesz_entr.to_csv("Fidesz_entr_prob_2018.csv", index=False)
 
 
-# suspects5_digits = pd.merge(suspects5_18, df_Fidesz, how="inner", on=["Division", "Settlement"])
-# # this leaves us with only 146 settlements to examine
-# suspects5_18 = df_Fidesz_entr.loc[df_Fidesz_entr["min"] >= 201].head(20)
-# suspects5_18.to_csv("suspects5_18.csv")
-
-# plt.hist(suspects5_digits.ld, bins=10)
-# plt.show()
-
-# print(suspects5_18[suspects5_18.Settlement == "Eger"])
+df_comparative_sorted_by_both
+suspects2
