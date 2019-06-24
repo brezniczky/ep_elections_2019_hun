@@ -25,8 +25,6 @@ def get_cleaned_data() -> pd.DataFrame:
     else:
         df = pd.read_csv("merged.csv")
 
-    print("concatenated data frame has %d rows" % len(df))
-
     df.columns = [
         "Unnamed", "Megye", "Telepules", "Szavazokor", "Nevjegyzekben", "Megjelent",
         "Belyegzetlen", "Lebelyegzett", "Elteres megjelentektol", "Ervenytelen", "Ervenyes",
@@ -38,5 +36,14 @@ def get_cleaned_data() -> pd.DataFrame:
     if len(nan_line_idxs) != 1 or (nan_line_idxs[0] != 1405):
         raise Exception("Only a certain NaN line was expected, please check the data.")
     df.drop(nan_line_idxs[0], inplace=True)
+
+    # a bit of regret: this is not strictly part of the cleaned data,
+    # maybe this function should be called get_preprocessed_data()
+    # of course the project is already "beyond budget" (==0 :) )
+    columns = df.columns.copy()
+
+    for column in columns[-10:]:
+        df["ld_" + column] = df[column] % 10
+    df["ld_Nevjegyzekben"] = df["Nevjegyzekben"] % 10
 
     return df

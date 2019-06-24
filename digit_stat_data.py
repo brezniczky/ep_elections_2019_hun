@@ -30,12 +30,6 @@ def lucky_nr2(occurrances):
         return None
 
 def get_last_digit_stats(df):
-    columns = df.columns.copy()
-
-    for column in columns[-10:]:
-        df["ld_" + column] = df[column] % 10
-    df["ld_Nevjegyzekben"] = df["Nevjegyzekben"] % 10
-
     county_town_digit_groups = (
         df[["Megye", "Telepules", "ld_Fidesz", "Fidesz"]]
         .groupby(["Megye", "Telepules", "ld_Fidesz"])
