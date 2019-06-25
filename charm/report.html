@@ -13116,6 +13116,13 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Signs-of-flawed-data-provision-in-Hungarian-EP-and-General-Election-data-(2019,-2018,-2014)">Signs of flawed data provision in Hungarian EP and General Election data (2019, 2018, 2014)<a class="anchor-link" href="#Signs-of-flawed-data-provision-in-Hungarian-EP-and-General-Election-data-(2019,-2018,-2014)">&#182;</a></h2><h4 id="Draft-Version-0.1">Draft Version 0.1<a class="anchor-link" href="#Draft-Version-0.1">&#182;</a></h4><h4 id="J&#225;nos-Brezniczky">J&#225;nos Brezniczky<a class="anchor-link" href="#J&#225;nos-Brezniczky">&#182;</a></h4><h4 id="25/06/2019">25/06/2019<a class="anchor-link" href="#25/06/2019">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Abstract">Abstract<a class="anchor-link" href="#Abstract">&#182;</a></h3>
 </div>
 </div>
@@ -13124,11 +13131,12 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Human craft work tends to leave a trace of unevenness on impacted numeric data, for instance, humans are an imperfect source of random numbers. Certain values tend to be avoided, those of last digits are no exception. Such behaviour can be analytically examined.</p>
-<p>A quick analysis of the recent Hungarian electoral data is found to show some convincing degree of anomaly which is detailed herein. The analysis is focused on the numbers of the winning party - since these numbers are the biggest, and thus would be expected to have the most uniform last digit distribution.</p>
+<p>A quick analysis of the recent (2019 European Parliamentary) Hungarian electoral data is found to show a convincing degree of anomaly which is detailed herein. The analysis is focused on the numbers of the winning party - since these numbers are the biggest, and thus would be expected to have the most uniform last digit distribution, the properties of which being the subject of the below verifications.</p>
 <p>The examination of the 2019 European Parlamentiary Election results alone shows a 97% unlikeliness after focusing on the top 20 settlements which were identified as the most likely "oddball" candidates through certain heuristics.
 In this case the verification is not restricted to these, but a full scale Monte-Carlo simulation takes place replacing each vote count with a uniform random value. The extremities obtained via identical steps leading to the aforementioned top 20 candidates are found to rarely (approx. 3%) as extreme as in case of the actual data.
-Without focusing on the top 20, the likeliness increases to some sub-6% value.</p>
+(Without focusing on the top 20, the likeliness increases to some sub-6% value, this is not detailed below.)</p>
 <p>Individual settlement results can also be highlighted via comparing the 2018 and 2019 last digit distribution entropy and leveraging that the last digits should independently vary in such characteristically different electoral settings (for instance, the turnout has been 70.22% in 2018 at 7 pm [1], whilst only 43.48% at the same time in 2019 [2]). Certain larger settlements appear to have been treated less accurately than others.</p>
+<p>An additional inclusion of 2014 results further broadends the scope, pointing the finger on 44 areas with a 5% probability left for error, where some anomaly is likely to have occurred at least once during the three elections.</p>
 <p>Although no effort has been made to reach beyond this degree of potential suspicion, a number of ways in which further examinations could be carried out will be explained. The above does not necessarily imply forgery, natural human mistakes would be expected to leave such marks on numeric data as well, and we could similarly expect some degree of random discrepancy, yet any of these underlines that certain quality improvements are likely desirable.</p>
 
 </div>
@@ -13200,12 +13208,14 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">app6_comparative</span> <span class="k">as</span> <span class="nn">app6</span>
 
-<span class="p">(</span><span class="n">df_comparative</span><span class="p">,</span> <span class="n">suspects</span><span class="p">,</span> <span class="n">df_comparative_sorted_by_both</span><span class="p">,</span> <span class="n">suspects2</span><span class="p">)</span> <span class="o">=</span> <span class="n">app6</span><span class="o">.</span><span class="n">load_results</span><span class="p">()</span>
+<span class="p">(</span><span class="n">df_comparative</span><span class="p">,</span> <span class="n">suspects</span><span class="p">,</span> 
+ <span class="n">df_comparative_sorted_by_both</span><span class="p">,</span> <span class="n">suspects2</span><span class="p">,</span> 
+ <span class="n">df_comparative_sorted_by_all_3</span><span class="p">,</span> <span class="n">suspects3</span><span class="p">)</span> <span class="o">=</span> <span class="n">app6</span><span class="o">.</span><span class="n">load_results</span><span class="p">()</span>
 
 <span class="n">suspects2</span><span class="p">[</span><span class="s2">&quot;p_both_incorr_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects2</span><span class="p">[</span><span class="s2">&quot;p_both_incorr&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
 
@@ -13222,7 +13232,7 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[1]:</div>
 
 
 
@@ -13369,14 +13379,14 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Top-suspects-for-some-irregularity-in-at-least-one-of-the-years">Top suspects for some irregularity in at least one of the years<a class="anchor-link" href="#Top-suspects-for-some-irregularity-in-at-least-one-of-the-years">&#182;</a></h4><p>On the other hand, naturally, the number of cases where at least one of the results looks suspicious (i.e. it is significantly unlikely, &lt; 5%, that both would be 'regular'), is greater than that of the cases where only the 2019 results appeared odd (not detailed here), and yields a crisper view.</p>
+<h4 id="Top-suspects-for-some-irregularity-in-at-least-one-of-the-2018-and-2019-(EP)-elections">Top suspects for some irregularity in at least one of the 2018 and 2019 (EP) elections<a class="anchor-link" href="#Top-suspects-for-some-irregularity-in-at-least-one-of-the-2018-and-2019-(EP)-elections">&#182;</a></h4><p>On the other hand, naturally, the number of cases where at least one of the results looks suspicious (i.e. it is significantly unlikely, &lt; 5%, that both would be 'regular'), is greater than that of the cases where only the 2019 results appeared odd (not detailed here), and yields a crisper view, once 2018 values had been taken into account.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">suspects</span><span class="p">[</span><span class="s2">&quot;p_both_correct_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects</span><span class="p">[</span><span class="s2">&quot;p_both&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
@@ -13393,7 +13403,7 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[15]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -13546,6 +13556,51 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
       <td>Százhalombatta</td>
       <td>4.817406</td>
     </tr>
+    <tr>
+      <th>25</th>
+      <td>Budapest XXII. kerület</td>
+      <td>5.259285</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Gyál</td>
+      <td>5.324157</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Zalaegerszeg</td>
+      <td>6.302375</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Budapest II. kerület</td>
+      <td>6.507148</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Gyömrő</td>
+      <td>6.627704</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Kerepes</td>
+      <td>7.327034</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Kisújszállás</td>
+      <td>7.750656</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Pomáz</td>
+      <td>8.679330</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Budapest VI. kerület</td>
+      <td>8.942017</td>
+    </tr>
   </tbody>
 </table>
 </div>
@@ -13560,9 +13615,895 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Top-suspects-for-some-irregularity-in-at-least-one-of-the-2014-general,-2018-general(?-TODO:-check!)-and-2019-(EP)">Top suspects for some irregularity in at least one of the 2014 general, 2018 general(? TODO: check!) and 2019 (EP)<a class="anchor-link" href="#Top-suspects-for-some-irregularity-in-at-least-one-of-the-2014-general,-2018-general(?-TODO:-check!)-and-2019-(EP)">&#182;</a></h4><p>Involving one more year's generic eletion data plausibly further increases the number of suspect locations.</p>
+<p>Below the probability for instance next to Eger (second column) means that there is a 0.55% chance (~ 1:180) that the values are regular in all three cases, i.e. nothing unusual took place that would have otherwise affected the uniform distribution of the last digits.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">suspects3</span><span class="p">[</span><span class="s2">&quot;p_all_3_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects3</span><span class="p">[</span><span class="s2">&quot;p_all_3&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> 
+<span class="n">suspects3</span><span class="p">[[</span><span class="s2">&quot;Settlement&quot;</span><span class="p">,</span> <span class="s2">&quot;p_all_3_%&quot;</span><span class="p">,</span> <span class="s2">&quot;p_2014&quot;</span><span class="p">,</span> <span class="s2">&quot;p_2018&quot;</span><span class="p">,</span> <span class="s2">&quot;p_2019&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">suspects3</span><span class="p">[</span><span class="s2">&quot;p_all_3_%&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Settlement</th>
+      <th>p_all_3_%</th>
+      <th>p_2014</th>
+      <th>p_2018</th>
+      <th>p_2019</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Vecsés</td>
+      <td>0.010415</td>
+      <td>0.8523</td>
+      <td>0.3055</td>
+      <td>0.0004</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Tata</td>
+      <td>0.013959</td>
+      <td>0.3846</td>
+      <td>0.0085</td>
+      <td>0.0427</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Berettyóújfalu</td>
+      <td>0.036904</td>
+      <td>0.2664</td>
+      <td>0.0052</td>
+      <td>0.2664</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Püspökladány</td>
+      <td>0.043300</td>
+      <td>0.0008</td>
+      <td>0.7237</td>
+      <td>0.7479</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Balatonfüred</td>
+      <td>0.053966</td>
+      <td>0.4862</td>
+      <td>0.0281</td>
+      <td>0.0395</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Fót</td>
+      <td>0.054121</td>
+      <td>0.6503</td>
+      <td>0.0824</td>
+      <td>0.0101</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Mezőkövesd</td>
+      <td>0.061870</td>
+      <td>0.0656</td>
+      <td>0.0101</td>
+      <td>0.9338</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Veresegyház</td>
+      <td>0.065345</td>
+      <td>0.0422</td>
+      <td>0.0775</td>
+      <td>0.1998</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Pécel</td>
+      <td>0.159764</td>
+      <td>0.9144</td>
+      <td>0.3360</td>
+      <td>0.0052</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Kerepes</td>
+      <td>0.205890</td>
+      <td>0.0281</td>
+      <td>0.4862</td>
+      <td>0.1507</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Budapest II. kerület</td>
+      <td>0.206277</td>
+      <td>0.0317</td>
+      <td>0.2164</td>
+      <td>0.3007</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Kisújszállás</td>
+      <td>0.217793</td>
+      <td>0.0281</td>
+      <td>0.2784</td>
+      <td>0.2784</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Érd</td>
+      <td>0.356148</td>
+      <td>0.0301</td>
+      <td>0.3905</td>
+      <td>0.3030</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Budapest XVI. kerület</td>
+      <td>0.512620</td>
+      <td>0.3532</td>
+      <td>0.1880</td>
+      <td>0.0772</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Eger</td>
+      <td>0.551731</td>
+      <td>0.9846</td>
+      <td>0.1237</td>
+      <td>0.0453</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Budapest XV. kerület</td>
+      <td>0.685288</td>
+      <td>0.8381</td>
+      <td>0.0113</td>
+      <td>0.7236</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Dunaföldvár</td>
+      <td>0.700427</td>
+      <td>0.6419</td>
+      <td>0.0363</td>
+      <td>0.3006</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Pilisvörösvár</td>
+      <td>0.847147</td>
+      <td>0.2784</td>
+      <td>0.2784</td>
+      <td>0.1093</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Mezőtúr</td>
+      <td>0.912108</td>
+      <td>0.6503</td>
+      <td>0.0702</td>
+      <td>0.1998</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Gárdony</td>
+      <td>0.985176</td>
+      <td>0.4296</td>
+      <td>0.8161</td>
+      <td>0.0281</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Tiszaföldvár</td>
+      <td>1.222642</td>
+      <td>0.2784</td>
+      <td>0.4018</td>
+      <td>0.1093</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Gyál</td>
+      <td>1.233075</td>
+      <td>0.2316</td>
+      <td>0.6361</td>
+      <td>0.0837</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Maglód</td>
+      <td>1.295240</td>
+      <td>0.8161</td>
+      <td>0.4018</td>
+      <td>0.0395</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Nagykálló</td>
+      <td>1.335136</td>
+      <td>0.4018</td>
+      <td>0.0827</td>
+      <td>0.4018</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Keszthely</td>
+      <td>1.440871</td>
+      <td>0.0448</td>
+      <td>0.3474</td>
+      <td>0.9258</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Budapest III. kerület</td>
+      <td>1.510579</td>
+      <td>0.8345</td>
+      <td>0.9680</td>
+      <td>0.0187</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Sopron</td>
+      <td>1.626697</td>
+      <td>0.9837</td>
+      <td>0.5782</td>
+      <td>0.0286</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Komárom</td>
+      <td>1.709428</td>
+      <td>0.4533</td>
+      <td>0.1155</td>
+      <td>0.3265</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Százhalombatta</td>
+      <td>1.773287</td>
+      <td>0.3681</td>
+      <td>0.3102</td>
+      <td>0.1553</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Budapest XVII. kerület</td>
+      <td>1.829809</td>
+      <td>0.8215</td>
+      <td>0.0280</td>
+      <td>0.7955</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Budapest XI. kerület</td>
+      <td>2.328696</td>
+      <td>0.0333</td>
+      <td>0.7036</td>
+      <td>0.9939</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Tapolca</td>
+      <td>2.438502</td>
+      <td>0.2163</td>
+      <td>0.9611</td>
+      <td>0.1173</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Balatonalmádi</td>
+      <td>2.711807</td>
+      <td>0.0827</td>
+      <td>0.8161</td>
+      <td>0.4018</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Diósd</td>
+      <td>2.993617</td>
+      <td>0.1093</td>
+      <td>0.2784</td>
+      <td>0.9838</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>Makó</td>
+      <td>3.075598</td>
+      <td>0.9900</td>
+      <td>0.2227</td>
+      <td>0.1395</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>Pásztó</td>
+      <td>3.140781</td>
+      <td>0.2212</td>
+      <td>0.2212</td>
+      <td>0.6419</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>Pomáz</td>
+      <td>3.194861</td>
+      <td>0.3681</td>
+      <td>0.8767</td>
+      <td>0.0990</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>Budapest VI. kerület</td>
+      <td>3.338055</td>
+      <td>0.3733</td>
+      <td>0.1141</td>
+      <td>0.7837</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>Oroszlány</td>
+      <td>3.529361</td>
+      <td>0.9338</td>
+      <td>0.5384</td>
+      <td>0.0702</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>Budapest XXII. kerület</td>
+      <td>3.791944</td>
+      <td>0.7210</td>
+      <td>0.1601</td>
+      <td>0.3285</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>Zalaegerszeg</td>
+      <td>3.838146</td>
+      <td>0.6090</td>
+      <td>0.9925</td>
+      <td>0.0635</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Budapest V. kerület</td>
+      <td>3.897143</td>
+      <td>0.2762</td>
+      <td>0.1982</td>
+      <td>0.7119</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>Szentendre</td>
+      <td>4.718863</td>
+      <td>0.3694</td>
+      <td>0.9980</td>
+      <td>0.1280</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>Budaörs</td>
+      <td>4.791168</td>
+      <td>0.3835</td>
+      <td>0.2311</td>
+      <td>0.5406</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>Gyömrő</td>
+      <td>4.796469</td>
+      <td>0.7237</td>
+      <td>0.1231</td>
+      <td>0.5384</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Is there really a bit of room for suspicion? Looking into e.g. the Balatonfüred data just slightly deeper - particularly the 2019 EP result for 4 (ex-?)major parties (Fidesz, Jobbik, DK, Momentum) reveals that the numbers do not seem to get any less irregular - just by the eye it is easy to spot that 4 never appears.</p>
+<p>A quick plot consistently appears to show an odd distribution.</p>
+<p>The corresponding p-value is 1.61% - this is an increase actually, but still remains well below a 5% error level.</p>
+<p>Note that in the meantime the number of digits has doubled - and the distribution should have evened out, unless there is something commonly affecting the results of all included parties. Interesting.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">preprocessing</span> <span class="k">import</span> <span class="n">get_cleaned_data</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">digit_entropy_distribution</span> <span class="k">import</span> <span class="n">get_entropy</span><span class="p">,</span> <span class="n">prob_of_entr</span>
+
+<span class="n">df_2019</span> <span class="o">=</span> <span class="n">get_cleaned_data</span><span class="p">()</span>
+<span class="n">df_2019</span><span class="p">[</span><span class="n">df_2019</span><span class="o">.</span><span class="n">Telepules</span><span class="o">==</span><span class="s2">&quot;Balatonfüred&quot;</span><span class="p">][[</span><span class="s2">&quot;Fidesz&quot;</span><span class="p">,</span> <span class="s2">&quot;Jobbik&quot;</span><span class="p">,</span> <span class="s2">&quot;DK&quot;</span><span class="p">,</span> <span class="s2">&quot;Momentum&quot;</span><span class="p">]]</span>
+
+<span class="n">digits_Balatonfured</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">df_2019</span><span class="p">[</span><span class="n">df_2019</span><span class="o">.</span><span class="n">Telepules</span><span class="o">==</span><span class="s2">&quot;Balatonfüred&quot;</span><span class="p">]</span>
+                                     <span class="p">[[</span><span class="s2">&quot;Fidesz&quot;</span><span class="p">,</span> <span class="s2">&quot;Jobbik&quot;</span><span class="p">,</span> <span class="s2">&quot;DK&quot;</span><span class="p">,</span> <span class="s2">&quot;Momentum&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span> <span class="o">%</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">digits_Balatonfured</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">p_Balatonfured</span> <span class="o">=</span> <span class="n">prob_of_entr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">digits_Balatonfured</span><span class="p">),</span> <span class="n">get_entropy</span><span class="p">(</span><span class="n">digits_Balatonfured</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p = </span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p_Balatonfured</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Balatonfüred, 4 parties </span><span class="se">\&quot;</span><span class="s2">joint</span><span class="se">\&quot;</span><span class="s2">, 2019, p = </span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p_Balatonfured</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>p = 1.61 %
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-2014-data:-Fidesz,-Fidesz-and-Jobbik">The 2014 data: Fidesz, Fidesz and Jobbik<a class="anchor-link" href="#The-2014-data:-Fidesz,-Fidesz-and-Jobbik">&#182;</a></h3><p>The 2014 data yields a handful of candidates when only looking at the Fidesz vote counts alone.</p>
+<h4 id="Top-2014-candidates-for-irregularity-in-the-number-of-Fidesz-votes">Top 2014 candidates for irregularity in the number of Fidesz votes<a class="anchor-link" href="#Top-2014-candidates-for-irregularity-in-the-number-of-Fidesz-votes">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">app6_comparative</span> <span class="k">as</span> <span class="nn">app6</span>
+
+
+<span class="n">df_comparative</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">app6</span><span class="o">.</span><span class="n">load_results</span><span class="p">()</span>
+<span class="n">df_comparative</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_comparative</span><span class="p">[[</span><span class="s2">&quot;Settlement&quot;</span><span class="p">,</span> <span class="s2">&quot;p_2014&quot;</span><span class="p">]][(</span><span class="n">df_comparative</span><span class="o">.</span><span class="n">p_2014</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">&amp;</span>
+                                         <span class="p">(</span><span class="n">df_comparative</span><span class="o">.</span><span class="n">count_2014</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span>
+                                         <span class="p">(</span><span class="n">df_comparative</span><span class="o">.</span><span class="n">min_votes_2014</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">)]</span> \
+              <span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;p_2014&quot;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Settlement</th>
+      <th>p_2014</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>518</th>
+      <td>Püspökladány</td>
+      <td>0.0008</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Derecske</td>
+      <td>0.0027</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>Kerepes</td>
+      <td>0.0281</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>Kisújszállás</td>
+      <td>0.0281</td>
+    </tr>
+    <tr>
+      <th>223</th>
+      <td>Érd</td>
+      <td>0.0301</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>Budapest II. kerület</td>
+      <td>0.0317</td>
+    </tr>
+    <tr>
+      <th>556</th>
+      <td>Budapest XI. kerület</td>
+      <td>0.0333</td>
+    </tr>
+    <tr>
+      <th>411</th>
+      <td>Budapest IX. kerület</td>
+      <td>0.0411</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Veresegyház</td>
+      <td>0.0422</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The entropy based verification tends to be more reliable over more sizable areas. There are 3 of the districts of the capital listed above. It is at least an interesting coincidence (?) that according to [3] two of those, namely the Budapest XI. and IX. districts (kerület) have seen Fidesz conquering an extraordinarily faint victory in that year (~2..5% ahead of the second candidate).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="The-top-2014-candidates-based-on-common-irregularities-in-the-number-of-votes-of-Fidesz-and-Jobbik">The top 2014 candidates based on common irregularities in the number of votes of Fidesz and Jobbik<a class="anchor-link" href="#The-top-2014-candidates-based-on-common-irregularities-in-the-number-of-votes-of-Fidesz-and-Jobbik">&#182;</a></h4><p>Should the values be affected by some 'anomaly', assuming it is a consistent anomaly - a common habit, or "hand" - this should leave, albeit stochastic, consistent marks on the data.</p>
+<p>Since both the Fidesz and Jobbik parties frequently received numerous votes on this occasion, the Jobbik party vote last digits should also lend themselves for uniformity checks in several cases. (In case of small values, say in the range of 1..10, a downward bias is expected, as large values become less likely and this is reflected in the last digit - since that is the only digit. But as the values increase, this effect is expected to fade out.)
+Here a little relaxation of the number of votes constraint was applied, the minimum for Jobbik votes was 50 instead of 100 - the norm above.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">app7_fidesz_vs_jobbik</span> <span class="k">as</span> <span class="nn">app7</span>
+
+
+<span class="n">_</span><span class="p">,</span> <span class="n">suspects</span> <span class="o">=</span> <span class="n">app7</span><span class="o">.</span><span class="n">load_results</span><span class="p">()</span>
+<span class="n">suspects</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Telepules</th>
+      <th>min_votes</th>
+      <th>Korzet_count</th>
+      <th>entropy</th>
+      <th>p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Budaörs</td>
+      <td>52</td>
+      <td>40</td>
+      <td>2.095817</td>
+      <td>0.0834</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bátonyterenye</td>
+      <td>57</td>
+      <td>30</td>
+      <td>1.985231</td>
+      <td>0.0448</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Edelény</td>
+      <td>120</td>
+      <td>16</td>
+      <td>1.771016</td>
+      <td>0.0868</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kerepes</td>
+      <td>100</td>
+      <td>16</td>
+      <td>1.721402</td>
+      <td>0.0541</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Pomáz</td>
+      <td>54</td>
+      <td>32</td>
+      <td>1.956679</td>
+      <td>0.0141</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Pásztó</td>
+      <td>54</td>
+      <td>18</td>
+      <td>1.798106</td>
+      <td>0.0639</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Püspökladány</td>
+      <td>118</td>
+      <td>32</td>
+      <td>1.879748</td>
+      <td>0.0020</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Szeged</td>
+      <td>50</td>
+      <td>218</td>
+      <td>2.264374</td>
+      <td>0.0586</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Szigethalom</td>
+      <td>82</td>
+      <td>32</td>
+      <td>2.018515</td>
+      <td>0.0560</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This comparsion of the distribution of the then leading two parties, Fidesz and Jobbik, suggests that the Szeged (one of the larger cities in Hungary, representing about 1.6% of the population) area could have really deserved some close attention - whether or not certain suspect efforts (if any) have reached their goal.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">AndrasKalman.load</span>
+
+<span class="n">AndrasKalman</span><span class="o">.</span><span class="n">load</span><span class="o">.</span><span class="n">plot_location</span><span class="p">(</span><span class="s2">&quot;Szeged&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAEICAYAAABPgw/pAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4zLCBodHRwOi8vbWF0cGxvdGxpYi5vcmcvnQurowAAEyBJREFUeJzt3Xe0ZWV9xvHvI2ABRRkZCQOMY6xBl6JrpAgaig27y4plYR2TpSK2KCYqlsQSa9SwMgpCREEXoBIDKhIsGCwDNrqKlKEjUjUi8Msfe185c507t7PvvPP9rHXWPWe/u/z2Pvc8993vPufcVBWSpPXfHYYuQJI0Nwx0SWqEgS5JjTDQJakRBrokNcJAl6RGGOiatiQHJjl86DrmS5Izkuw+QdvuSVbfziUNJkklud8EbS9JcvI6lj0+yb5TmVdzw0BfgJLsluR/k1yb5Ook30/yyKHrmokk+yY5Ncl1SVYn+WCSjUfaFyX5cpIbk1yQ5AUjbVsnOTbJJX2wLJtgG4uSXDmdwEhyaJKbktwwcnseQFU9uKq+PeOdXuCSfDvJK+Z7O1W1d1UdNt/b0W0M9AUmyebA14BPAIuAbYB3AX8csq5Z2BTYH9gS2AnYC3jTSPungJuArYAXAgcleXDfdivwdeBZk2zjA8BZM6jtg1V115HbF2ewDmnBMNAXngcAVNURVXVLVf2hqr5ZVT8HSPKzcb3KGhseSLJz37O/pp9v97GVJrlPku8muT7Jt5J8anTYZArLfqdf9gS6cJ6Sqjqoqr5XVTdV1cXA54Fd+/VuRhfWb6+qG6rqZOBY4MX9spdX1b8DP55o/UkeBTwE+OxUa5pMkvOTPLa/f5e+N/+7JGcCjxw375IkR/dnCL9Jst9I245JVvVnJ5cn+Ug//ZPjnsObkxy4ljoOSvKhcdO+muQN/f23JLm4f17OSbLXDPf3lUl+1Z8NHptkybhZnpTkvCRXJfnXJHdYc/F8sj+bPHu0hnWdCfTrOTnJ3WdSs9bOQF94zgVuSXJYkr2TbDHaWFUPG+tRAm8AzgFOS7IN8N/Ae+l69m8Cjk6yuF/0C8CPgHsCB9KHJsAUlz2VLsjfA+w7i/17DHBGf/8BwM1Vde5I+8+AB//FUmuRZCPgk8BrgPn6Dot3Avftb09gZN/7YPsvupq3oTv72D/JE/pZPg58vKo275f/EkBVvWbkOdwN+B3w1bVs+wjgeUnSb28L4PHAkUkeSLffj6yqu/W1nT/dnUuyJ/A+4LnA1sAFwJHjZnsmsBx4BPB04GUjbTsBv6b73XgncEySRevY3h2SfBp4KPD4qrp2ujVrYgb6AlNV19G9yAv4NHBl32vaanS+JLvRBfDT+mVeBBxXVcdV1a1VdQKwiq53tZSuZ/mOvqc81hMeM5Vl315Vf6yq79KF2LQleRldMIz1Ou8KXDdutmuBu01xlfsBP6yqU2dSD/Cm/ozkmiRXTTDPc4F/rqqrq+oi4N9G2h4JLK6qd/fH9Ty65+z5ffufgPsl2bI/A/nB6Ir7P5hfAV5bVT9Zy7a/R/d78Oj+8bOBU6rqEuAW4E7A9kk2qarzq+rX0z4C3TDXIVV1WlX9ETgA2GXc9YoP9Pt/IfAxYJ+RtiuAj1XVn/ohq3OAJ0+wrU3o/kgtAp5aVb+fQb1aBwN9Aaqqs6rqJVW1Ld1wwhK6FxIASbaj6+3tO9K7vTfwnJGAuobuD8PW/fJXj3sBXTRyf7Jlf1dVN47Mf8F09ynJM+h6gntX1Vh43gBsPm7WzYHrp7C+JXSB/o/TrWXEh6rqHv1tomGkJax5rEb3/d7AknHH7W101wMAXk53FnJ2kh8necpI/ZsARwFfqKrxPWIAqvvmvCO5LUBfQDdkRVX9iu7axIHAFUmOXMtQyVQsGd2nqroB+C3dGceY8fs/up2La81v+BvfPup+dD38d1XVTTOoVZMw0Be4qjobOJQu2ElyF7pe3ceq6viRWS8CPjcSUPeoqs2q6v3ApcCiJJuOzL/dNJbdoh/vHrN0OvuQ5Il0PdenVtUvRprOBTZOcv+RaQ/jtiGZddmR7g/OmUkuoxve2DHJZf1QzFy5lDWP1ei+XwT8Ztxxu1tVPQmgqn5ZVfsA96K7cHvUyHH8BN3ZyT9Nsv0jgGcnuTfd8MbRYw1V9YWq2o3uD0v125iuS/rlgT9f17gncPHIPOP3/5KRx9uMDQlN0D7qLOClwPH9kJHmmIG+wCR5UJI3Jtm2f7wdXQ9t7HT9EODsqvrguEUPB56a5AlJNkpy53Tvmd62qi6gG0I5MMkdk+wCPHWay76rX3a3ccuOXUR8yQT7syddr/JZVfWj0ba+138M8O4kmyXZla4H97mR5e9MN7QAcKf+McDxwDJgh/72DuAnwA5VdUu/7J8vGM/Cl4ADkmzRPyevHWn7EXB9f3HyLv2xe0j6t5gmeVGSxVV1K3BNv8ytSV4F/C3wwr5tQv1QzFXAZ4BvVNU1/bofmGTPJHcC/g/4A927gqbrCOClSXbo1/UvdMNY54/M8+Z+/7cDXgeMvhvoXsB+STZJ8hzgb4Dj1rE/R9CdxXwryX1nUK/Wpaq8LaAb3anul+h6SDf2P/8D2LxvL+D3dMMVY7dH9207Ad8BrgaupLvQubRvuy/dmOz1wInASuDgke2ua9m/7pe9ATiB7kLk4X3bHft1PmiC/TkJuHlcvcePtC+iO+O4EbgQeMG45Wv8bYLtvAQ4eeTxdnQ94HtOMP+hwHsnaDsfeGx/f1PgP+kC+UzgzcDqkXmX0IXiZXQXN38wsuzhdGPMN9CddTyjn/5turehjh6Tt63jd+Lt/b4/Z2TaQ+n/oPTP2deAJX3bC4Ez1rG+bwMvH3n8d3QXNsfWs+24478fcB7dUMyHgY1Gjvn3+9+Ha+nOuB4/bjuvmOD5eSXd8MyyoV9zLd3SH1xtYJJ8ka6n/85Zrmc34NXVDS0sGEleBDy4qg4YupaFJslpwLur6itD16K5ZaBvIPphgKuB39C99e0rwC619ndXqFHpPrS1iu6MatoXt7WwbTz5LGrEX9GNV98TWA38vWG+YUnyAbq3qL7FMG+TPXRJaoTvcpGkRtyuQy5bbrllLVu27PbcpCSt90499dSrqmrxZPPdroG+bNkyVq1adXtuUpLWe0mmdM3DIRdJaoSBLkmNMNAlqREGuiQ1wkCXpEYY6JLUCANdkhphoEtSIwx0SWqE37YoqW0nvW/oCjp7zP9X89tDl6RGGOiS1AgDXZIaYaBLUiMMdElqhIEuSY0w0CWpEQa6JDXCQJekRhjoktQIA12SGmGgS1IjDHRJaoSBLkmNmDTQk2yX5KQkZyY5I8nr+umLkpyQ5Jf9zy3mv1xJ0kSm0kO/GXhjVW0P7Ay8Osn2wFuBE6vq/sCJ/WNJ0kAmDfSqurSqTuvvXw+cBWwDPB04rJ/tMOAZ81WkJGly0xpDT7IMeDjwQ2Crqrq0b7oM2GpOK5MkTcuU/wVdkrsCRwP7V9V1Sf7cVlWVpCZYbgWwAmDp0qWzq3YB+OgJ5w5dAgCvf9wDhi5B0gIzpR56kk3owvzzVXVMP/nyJFv37VsDV6xt2apaWVXLq2r54sWL56JmSdJaTOVdLgEOBs6qqo+MNB0L7Nvf3xf46tyXJ0maqqkMuewKvBj4RZKf9tPeBrwf+FKSlwMXAM+dnxIlSVMxaaBX1clAJmjea27LkSTNlJ8UlaRGGOiS1AgDXZIaYaBLUiOm/MEiSVofnXLeb4cuAYBd9pj/bdhDl6RGGOiS1AgDXZIaYaBLUiMMdElqhIEuSY0w0CWpEQa6JDXCQJekRhjoktQIA12SGmGgS1IjDHRJaoSBLkmNMNAlqREGuiQ1wkCXpEYY6JLUCANdkhphoEtSIwx0SWqEgS5JjTDQJakRBrokNcJAl6RGGOiS1AgDXZIasfHQBaxvdr5w5dAl9D40dAGSFhh76JLUCANdkhphoEtSIwx0SWqEgS5JjZg00JMckuSKJKePTDswycVJftrfnjS/ZUqSJjOVHvqhwBPXMv2jVbVDfztubsuSJE3XpIFeVd8Frr4dapEkzcJsxtBfk+Tn/ZDMFnNWkSRpRmb6SdGDgPcA1f/8MPCytc2YZAWwAmDp0qUz3JykqfroCecOXQIAr3/cA4YuYYMzox56VV1eVbdU1a3Ap4Ed1zHvyqpaXlXLFy9ePNM6JUmTmFGgJ9l65OEzgdMnmleSdPuYdMglyRHA7sCWSVYD7wR2T7ID3ZDL+cCr5rFGSdIUTBroVbXPWiYfPA+1SJJmwU+KSlIjDHRJaoSBLkmNMNAlqREGuiQ1wkCXpEYY6JLUCANdkhphoEtSIwx0SWqEgS5JjTDQJakRBrokNWKm/7FI0ngnvW/oCnrPGroADcQeuiQ1wkCXpEYY6JLUCANdkhphoEtSIwx0SWqEgS5JjTDQJakRBrokNcJPiq6vFsqnEvc4YOgKJPXsoUtSIwx0SWqEgS5JjTDQJakRBrokNcJAl6RGGOiS1AgDXZIasd58sOijJ5w7dAkA7Dx0AfpLC+VDVtLA7KFLUiMMdElqhIEuSY0w0CWpEQa6JDXCQJekRkwa6EkOSXJFktNHpi1KckKSX/Y/t5jfMiVJk5lKD/1Q4Injpr0VOLGq7g+c2D+WJA1o0kCvqu8CV4+b/HTgsP7+YcAz5rguSdI0zfSToltV1aX9/cuArSaaMckKYAXA0qVLZ7g52PnClTNetkWnnPfboUsAYJc9hq5g4Vgozwkzf5nNKT/dffub9UXRqiqg1tG+sqqWV9XyxYsXz3ZzkqQJzDTQL0+yNUD/84q5K0mSNBMzDfRjgX37+/sCX52bciRJMzWVty0eAZwCPDDJ6iQvB94PPC7JL4HH9o8lSQOa9KJoVe0zQdNec1yLJGkW/KSoJDXCQJekRhjoktSI9eZf0EmaGj+Et+Gyhy5JjTDQJakRBrokNcJAl6RGGOiS1AgDXZIaYaBLUiMMdElqhIEuSY0w0CWpEQa6JDXCQJekRhjoktQIA12SGmGgS1IjDHRJaoSBLkmNMNAlqRH+CzrNyikHv2noEiT17KFLUiMMdElqhIEuSY0w0CWpEQa6JDXCQJekRhjoktQIA12SGmGgS1IjDHRJaoSBLkmNMNAlqREGuiQ1wkCXpEYY6JLUiFl9H3qS84HrgVuAm6tq+VwUJUmavrn4Bxd7VNVVc7AeSdIsOOQiSY2YbaAX8M0kpyZZsbYZkqxIsirJqiuvvHKWm5MkTWS2gb5bVT0C2Bt4dZLHjJ+hqlZW1fKqWr548eJZbk6SNJFZBXpVXdz/vAL4MrDjXBQlSZq+GQd6ks2S3G3sPvB44PS5KkySND2zeZfLVsCXk4yt5wtV9fU5qUqSNG0zDvSqOg942BzWIkmaBd+2KEmNMNAlqREGuiQ1wkCXpEYY6JLUCANdkhphoEtSIwx0SWqEgS5JjTDQJakRBrokNcJAl6RGGOiS1AgDXZIaYaBLUiMMdElqhIEuSY0w0CWpEQa6JDXCQJekRhjoktQIA12SGmGgS1IjDHRJaoSBLkmNMNAlqREGuiQ1wkCXpEYY6JLUCANdkhphoEtSIwx0SWqEgS5JjTDQJakRBrokNcJAl6RGGOiS1AgDXZIaMatAT/LEJOck+VWSt85VUZKk6ZtxoCfZCPgUsDewPbBPku3nqjBJ0vTMpoe+I/Crqjqvqm4CjgSePjdlSZKma+NZLLsNcNHI49XATuNnSrICWNE/vCHJOTPc3pbAVTNctkUej9t4LNbk8VjTwjger/jwbJa+91Rmmk2gT0lVrQRWznY9SVZV1fI5KKkJHo/beCzW5PFY04Z0PGYz5HIxsN3I4237aZKkAcwm0H8M3D/JfZLcEXg+cOzclCVJmq4ZD7lU1c1JXgN8A9gIOKSqzpizyv7SrIdtGuPxuI3HYk0ejzVtMMcjVTV0DZKkOeAnRSWpEQa6JDVivQh0v2Kgk2S7JCclOTPJGUleN3RNC0GSjZL8JMnXhq5laEnukeSoJGcnOSvJLkPXNJQkr+9fJ6cnOSLJnYeuab4t+ED3KwbWcDPwxqraHtgZePUGfCxGvQ44a+giFoiPA1+vqgcBD2MDPS5JtgH2A5ZX1UPo3rjx/GGrmn8LPtDxKwb+rKourarT+vvX071Ytxm2qmEl2RZ4MvCZoWsZWpK7A48BDgaoqpuq6pphqxrUxsBdkmwMbApcMnA98259CPS1fcXABh1iAEmWAQ8HfjhsJYP7GPAPwK1DF7IA3Ae4EvhsPwT1mSSbDV3UEKrqYuBDwIXApcC1VfXNYauaf+tDoGucJHcFjgb2r6rrhq5nKEmeAlxRVacOXcsCsTHwCOCgqno4cCOwQV5zSrIF3Zn8fYAlwGZJXjRsVfNvfQh0v2JgRJJN6ML881V1zND1DGxX4GlJzqcbitszyeHDljSo1cDqqho7azuKLuA3RI8FflNVV1bVn4BjgEcNXNO8Wx8C3a8Y6CUJ3fjoWVX1kaHrGVpVHVBV21bVMrrfi/+pquZ7YROpqsuAi5I8sJ+0F3DmgCUN6UJg5ySb9q+bvdgALhDP+7ctztYAXzGwkO0KvBj4RZKf9tPeVlXHDViTFpbXAp/vOz/nAS8duJ5BVNUPkxwFnEb37rCfsAF8BYAf/ZekRqwPQy6SpCkw0CWpEQa6JDXCQJekRhjoktQIA12SGmGgS1Ij/h+bNzwT03AVyQAAAABJRU5ErkJggg==
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="About-the-political-significance-of-the-results">About the political significance of the results<a class="anchor-link" href="#About-the-political-significance-of-the-results">&#182;</a></h3><p>The Hungarian elections have kept warranting the Fidesz party a "2/3" governing position. This distinguished majority has allowed the party to carry out modifications of very high importance without confirmation from the opposition, rendering them speaking puppets in the Parliament.</p>
+<p>However - interestingly, by coincidence - this has kept being a very fragile "2/3". Even the loss of a single parliamentary mandate would have broken this fragile "2/3" position, Fidesz has barely hit the threshold both in 2014 and 2018.</p>
+<p>Could they have gained this effectively huge advantage by - perhaps repeat, "administrative mistakes"?</p>
+<h3 id="Personal-connection-with-the-issue">Personal connection with the issue<a class="anchor-link" href="#Personal-connection-with-the-issue">&#182;</a></h3><p>The author has been confronted with the situation in Eger on multiple occasions for various bonds with the area. In certain wards, people feel like as if they have almost never seen an actual, living Fidesz voter. And yet, they are the majority. Isn't it strange?
+Eger has come out (without particular intention) as a likely candidate for tampering on multiple occasions in the above, especially in 2019.
+The motivation for the analysis was that it was difficult to miss a "poker" of numbers ending with 9's among the 2019 Fidesz votes in Eger - so it seemed the quality of err... data processing has become worse.
+The author also personally visited a certain ward in said settlement and his inquiry about the presence of opoosition delegates was not 'too well received'.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Conclusion-and-further-steps">Conclusion and further steps<a class="anchor-link" href="#Conclusion-and-further-steps">&#182;</a></h3><p>The above shows some awkward digit distributions in each considered year.</p>
+<p>A simulation confirms that the 2019 data is unlikely to be "regular", uneffected by biased digit choices.</p>
+<p>Certain settlements/cities come up, even regularly, as very likely candidates for closer inspection, and this should not be missed.</p>
+<h4 id="Futher-aims">Futher aims<a class="anchor-link" href="#Futher-aims">&#182;</a></h4><p>This analyis has/had multiple aims, some were realized as a potential side benefit along the way.</p>
+<p>First, the author was curious whether there is actual evidence of tampering in the data - can anything significant be found? Apparently, yes.</p>
+<p>Second, to draw attention of international bodies on the problem of, to say the least, election data processing in Hungary.
+This time it was EP votes at stake, and the EU (for instance, the OSCE) should be watching, closely.
+On the other hand, everyday people are allowed to inspect the voting process, and we should, too.</p>
+<p>The 2019 elections are coming soon, and we should go prepared.</p>
+<p>Third, to suggest particular areas which may deserve a closer attention next time there is an election.</p>
+<p>Fourth, to demonstrate methods for further verification of past <em>Hungarian election data</em>.
+In the above, there is room for simulation based checks on both the 2014 and 2018 data. This should be easy - little does the structure of the wards change, it is almost, if not exactly, the same problem as with the 2019 numbers (see app5...).
+But there is also room for checking on the digits from multiple parties together, as it happened in case of the Fidesz and Jobbik in 2014 above, or for Balatonfüred in 2019.</p>
+<p>Then, to demonstrate methods for further verification of past election data on an <em>international scale</em>.
+Not only on grounds of suspicion about others' work - it would be very interesting to find out whether the above discrepancies are typical for some innocent reason rather than anything to be nosy about - i.e. to see if the above suffers from methodological or conceptual issues. (But also on grounds of suspicion :) )</p>
+<p>The author expects that a framework (such as a Python package, combined with a standardised format for voting data) for such analyses could be very welcome by a broad range of experts and democrats - democracies will not work without ensuring that the processes are properly put in place, and this means repeat checks. The distributions above were examined in a non-parametric style, reference distributions or functions to deal with the respective PMFs should be a welcome part.</p>
+<p>The author hereby makes a commitment to improve on what the above provides in case of interest, and also wishes good luck to those digging deeper, irrespective of what their - hopefully correct! - findings may be.</p>
+<h3 id="The-author's-personal-opinion">The author's personal opinion<a class="anchor-link" href="#The-author's-personal-opinion">&#182;</a></h3><p>My opinion - obviously, it is only my best bet - is that there is a systemic fraud in Hungarian elections, which other reports have already reflected on from perspectives typically different from the above, which is signified by the above, and which should cease to exist as soon as possible.
+Not only are the electoral processes unfair, an unelected government is illegitimate, and particularly their policies reliant on the "2/3 majority" should be revoked, the people contributing to the fraud should be trialled.</p>
+<p>We, the people, should never accept the ruling of an illegitimate, fraudulent government. Such leaders should be deprived from their position  and held accountable whatever force it takes.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements">&#182;</a></h3><p>For the data, thanks to</p>
+<ul>
+<li>Platón Party  (2018 and 2019) [4]</li>
+<li>András Kálmán (2014) [5]</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
 <p>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
+<p>[3] <a href="https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s">https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s</a></p>
+<p>[4]</p>
+<p>[5] <a href="https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results">https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results</a></p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3>
 </div>
 </div>
 </div>
