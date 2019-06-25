@@ -43,6 +43,7 @@ def get_cleaned_data() -> pd.DataFrame:
     columns = df.columns.copy()
 
     for column in columns[-10:]:
+        df[column] = df[column].astype(int)
         df["ld_" + column] = df[column] % 10
     df["ld_Nevjegyzekben"] = df["Nevjegyzekben"] % 10
 
