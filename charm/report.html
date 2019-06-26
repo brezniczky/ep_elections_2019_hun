@@ -13116,7 +13116,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Signs-of-flawed-data-provision-in-Hungarian-EP-and-General-Election-data-(2019,-2018,-2014)">Signs of flawed data provision in Hungarian EP and General Election data (2019, 2018, 2014)<a class="anchor-link" href="#Signs-of-flawed-data-provision-in-Hungarian-EP-and-General-Election-data-(2019,-2018,-2014)">&#182;</a></h2><h4 id="Draft-Version-0.1">Draft Version 0.1<a class="anchor-link" href="#Draft-Version-0.1">&#182;</a></h4><h4 id="J&#225;nos-Brezniczky">J&#225;nos Brezniczky<a class="anchor-link" href="#J&#225;nos-Brezniczky">&#182;</a></h4><h4 id="25/06/2019">25/06/2019<a class="anchor-link" href="#25/06/2019">&#182;</a></h4>
+<h2 id="Signs-of-flawed-data-provision-in-the-Hungarian-EP-and-General-Election-data-(2019,-2018,-2014)">Signs of flawed data provision in the Hungarian EP and General Election data (2019, 2018, 2014)<a class="anchor-link" href="#Signs-of-flawed-data-provision-in-the-Hungarian-EP-and-General-Election-data-(2019,-2018,-2014)">&#182;</a></h2><h4 id="Draft-Version-0.1">Draft Version 0.1<a class="anchor-link" href="#Draft-Version-0.1">&#182;</a></h4><h4 id="J&#225;nos-Brezniczky">J&#225;nos Brezniczky<a class="anchor-link" href="#J&#225;nos-Brezniczky">&#182;</a></h4><h4 id="25/06/2019">25/06/2019<a class="anchor-link" href="#25/06/2019">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -13380,6 +13380,7 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Top-suspects-for-some-irregularity-in-at-least-one-of-the-2018-and-2019-(EP)-elections">Top suspects for some irregularity in at least one of the 2018 and 2019 (EP) elections<a class="anchor-link" href="#Top-suspects-for-some-irregularity-in-at-least-one-of-the-2018-and-2019-(EP)-elections">&#182;</a></h4><p>On the other hand, naturally, the number of cases where at least one of the results looks suspicious (i.e. it is significantly unlikely, &lt; 5%, that both would be 'regular'), is greater than that of the cases where only the 2019 results appeared odd (not detailed here), and yields a crisper view, once 2018 values had been taken into account.</p>
+<p>Note that the limiting p-value below is 0.1 i.e. 10%.</p>
 
 </div>
 </div>
@@ -14047,8 +14048,7 @@ confidence, however, the suspects can be listed out in decreasing likeliness.</p
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Is there really a bit of room for suspicion? Looking into e.g. the Balatonfüred data just slightly deeper - particularly the 2019 EP result for 4 (ex-?)major parties (Fidesz, Jobbik, DK, Momentum) reveals that the numbers do not seem to get any less irregular - just by the eye it is easy to spot that 4 never appears.</p>
 <p>A quick plot consistently appears to show an odd distribution.</p>
-<p>The corresponding p-value is 1.61% - this is an increase actually, but still remains well below a 5% error level.</p>
-<p>Note that in the meantime the number of digits has doubled - and the distribution should have evened out, unless there is something commonly affecting the results of all included parties. Interesting.</p>
+<p>The corresponding p-value is 1.61% - note that it is a steep from the original 2019 probability, 3.95%.</p>
 
 </div>
 </div>
@@ -14452,23 +14452,46 @@ The author also personally visited a certain ward in said settlement and his inq
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Conclusion-and-further-steps">Conclusion and further steps<a class="anchor-link" href="#Conclusion-and-further-steps">&#182;</a></h3><p>The above shows some awkward digit distributions in each considered year.</p>
-<p>A simulation confirms that the 2019 data is unlikely to be "regular", uneffected by biased digit choices.</p>
-<p>Certain settlements/cities come up, even regularly, as very likely candidates for closer inspection, and this should not be missed.</p>
-<h4 id="Futher-aims">Futher aims<a class="anchor-link" href="#Futher-aims">&#182;</a></h4><p>This analyis has/had multiple aims, some were realized as a potential side benefit along the way.</p>
+<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3><p>The methodology is based on that for large enough vote counts, the last digit values can be considered i.i.d. uniformly distributed choices of the 10 possible digits.
+Originally some home made metric ((n<em>{most frequent digit} - n</em>{least frequent digit}) / (n_{total  digits}) was used to see how big the fluctuation in digit distributions is. However, while it was pointing towards largely the same geographic areas, and helped with the beginnings of the exploration, it can be fragile and non-standard, so a different, more mature one forms the basis of statistics.</p>
+<h4 id="Simulation">Simulation<a class="anchor-link" href="#Simulation">&#182;</a></h4><p>One relatively larger scale simulation was kept for the report at this stage (see the app5... moduke). It is rather slow and surely could be multithreaded/processed and otherwise accelerated (C, C++, ignoring unused values), but keeping it simple (at the cost of being slow) reduces the likeliness of errors creeping in and allows to reflect the thinking that lead to the algorithm. The concept here is to inject randomly generated last digits into the electoral ward vote numbers (for the Fidesz party only) and to examine what distribution of overall entropy (sum of individual entropies) they yield for the top x (ended up being 20) suspects, thereby becoming able to obtain a p-value for the actual data.</p>
+<p>While creating this simulation did it become evident that entropy on its own is not an easily utilizable metric for comparing short sequences of varying length in terms of extracted source entropy. For instance, it would attach the same scores to the sequences [1, 2] and [1, 1, 2, 2], despite that the first is maximized and the second is unusually redundant given the draws in our case come from 10 elements.</p>
+<p>The problems experienced while sorting have led to the construction of the entropy p-values, technically p-values of the possible entropy levels of a multinomial distribution depicting possible outcomes of n draws of 10 elements.</p>
+<p>The items in the simulation were left ranked in ascending entropy order, although utilizing the below p-values could almost surely improve on the quality of the findings here.</p>
+<h4 id="Entropy-p-values">Entropy p-values<a class="anchor-link" href="#Entropy-p-values">&#182;</a></h4><p>The standard information entropy (python scipy.stats.entropy) formula is used [6]:</p>
+$${\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}$$<p>This is probably much better-known and if in the need of improving the accuracy of the report e.g. in case of doubt, it should allow for constructing more convincing arguments based on existing mathematical results.</p>
+<p>Entropy reduces when the numbers become inhomogeneously distributed. Also, while it is "neutral" towards human preference for certain digits (e.g. 0 is both expected and often appeared to be an unreasonably frequent one), it already shows convincing signs of discrepancies.</p>
+<p>It was intentionally ignored that people have an attraction to certain digits ("classic lucky numbers"), as on the one hand cultural nuances may vary geographically within the country, on the other the analysis aims for 'good willed' estimates of discrepancy probabilities. The benefit of that is it leaves some room for error: the results should be more likely to hold with this approach, perhaps in part, once correcting for human mistakes should any turn out in the future.</p>
+<h4 id="Entropy-and-simulations">Entropy and simulations<a class="anchor-link" href="#Entropy-and-simulations">&#182;</a></h4><p>Whilst individual entropy p-values are interesting, and can reflect on where the problem, if any, may be concentrated, it is a good idea to confirm their overall significance given the bigger picture. Any rare event will happen occasionally if we are to sample long enough, and while there are apparently well more than one &lt; 5% events, there are over 3100 settlements involved - it is always a good idea to confirm, perhaps in this way, whether it is anything really unusual that seems to have been localized, or it is simply large numbers at play.</p>
+<p>There is definitely room for more accurate work in this respect - checking on the 2014 and 2018 general election data, for instance, also to employ the p-values when sorting to identify the top candidates.</p>
+<p>Beyond comparability, a beneficial property of p-values is that since the events (digit occurrneces) are assumed to be independent, they can be just multiplied to obtain joint probabilities.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Conclusion-and-further-steps">Conclusion and further steps<a class="anchor-link" href="#Conclusion-and-further-steps">&#182;</a></h3><p>This analyis has/had multiple aims, some were realized as a potential side benefit along the way.</p>
 <p>First, the author was curious whether there is actual evidence of tampering in the data - can anything significant be found? Apparently, yes.</p>
-<p>Second, to draw attention of international bodies on the problem of, to say the least, election data processing in Hungary.
+<p>The above shows some awkward digit distributions in each considered year.</p>
+<p>A simulation confirms that the 2019 data is unlikely to be "regular", unaffected by biased digit choices.</p>
+<p>Certain settlements/cities come up, even regularly, as very likely candidates for closer inspection, and this should not be missed.</p>
+<h4 id="Futher-aims">Futher aims<a class="anchor-link" href="#Futher-aims">&#182;</a></h4><p>Beyond the first aim, second, to draw attention of international bodies on the problem of, to say the least, election data processing in Hungary.
 This time it was EP votes at stake, and the EU (for instance, the OSCE) should be watching, closely.
 On the other hand, everyday people are allowed to inspect the voting process, and we should, too.</p>
-<p>The 2019 elections are coming soon, and we should go prepared.</p>
-<p>Third, to suggest particular areas which may deserve a closer attention next time there is an election.</p>
+<p>The 2019 elections are coming soon, and we should go prepared. The report should help motivating this.</p>
+<p>Third, to suggest particular geographical areas which may deserve a closer attention next time there is an election.</p>
 <p>Fourth, to demonstrate methods for further verification of past <em>Hungarian election data</em>.
 In the above, there is room for simulation based checks on both the 2014 and 2018 data. This should be easy - little does the structure of the wards change, it is almost, if not exactly, the same problem as with the 2019 numbers (see app5...).
 But there is also room for checking on the digits from multiple parties together, as it happened in case of the Fidesz and Jobbik in 2014 above, or for Balatonfüred in 2019.</p>
 <p>Then, to demonstrate methods for further verification of past election data on an <em>international scale</em>.
 Not only on grounds of suspicion about others' work - it would be very interesting to find out whether the above discrepancies are typical for some innocent reason rather than anything to be nosy about - i.e. to see if the above suffers from methodological or conceptual issues. (But also on grounds of suspicion :) )</p>
+<p>Fifth, it could and should be hypothesized or possibly investigated whether in the suspect locations any party was likely to benefit from the discrepancies.</p>
+<p>Sixth, there is a lot more data! There were not only general elections to refer to and compare against, even in the years 2014 and 2018. More data could lead to hopefully more convincing and more detailed findings.</p>
 <p>The author expects that a framework (such as a Python package, combined with a standardised format for voting data) for such analyses could be very welcome by a broad range of experts and democrats - democracies will not work without ensuring that the processes are properly put in place, and this means repeat checks. The distributions above were examined in a non-parametric style, reference distributions or functions to deal with the respective PMFs should be a welcome part.</p>
 <p>The author hereby makes a commitment to improve on what the above provides in case of interest, and also wishes good luck to those digging deeper, irrespective of what their - hopefully correct! - findings may be.</p>
+<p>Then, a major TODO: the data received indirectly needs to be verified against data in at the source from which it was scraped.</p>
 <h3 id="The-author's-personal-opinion">The author's personal opinion<a class="anchor-link" href="#The-author's-personal-opinion">&#182;</a></h3><p>My opinion - obviously, it is only my best bet - is that there is a systemic fraud in Hungarian elections, which other reports have already reflected on from perspectives typically different from the above, which is signified by the above, and which should cease to exist as soon as possible.
 Not only are the electoral processes unfair, an unelected government is illegitimate, and particularly their policies reliant on the "2/3 majority" should be revoked, the people contributing to the fraud should be trialled.</p>
 <p>We, the people, should never accept the ruling of an illegitimate, fraudulent government. Such leaders should be deprived from their position  and held accountable whatever force it takes.</p>
@@ -14479,7 +14502,7 @@ Not only are the electoral processes unfair, an unelected government is illegiti
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements">&#182;</a></h3><p>For the data, thanks to</p>
+<h3 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements">&#182;</a></h3><p>For the data, thanks go to:</p>
 <ul>
 <li>Platón Party  (2018 and 2019) [4]</li>
 <li>András Kálmán (2014) [5]</li>
@@ -14494,18 +14517,25 @@ Not only are the electoral processes unfair, an unelected government is illegiti
 <h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
 <p>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
 <p>[3] <a href="https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s">https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s</a></p>
-<p>[4]</p>
+<p>[4] <a href="https://www.facebook.com/platonpart/">https://www.facebook.com/platonpart/</a></p>
 <p>[5] <a href="https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results">https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results</a></p>
+<p>[6] <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory">https://en.wikipedia.org/wiki/Entropy_(information_theory)</a>)</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
     </div>
   </div>
