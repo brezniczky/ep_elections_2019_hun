@@ -101,13 +101,16 @@ if not "df_2014" in globals():
 def plot_location(location, df=df_2014):
     if df is None:
         df = df_2014
-    bins = range(10)
+    bins = range(11)
     loc_digits = \
         df.loc[(df.Telepules==location)]["Fidesz"].values % 10
     plt.hist(loc_digits, bins=bins, alpha=0.5)
     loc_digits = \
         df.loc[(df.Telepules==location)]["Jobbik"].values % 10
     plt.hist(loc_digits, bins=bins, alpha=0.5)
+    # loc_digits = \
+    #     df.loc[(df.Telepules==location)]["MSZP-EGYÜTT-DK-PM-MLP"].values % 10
+    # plt.hist(loc_digits, bins=bins, alpha=0.5)
     plt.title("%s, 2014, Fidesz vs. Jobbik" % location)
     plt.show()
 
