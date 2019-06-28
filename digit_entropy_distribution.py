@@ -1,4 +1,4 @@
-from scipy.stats import entropy
+from scipy.stats import entropy, poisson
 import numpy as np
 from functools import lru_cache
 
@@ -17,6 +17,33 @@ def get_entropy(x):
     # if len(counts) < 10:
     #     counts = np.concatenate([counts, [0] * (10 - len(counts))], axis=0)
     return entropy(counts)
+
+
+# this one gives a very uneven distribution
+#
+# plt.hist(abs(np.diff(np.random.choice(10, 10000))), bins=range(11))
+# plt.show()
+#
+# def get_abs_diff_entropy(x):
+#     """ x should be a list-like of digits """
+#     return abs(get_entropy(np.diff(x)))
+#
+# could be sensitive to changes in certain normally rare (e.g. 9)
+# differences by the look
+
+
+def prob_of_twins(x):
+    """ Return the probability of at least this many repeats
+        in the sequence of digits
+
+        x: list-like of digits
+    """
+    if len(x) <= 1:
+        # nothing to see here, not enough information
+        return 1
+    x = np.array(x)
+    count = sum(x[:-1] == x[1:])
+    return 1 - poisson((len(x) - 1) / 10).cdf(count - 1)
 
 
 def generate_sample(n_wards,
