@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from preprocessing import get_cleaned_data
 from digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
-from app5_var_in_top import plot_entropy_distribution_of
+from app5_ent_in_top import plot_entropy_distribution_of
 
 
 _DEFAULT_BOTTOM_N = 20
