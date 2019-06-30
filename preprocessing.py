@@ -46,5 +46,6 @@ def get_cleaned_data() -> pd.DataFrame:
         df[column] = df[column].astype(int)
         df["ld_" + column] = df[column] % 10
     df["ld_Nevjegyzekben"] = df["Nevjegyzekben"] % 10
+    df["ld_Ervenytelen"] = df["Ervenytelen"] % 10
 
     return df
