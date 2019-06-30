@@ -21,12 +21,7 @@ from digit_stat_data import get_last_digit_stats
 from scipy.stats import entropy
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
-if not "df" in globals():
-    df = get_cleaned_data()
-if not "county_town_digit_sums" in globals():
-    county_town_digit_sums, digit_sum_extr = get_last_digit_stats(df)
+from typing import List
 
 
 def total_freq_ent(counts):
@@ -138,8 +133,11 @@ def load_results():
     return actual_total_ent, probabilities, entropies
 
 
-def plot_entropy_distribution():
-    actual_total_ent, probabilities, entropies = load_results()
+def plot_entropy_distribution_of(actual_total_ent: float,
+                                 probabilities: List[float],
+                                 entropies: List[float],
+                                 save_filename = None):
+    # welcome to the late night boilerplate horror show
     fig = plt.figure()
     ax = fig.add_subplot(111)
     h = ax.hist(entropies, bins = 40)
@@ -150,10 +148,23 @@ def plot_entropy_distribution():
     x2, _ = ax.transData.inverted().transform((0, disp_y))
     ax.text(actual_total_ent + x1 - x2, y,
             u"P \u2248 %.2f %%" % (np.mean(probabilities) * 100))
+    if save_filename is not None:
+        plt.savefig(save_filename)
     plt.show()
 
 
+def plot_entropy_distribution():
+    actual_total_ent, probabilities, entropies = load_results()
+    plot_entropy_distribution_of(actual_total_ent,
+                                 probabilities, entropies)
+
+
 if __name__ == "__main__":
+    if not "df" in globals():
+        df = get_cleaned_data()
+    if not "county_town_digit_sums" in globals():
+        county_town_digit_sums, digit_sum_extr = get_last_digit_stats(df)
+
     N_TOP_WEIRDEST = 20
     MIN_VOTERS_THRESHOLD = 100
     N_ITERATIONS = 1000
