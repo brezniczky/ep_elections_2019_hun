@@ -5,7 +5,7 @@
 # import matplotlib.pyplot as plt
 # from datetime import datetime
 # import scipy.special
-# from preprocessing import get_cleaned_data
+# from preprocessing import get_preprocessed_data
 
 
 """
@@ -20,14 +20,14 @@ MMT; WT
 1.3; 20  -> hits: 33/72  ~ 6.5 %
 """
 import numpy as np
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from digit_stat_data import (
     get_suspects2, get_last_digit_stats,
     MAX_TO_MEAN_THRESHOLD, MIN_VOTERS_THRESHOLD
 )
 
 
-df = get_cleaned_data()
+df = get_preprocessed_data()
 _, digit_sum_extr = get_last_digit_stats(df)
 suspects2 = get_suspects2(digit_sum_extr)
 

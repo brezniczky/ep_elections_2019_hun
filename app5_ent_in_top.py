@@ -16,7 +16,7 @@ as low as that of the actual 2019 data?
 """
 import numpy as np
 from datetime import datetime
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from digit_stat_data import get_last_digit_stats
 from scipy.stats import entropy
 import pandas as pd
@@ -161,7 +161,7 @@ def plot_entropy_distribution():
 
 if __name__ == "__main__":
     if not "df" in globals():
-        df = get_cleaned_data()
+        df = get_preprocessed_data()
     if not "county_town_digit_sums" in globals():
         county_town_digit_sums, digit_sum_extr = get_last_digit_stats(df)
 

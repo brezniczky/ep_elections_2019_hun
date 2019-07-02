@@ -12,11 +12,11 @@ In its very draft and fragmented state here it is as a note to self.
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from digit_stat_data import get_last_digit_stats, get_suspects2
 
 
-df = get_cleaned_data()
+df = get_preprocessed_data()
 county_town_digit_sums, digit_sum_extr = get_last_digit_stats(df)
 
 

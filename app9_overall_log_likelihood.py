@@ -6,7 +6,7 @@ the n least likely candidates.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
 from app5_ent_in_top import plot_entropy_distribution_of
@@ -140,7 +140,7 @@ def run_simulation(bottom_n=_DEFAULT_BOTTOM_N,
     else:
         assert seed is None, "Only seed or seeds should be specified not both"
 
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
     feasible_settlements = \
         get_feasible_settlements(df, min_n_wards=8, min_fidesz_votes=100)
     print("Found", len(feasible_settlements), "feasible settlements")

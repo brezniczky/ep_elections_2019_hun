@@ -1,10 +1,10 @@
 import numpy as np
 from datetime import datetime
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from digit_stat_data import get_last_digit_stats
 
 
-df = get_cleaned_data()
+df = get_preprocessed_data()
 county_town_digit_sums, digit_sum_extr = get_last_digit_stats(df)
 
 

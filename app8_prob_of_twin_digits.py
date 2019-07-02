@@ -1,5 +1,5 @@
 import pandas as pd
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from AndrasKalman.load import load_2014
 from explore_2018 import load_2018_fidesz
 from digit_entropy_distribution import prob_of_twins
@@ -69,7 +69,7 @@ if __name__ == "__main__":
                             "ld": "ld_Fidesz",
                             "Votes": "Fidesz"},
                    inplace=True)
-    df_2019 = get_cleaned_data()
+    df_2019 = get_preprocessed_data()
 
     df_2014_p_twins = get_twins(df_2014)
     df_2018_p_twins = get_twins(df_2018)

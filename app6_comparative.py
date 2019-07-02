@@ -1,4 +1,4 @@
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 from digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
 import pandas as pd
@@ -6,7 +6,7 @@ from AndrasKalman.load import load_2014
 
 
 if not "df" in globals():
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
 
 
 def save_results(

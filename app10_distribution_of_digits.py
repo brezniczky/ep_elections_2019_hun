@@ -9,7 +9,7 @@ TODO:
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from preprocessing import get_cleaned_data
+from preprocessing import get_preprocessed_data
 
 
 def plot_votes_of_digits_hist(df, party, digit_groups, n_bins=20,
@@ -31,7 +31,7 @@ def plot_votes_of_digits_hist(df, party, digit_groups, n_bins=20,
 
 
 def plot_9_to_7_digit_distributions():
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
 
     # f, ax = plt.subplots(4, 3)
     f = plt.figure()
@@ -60,7 +60,7 @@ def plot_9_to_7_digit_distributions():
 
 
 def plot_party_vote_by_digit_relationships(party="Fidesz", max_votes=None):
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
 
     # f, ax = plt.subplots(4, 3)
     f = plt.figure()
@@ -92,13 +92,13 @@ def plot_Fidesz_digits_sensitivity_to_cutoff():
     # one way to eliminate such worries
     fig.add_subplot(1, 2, 1)
     plt.title(u"Fidesz votes \u2265 100 only")
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
     np.random.seed(5)
     for i in range(10):
         plt.hist(df.ld_Fidesz[df.Fidesz >= 95 + np.random.choice(range(11),
                  len(df))], bins=10, alpha=0.1)
 
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
     big_enough_ones = df[["Telepules"]].groupby(["Telepules"]).aggregate({"Telepules": len})
     big_enough_ones.columns = ["n_wards"]
     big_enough_ones.reset_index(inplace=True)
@@ -115,7 +115,7 @@ def plot_Fidesz_digits_sensitivity_to_cutoff():
 
 
 def plot_digit_distributions():
-    df = get_cleaned_data()
+    df = get_preprocessed_data()
 
     f = plt.figure()
     f.suptitle("Last digit distributions, 2019 values")
