@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-def get_cleaned_data() -> pd.DataFrame:
+def get_merged_data() -> pd.DataFrame:
     if not os.path.exists("merged.csv"):
         filename = r'EP_2019_szavaz_k_ri_eredm_ny.xlsx'
         # filename = r'short.xlsx'
@@ -24,6 +24,11 @@ def get_cleaned_data() -> pd.DataFrame:
         df.to_csv("merged.csv", index=False)
     else:
         df = pd.read_csv("merged.csv")
+    return df
+
+
+def get_cleaned_data(add_last_digits=True) -> pd.DataFrame:
+    df = get_merged_data()
 
     df.columns = [
         "Unnamed", "Megye", "Telepules", "Szavazokor", "Nevjegyzekben", "Megjelent",
@@ -42,10 +47,12 @@ def get_cleaned_data() -> pd.DataFrame:
     # of course the project is already "beyond budget" (==0 :) )
     columns = df.columns.copy()
 
-    for column in columns[-10:]:
-        df[column] = df[column].astype(int)
-        df["ld_" + column] = df[column] % 10
-    df["ld_Nevjegyzekben"] = df["Nevjegyzekben"] % 10
-    df["ld_Ervenytelen"] = df["Ervenytelen"] % 10
+    if add_last_digits:
+        df["ld_Nevjegyzekben"] = df["Nevjegyzekben"] % 10
+        df["ld_Ervenyes"] = df["Ervenyes"] % 10
+        df["ld_Ervenytelen"] = df["Ervenytelen"] % 10
+        for column in columns[-10:]:
+            df[column] = df[column].astype(int)
+            df["ld_" + column] = df[column] % 10
 
     return df
