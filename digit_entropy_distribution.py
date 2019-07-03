@@ -7,6 +7,13 @@ _DEFAULT_SEED = 1234
 _DEFAULT_ITERATIONS = 10000
 
 
+_DEFAULT_BOTTOM_N = 20
+_DEFAULT_RANDOM_SEED = 1234
+_DEFAULT_ITERATIONS = 10
+_DEFAULT_PE_RANDOM_SEED = 1234
+_DEFAULT_PE_ITERATIONS = 1234  # 12345
+
+
 def get_entropy(x):
     """ x should be a list-like of digits """
     _, counts = np.unique(x, return_counts=True)
@@ -88,6 +95,69 @@ def prob_of_entr(n_wards, entr,
     """ probability of the entropy being this small """
     cdf = get_cdf_fun(n_wards, seed, iterations)
     return cdf(entr)
+
+
+"""
+Log likelihood assessment of groups of digits of varying size for uniformity.
+
+Uses simulations, slow.
+
+Relies on non-parametric CDFs.
+"""
+def get_log_likelihood(digits, slice_limits, bottom_n,
+                       seed, iterations, towns=None):
+    slices = [digits[a:b] for a, b in slice_limits]
+    entropies = [get_entropy(s) for s in slices]
+    probs = [prob_of_entr(len(s), e, seed, iterations)
+            for s, e in zip(slices, entropies)]
+    bottom_probs = sorted(probs)[:bottom_n]
+    if towns is not None:
+        print(towns[np.array(probs) <= max(bottom_probs)])
+    l = sum(np.log(bottom_probs))
+    return l
+
+
+def get_likelihood_cdf(slice_limits, bottom_n,
+                       seed=_DEFAULT_RANDOM_SEED,
+                       iterations=_DEFAULT_ITERATIONS,  # voting simulation
+                       pe_seed=_DEFAULT_RANDOM_SEED,
+                       pe_iterations=_DEFAULT_ITERATIONS):  # entropy
+
+    sample = []
+    # end of the last slice is the ...
+    n_settlements = slice_limits[-1][1]
+    warnings = 0
+
+    np.random.seed(seed)
+    for i in range(iterations):
+        digits = np.random.choice(range(10), n_settlements)
+        sim_likelihood = get_log_likelihood(digits, slice_limits,
+                                            bottom_n, pe_seed, pe_iterations)
+        sample.append(sim_likelihood)
+        if np.isinf(sim_likelihood):
+            print("Warning! Infinite simulated likelihood - perhaps increase the p.e. iterations!")
+            warnings += 1
+        if i % 50 == 0:
+            print(i, np.mean(np.array(sample)[~np.isinf(sample)]))
+
+    values, counts = np.unique(sample, return_counts=True)
+    total = sum(counts)
+    counts = np.cumsum(counts)
+
+    def cdf(l):
+        """ Forgiving CDF: P(L <= L_actual) """
+        idx = np.digitize(l, values) - 1
+        if idx >= 0:
+            return counts[idx] / total
+        else:
+            return 0
+    print("There were", warnings, "warnings.")
+
+    cdf.min = min(values[~np.isinf(values)])
+    cdf.max = max(values[~np.isinf(values)])
+    cdf.sample = sample
+
+    return cdf
 
 
 if __name__ == "__main__":
