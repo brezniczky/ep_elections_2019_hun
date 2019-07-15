@@ -1,0 +1,7 @@
+https://wybory.gov.pl/pe2019/en/dane_w_arkuszach
+
+Results of voting for candidates
+* for polling districts XLSX
+
+File link:
+https://wybory.gov.pl/pe2019/data/csv/wyniki_gl_na_kand_po_obwodach_xlsx.zip
