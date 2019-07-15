@@ -1,0 +1,5 @@
+https://www.bmi.gv.at/412/Europawahlen/Europawahl_2019/
+
+https://www.bmi.gv.at/412/Europawahlen/Europawahl_2019/files/endgueltiges_Ergebnis/endgueltiges_Ergebnis_inkl_WK_mit_Gemeindeergebnissen_EW19.xls
+
+Remark: the csv version is the result of simply saving the xls file as a csv in LibreOffice.
