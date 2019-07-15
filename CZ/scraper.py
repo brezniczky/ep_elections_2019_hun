@@ -61,6 +61,8 @@ PARTY_RESULT_PATTERN = (
     ""
 )
 
+TABULAR_RESULTS_FILENAME = "party_results_tabular.csv"
+
 
 # Examples
 
@@ -223,6 +225,20 @@ def load_or_extract_party_results():
     return party_results
 
 
+def load_or_generate_tabular_results():
+    if os.path.exists(TABULAR_RESULTS_FILENAME):
+        tabular_results = pd.read_csv(TABULAR_RESULTS_FILENAME)
+    else:
+        tabular_results = party_results[["region", "district", "municipality", "ward",
+                                        "party_name", "total_votes"]]
+        tabular_results = tabular_results.pivot_table(index=["region", "district", "municipality", "ward"],
+                                      columns=["party_name"],
+                                      values="total_votes")
+        tabular_results.reset_index(inplace=True)
+        tabular_results.to_csv(TABULAR_RESULTS_FILENAME, index=False)
+        return tabular_results
+
+
 if __name__ == "__main__":
     if "district_links" not in globals():
         district_links = process_root()
@@ -232,3 +248,5 @@ if __name__ == "__main__":
         ward_links = load_or_extract_ward_links()
     if "party_results" not in globals():
         party_results = load_or_extract_party_results()
+    if "tabular_results" not in globals():
+        tabular_results = load_or_generate_tabular_results()
