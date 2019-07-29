@@ -14,6 +14,7 @@ from digit_entropy_distribution import get_entropy, LodigeTest
 import matplotlib.pyplot as plt
 from collections import OrderedDict, defaultdict
 from functools import lru_cache
+from digit_distribution_charts import plot_party_vote_by_digit_relationships
 
 
 cols = [
@@ -93,6 +94,8 @@ def get_big_cleaned_data():
 
     df_sheets = pd.DataFrame(dict(id=sheet_ids, sheet_names=sheet_names))
     df_sheets.to_csv(sheet_list_csv_filename, index=False, encoding="utf-8")
+
+    return dfs
 
 
 def check_column_code_stats(df, silent=False):
@@ -232,7 +235,7 @@ def plot_test_p_value_hists(tests: dict):
         Anyhow, please welcome the ...
     """
     for col, test in tests.items():
-        plt.hist(act_p_values.values(), bins=20)
+        plt.hist(test.p_values.values(), bins=20)
         plt.title(col)
         plt.show()
 
@@ -287,6 +290,10 @@ def merge_lista_results(dfs, lista_idxs_to_exclude):
         dfs_to_merge.append(pd.DataFrame(cols_dict))
     merged = pd.concat(dfs_to_merge)
 
+    for col in merged.columns:
+        if col.startswith("Lista"):
+            merged["ld_" + col] = merged[col] % 10
+
     return merged
 
 
@@ -320,21 +327,35 @@ if __name__ == "__main__":
     # check_likelihoods(merged, merged.columns[1:])
 
     # the primary aim is to deal with the two biggest winners
-    tests = check_likelihoods(merged, merged.columns[3:5])
-    plot_test_p_value_hists(tests)
-    p_values = calc_p_values_by_area(tests).sort_values(["p_value"])
 
-    print("Area codes with least unlikely correct results:")
-    print(p_values.head(20))
+    if input("run lengthy tests? (y/N)").lower().startswith("y"):
+        tests = check_likelihoods(merged, merged.columns[3:5])
+        plot_test_p_value_hists(tests)
+        p_values = calc_p_values_by_area(tests).sort_values(["p_value"])
 
-    p_values.to_csv("app11_top_suspects.csv")
+        print("Area codes with least unlikely correct results:")
+        print(p_values.head(20))
 
-    print("THE BELOW IS WRONG!!! but could useful as a concept, "
-          "though doesn't look very stable. due to the reciprocal.")
-    print("A rough estimate says these events should have occurred out of")
-    print("an est. %d cases - there are %d cases." %
-          (int(round(sum(1 / p_values.p_value))), len(p_values)))
+        p_values.to_csv("app11_top_suspects.csv")
 
+        print("--- THE BELOW IS WRONG!!! but could useful as a concept, "
+              "though doesn't look very stable. due to the reciprocal. ---")
+        print("A rough estimate says these events should have occurred out of")
+        print("an est. %d cases - there are %d cases." %
+              (int(round(sum(1 / p_values.p_value))), len(p_values)))
+
+    plot_party_vote_by_digit_relationships(
+        merged,
+        'Lista nr 3 - KKW KOALICJA EUROPEJSKA PO PSL SLD .N ZIELONI',
+        max_votes=600,
+        n_bins=80,
+    )
+    plot_party_vote_by_digit_relationships(
+        merged,
+        'Lista nr 4 - KW PRAWO I SPRAWIEDLIWOŚĆ',
+        max_votes=600,
+        n_bins = 80,
+    )
 
 
 """

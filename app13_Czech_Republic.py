@@ -2,6 +2,7 @@ from CZ.scraper import load_or_generate_tabular_results
 import digit_entropy_distribution as ded
 import pandas as pd
 from digit_entropy_distribution import LodigeTest
+from digit_distribution_charts import plot_party_vote_by_digit_relationships
 import numpy as np
 """
 
@@ -21,8 +22,19 @@ def load_results():
     # construct a unique municipality key
     # as I TBH don't much like multi-level indexes ATM
     # maybe later?
+
+    parties = [col
+               for col in res.columns
+               if col not in ["region", "district", "municipality", "ward"]]
     add_dm_key(res)
-    return res
+    return res, parties
+
+
+def get_preprocessed_data():
+    df, parties = load_results()
+    for party in parties:
+        df["ld_" + party] = df[party] % 10
+    return df, parties
 
 
 def rdig(along):
@@ -93,8 +105,15 @@ def test_party(df, party):
 
 
 if __name__ == "__main__":
-    df = load_results()
+    df, parties = get_preprocessed_data()
     """ Spoiler alert: values don't even drop below 50%. """
-    test_party(df, "ANO 2011")
-    test_party(df, "Obcanska demokraticka strana")
-    test_party(df, "Ceska piratska strana")
+    if input("run lengthy tests? (y/N)").lower().startswith("y"):
+        test_party(df, "ANO 2011")
+        test_party(df, "Obcanska demokraticka strana")
+        test_party(df, "Ceska piratska strana")
+
+    plot_party_vote_by_digit_relationships(df, "ANO 2011", n_bins=60)
+    plot_party_vote_by_digit_relationships(df, "Obcanska demokraticka strana",
+                                           n_bins=60)
+    plot_party_vote_by_digit_relationships(df, "Ceska piratska strana",
+                                           n_bins=60)

@@ -25,7 +25,8 @@ def _plot_votes_of_digits_hist(df, party, digit_groups, n_bins=20,
 
 def plot_party_vote_by_digit_relationships(df, party="Fidesz", ref_digit=7,
                                            max_votes=None,
-                                           last_digit_colname_prefix="ld_"):
+                                           last_digit_colname_prefix="ld_",
+                                           n_bins=20):
     """
 
     :param df: columns should contain
@@ -50,7 +51,7 @@ def plot_party_vote_by_digit_relationships(df, party="Fidesz", ref_digit=7,
         if digit != ref_digit:
             plot_to_next(
                 lambda: _plot_votes_of_digits_hist(
-                    df, party, [[digit], [ref_digit]], 10,
+                    df, party, [[digit], [ref_digit]], n_bins=n_bins,
                     title="%d" % digit,
                     max_votes=max_votes,
                     last_digit_colname_prefix=last_digit_colname_prefix
