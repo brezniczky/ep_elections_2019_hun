@@ -73,6 +73,7 @@ def plot_party_vote_by_digit_relationships(party="Fidesz", max_votes=None):
         f.add_subplot(3, 3, i)
         i += 1
         l()
+
     for digit in range(10):
         if digit != 7:
             plot_to_next(
@@ -143,4 +144,3 @@ if __name__ == "__main__":
     plot_party_vote_by_digit_relationships("Jobbik", max_votes=300)
     plot_party_vote_by_digit_relationships("LMP", max_votes=50)
     plot_party_vote_by_digit_relationships("MSZP", max_votes=50)
-;

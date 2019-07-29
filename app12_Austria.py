@@ -4,6 +4,7 @@ Only a quick check
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from digit_distribution_charts import plot_party_vote_by_digit_relationships
 
 
 def get_cleaned_data():
@@ -13,8 +14,16 @@ def get_cleaned_data():
     return df
 
 
-if __name__ == "__main__":
+def get_preprocessed_data():
     df = get_cleaned_data()
+    for col in ["ÖVP", "SPÖ", "FPÖ", "GRÜNE", "NEOS",
+                "KPÖ", "EUROPA"]:
+        df["ld_" + col] = df[col] % 10
+    return df
+
+
+if __name__ == "__main__":
+    df = get_preprocessed_data()
     print(df)
     print(df.columns)
     col1 = df["ÖVP"]
@@ -40,3 +49,8 @@ if __name__ == "__main__":
         plt.show()
 
     ok = (col1 >= 100) & (col2 >= 100) & (col3 >= 100)
+
+    for party in ["ÖVP", "SPÖ", "FPÖ", "GRÜNE", "NEOS",
+                "KPÖ", "EUROPA"]:
+        plot_party_vote_by_digit_relationships(df, party,
+                                               max_votes=600)
