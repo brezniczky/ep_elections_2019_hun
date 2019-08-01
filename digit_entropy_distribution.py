@@ -75,9 +75,12 @@ def get_cdf_fun(n_wards,
                 seed=_DEFAULT_SEED,
                 iterations=_DEFAULT_ITERATIONS,
                 quiet=False):
-    """ Return a 'forgiving' CDF, that is, one where
-        equality allowed: F where
-        F(y) = P(X <= y) """
+    """ Return a PMF of digit distribution entropy values, that is, F where
+        F(y) = P(X <= y)
+
+        The entropy values considered are those returned by
+        scipy.stats.entropy() for the relative digit frequency
+        configuration. """
     sample = generate_sample(n_wards, seed, iterations, quiet=quiet)
     values, counts = np.unique(sample, return_counts=True)
     total = sum(counts)

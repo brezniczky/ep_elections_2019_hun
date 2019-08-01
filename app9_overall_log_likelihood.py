@@ -17,6 +17,7 @@ from app5_ent_in_top import plot_entropy_distribution_of
 
 # TODO: remove via refactoring into dependency
 _DEFAULT_ITERATIONS = 10
+_DEFAULT_RANDOM_SEED = 1234
 _DEFAULT_PE_RANDOM_SEED = 1234
 _DEFAULT_PE_ITERATIONS = 1234  # 12345
 
@@ -77,7 +78,8 @@ def run_simulation(bottom_n,
                    seeds=None,
                    iterations=_DEFAULT_ITERATIONS,
                    pe_seed=_DEFAULT_PE_RANDOM_SEED,
-                   pe_iterations=_DEFAULT_PE_ITERATIONS):
+                   pe_iterations=_DEFAULT_PE_ITERATIONS,
+                   party_name="Fidesz"):
     if seeds is None:
         if seed is None:
             seeds = [_DEFAULT_RANDOM_SEED]
@@ -96,7 +98,7 @@ def run_simulation(bottom_n,
     slice_limits = list(get_slice_limits(df["Telepules"]))
 
     actual_likelihood = get_log_likelihood(
-        df.ld_Fidesz.values,
+        df["ld_" + party_name].values,
         slice_limits,
         bottom_n,
         pe_seed, pe_iterations,
@@ -161,7 +163,8 @@ if __name__ == "__main__":
     # run_simulation(bottom_n=100) # 100: 0.04, 500: 0.084, 1k: 0.076
     # run_simulation(bottom_n=10, iterations=100) # 100: 0.03, 1k: 0.032
     # run_simulation(bottom_n=15, iterations=100) # 100: 0.01, 1k: 0.027, 2k: 0.0295
-    run_simulation(bottom_n=20, iterations=200, seeds=[1234, 1235, 1236, 1237])
+    run_simulation(bottom_n=20, iterations=1000, seeds=[1234],
+                   party_name="Ervenyes")
 
     # min_wards=4
     # run_simulation(bottom_n=200, iterations=1000)  # 1000: 0.308
