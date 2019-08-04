@@ -19,7 +19,7 @@ from app5_ent_in_top import plot_entropy_distribution_of
 _DEFAULT_ITERATIONS = 10
 _DEFAULT_RANDOM_SEED = 1234
 _DEFAULT_PE_RANDOM_SEED = 1234
-_DEFAULT_PE_ITERATIONS = 1234  # 12345
+_DEFAULT_PE_ITERATIONS = 50000
 
 
 def get_slice_limits(settlement_values):
@@ -124,7 +124,6 @@ def run_simulation(bottom_n,
         cdfs.append(cdf)
         probabilities.append(cdf(actual_likelihood))
 
-    actual_likelihood_prob = np.mean(probabilities)
     print("Actual (mean) likelihood prob:", cdf(actual_likelihood))
     print("Seeds:", seeds)
     print("Likelihood probabilities:", probabilities)
@@ -163,8 +162,10 @@ if __name__ == "__main__":
     # run_simulation(bottom_n=100) # 100: 0.04, 500: 0.084, 1k: 0.076
     # run_simulation(bottom_n=10, iterations=100) # 100: 0.03, 1k: 0.032
     # run_simulation(bottom_n=15, iterations=100) # 100: 0.01, 1k: 0.027, 2k: 0.0295
-    run_simulation(bottom_n=20, iterations=1000, seeds=[1234],
-                   party_name="Ervenyes")
+    # run_simulation(bottom_n=20, iterations=1000, seeds=[1234],
+    #                party_name="Ervenyes")
+    run_simulation(bottom_n=20, iterations=1000, seeds=[1234, 1235, 1236, 1237],
+                   party_name="Fidesz")
 
     # min_wards=4
     # run_simulation(bottom_n=200, iterations=1000)  # 1000: 0.308

@@ -60,6 +60,7 @@ def plot_9_to_7_digit_distributions():
     plot_to_next(lambda: plot_votes_of_digits_hist(df, "MSZP", [[9], [7]]))
     plot_to_next(lambda: plot_votes_of_digits_hist(df, "MKKP", [[9], [7]]))
     plt.tight_layout()
+    plt.subplots_adjust(top=0.875)
     plt.show()
 
 
@@ -109,6 +110,7 @@ def plot_digit_distributions():
         plt.hist(df["ld_" + party], bins=range(11))
 
         plt.title(party)
+    plt.subplots_adjust(wspace=0.6, hspace=0.6)
     plt.show()
 
 
@@ -120,52 +122,58 @@ if __name__ == "__main__":
     # plot_party_vote_by_digit_relationships("Jobbik", max_votes=300)
     # plot_party_vote_by_digit_relationships("LMP", max_votes=50)
     # plot_party_vote_by_digit_relationships("MSZP", max_votes=50)
-    df = get_preprocessed_data()
-    plot_party_vote_by_digit_relationships(df,
-                                           "Ervenyes", max_votes=600,
-                                           ref_digit=USE_MEAN_DIGIT_GROUP,
-                                           n_bins=60)
-    plot_party_vote_by_digit_relationships(df,
-                                           "Fidesz", max_votes=600,
-                                           ref_digit=USE_MEAN_DIGIT_GROUP,
-                                           n_bins=60)
-    df["except_Fidesz"] = df["Ervenyes"] - df["Fidesz"]
-    df["ld_except_Fidesz"] = df["except_Fidesz"] % 10
 
-    plot_party_vote_by_digit_relationships(df,
-                                           "except_Fidesz", max_votes=600,
-                                           ref_digit=USE_MEAN_DIGIT_GROUP,
-                                           n_bins=60)
 
-    seed = 1234
-    n_iterations = 50000
-    cdf = digit_correlation_cdf(len(df), seed, n_iterations)
-    coef = np.corrcoef(df["ld_Ervenyes"], df["ld_Nevjegyzekben"])[1, 0]
-    print("Correlation of last digits of registered voters and valid votes:")
-    print(coef)
-    print("Probability of correlations at least this big:\b %.2f %%" \
-          "\n(assuming a uniform digit distribution)" %
-          ((1 - cdf(coef)) * 100))
+    # df = get_preprocessed_data()
+    # plot_party_vote_by_digit_relationships(df,
+    #                                        "Ervenyes", max_votes=600,
+    #                                        ref_digit=USE_MEAN_DIGIT_GROUP,
+    #                                        n_bins=60)
+    # plot_party_vote_by_digit_relationships(df,
+    #                                        "Fidesz", max_votes=600,
+    #                                        ref_digit=USE_MEAN_DIGIT_GROUP,
+    #                                        n_bins=60)
+    # df["except_Fidesz"] = df["Ervenyes"] - df["Fidesz"]
+    # df["ld_except_Fidesz"] = df["except_Fidesz"] % 10
+    #
+    # plot_party_vote_by_digit_relationships(df,
+    #                                        "except_Fidesz", max_votes=600,
+    #                                        ref_digit=USE_MEAN_DIGIT_GROUP,
+    #                                        n_bins=60)
+    #
+    # seed = 1234
+    # n_iterations = 50000
+    # cdf = digit_correlation_cdf(len(df), seed, n_iterations)
+    # coef = np.corrcoef(df["ld_Ervenyes"], df["ld_Nevjegyzekben"])[1, 0]
+    # print("Correlation of last digits of registered voters and valid votes:")
+    # print(coef)
+    # print("Probability of correlations at least this big:\b %.2f %%" \
+    #       "\n(assuming a uniform digit distribution)" %
+    #       ((1 - cdf(coef)) * 100))
+    #
+    # df2 = df.loc[df["Fidesz"] >= 100]
+    # coef2 = np.corrcoef(df2["ld_Ervenyes"], df2["ld_Nevjegyzekben"])[1, 0]
+    # print("Correlation of last digits of registered voters and valid votes, "
+    #       "where Fidesz received at least 100 votes:")
+    # print(coef)
+    # print("Probability of correlations at least this big:\n %.2f %%\n " \
+    #       "(assuming a uniform digit distribution)" % ((1 - cdf(coef2)) * 100))
+    #
+    # df3 = df.loc[df["Fidesz"] >= 200]
+    # coef3 = np.corrcoef(df3["ld_Ervenyes"], df3["ld_Nevjegyzekben"])[1, 0]
+    # print("Correlation of last digits of registered voters and valid votes, "
+    #       "where Fidesz received at least 200 votes:")
+    # print(coef3)
+    # print("Probability of correlations at least this big:\n %.2f %%\n " \
+    #       "(assuming a uniform digit distribution)" % ((1 - cdf(coef3)) * 100))
+    #
+    # print("Note that this is just a simple,\"stupid\" correlation ...")
+    #
+    # import matplotlib.pyplot as plt
+    # xs = np.arange(0, 0.03, 0.0003)
+    # plt.plot(xs, [cdf(x) for x in xs])
+    # plt.show()
 
-    df2 = df.loc[df["Fidesz"] >= 100]
-    coef2 = np.corrcoef(df2["ld_Ervenyes"], df2["ld_Nevjegyzekben"])[1, 0]
-    print("Correlation of last digits of registered voters and valid votes, "
-          "where Fidesz received at least 100 votes:")
-    print(coef)
-    print("Probability of correlations at least this big:\n %.2f %%\n " \
-          "(assuming a uniform digit distribution)" % ((1 - cdf(coef2)) * 100))
-
-    df3 = df.loc[df["Fidesz"] >= 200]
-    coef3 = np.corrcoef(df3["ld_Ervenyes"], df3["ld_Nevjegyzekben"])[1, 0]
-    print("Correlation of last digits of registered voters and valid votes, "
-          "where Fidesz received at least 200 votes:")
-    print(coef3)
-    print("Probability of correlations at least this big:\n %.2f %%\n " \
-          "(assuming a uniform digit distribution)" % ((1 - cdf(coef3)) * 100))
-
-    print("Note that this is just a simple,\"stupid\" correlation ...")
-
-    import matplotlib.pyplot as plt
-    xs = np.arange(0, 0.03, 0.0003)
-    plt.plot(xs, [cdf(x) for x in xs])
-    plt.show()
+    # df = get_preprocessed_data()
+    # plot_party_vote_by_digit_relationships(df, "DK", max_votes=200)
+    plot_digit_distributions()

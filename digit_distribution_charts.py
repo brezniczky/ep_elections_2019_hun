@@ -100,6 +100,7 @@ def plot_party_vote_by_digit_relationships(df, party="Fidesz", ref_digit=7,
                 ),
             )
     plt.tight_layout()
+    plt.subplots_adjust(top=0.875)
     plt.show()
 
 
