@@ -11780,7 +11780,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Disclaimer">Disclaimer<a class="anchor-link" href="#Disclaimer">&#182;</a></h3><p>The author is not a statistician, considers himself an enthusiastic hobbyist with some degree of familiarity with data analytics. The author went intentionally "inventive", once fraud metrics are defined, measures can be taken to avoid those - so likely these have to be reinvented regularly in order to remain effective in this continuous chase.</p>
-<p>The below is not a definitive answer to whether there was any rigging, misconduct, discrepancy but is a best effort aiming to lay out a set of tools along with a set of results suggesting some degree of suspicion at this point about the 2019 EP elections, and perhaps earlier ones, and which could, after further improvements, hopefully also lead to further and more reliable results in the future.</p>
+<p>The below is not a definitive answer to whether there was any rigging, misconduct, discrepancy but is a best effort aiming to lay out a set of tools along with a set of results suggesting some degree of suspicion at this point about the 2019 EP elections, and perhaps earlier ones, and which could, after further improvements, hopefully also lead to further and more reliable results in the future. As a corollary, we obtain suspect muncipality lists, which can be perhaps utilised.</p>
 <p>Also note though, there will probably always be some degree of uncertainity when trying to verify election results a posteriori, so this might as well be normal. At the end, the author's personal opinion is also voiced.</p>
 
 </div>
@@ -11803,12 +11803,13 @@ div#notebook {
 <p><a href="#2019_entropy_based_stats">An entropy based overall assessment</a> of the 2019 European Parlamentiary Election results alone shows a 97%-98% unlikeliness after focusing on the top 20 settlements which were identified as the most likely "oddball" candidates through certain heuristics.
 The verification is not entirely restricted to these, but a Monte-Carlo simulation covering each ward takes place replacing each vote count last digit with a uniform random value. The extremities obtained via identical steps leading to the aforementioned top 20 candidates are rarely found to be (approx. 3%) as extreme as in case of the actual data.
 (Without focusing on the top 20, the likeliness increases to some sub-6% value, this is not detailed below.)</p>
-<p>Individual settlement results can also be highlighted using this tool, for instance by <a href="#entropy_2018_2019_summary">compiling the 2018 and 2019 last digit distribution entropy probabilities</a> and leveraging that the last digits should independently vary in such characteristically different electoral settings (the turnout has been 70.22% in 2018 at 7 pm [1], whilst only 43.48% at the same time in 2019 [2], when the ballots closed). Certain larger settlements appear to have been treated less accurately than others.</p>
+<p>Individual settlement results can also be highlighted using this tool, for instance by <a href="#entropy_2018_2019_summary">compiling the 2018 and 2019 last digit distribution entropy probabilities</a> and leveraging that the last digits should independently vary in such characteristically different electoral settings (the turnout has been 70.22% in 2018 at 7 pm [<a href="#ref_1">1</a>], whilst only 43.48% at the same time in 2019 [<a href="#ref_2">2</a>], when the ballots closed). Certain larger settlements appear to have been treated less accurately than others.</p>
 <p><a href="#ent_2014_18_19_top">An additional inclusion of 2014 results</a> further broadens the scope, 44 areas are listed with a 5% probability left for them being the result of pure chance, assuming that no anomaly occurred in either of the three years.</p>
 <p><a href="#digit_repeats">Equality of successive digits</a> can also be considered an anomaly, there are settlements with an odd prevalence of  this respect as well.</p>
-<p>Another approach reliant on <a href="#overhearing">the concept of <em>overhearing</em></a> (possibly introduced here, but more likely just unknowingly renamed) of values between recorded streams of 2019 digits also concludes a &lt;&lt; 5% likeliness of the major value sequences (votes of Fidesz and valid votes) having a uniformly and <em>independently</em>  distributed last digit from other sequences.</p>
+<p>Another approach reliant on <a href="#overhearing">the concept of <em>overhearing</em></a> (possibly introduced here, but more likely just unknowingly renamed and reintroduced) of values between recorded streams of 2019 digits also concludes a &lt;&lt; 5% likeliness of the major value sequences (votes of Fidesz and valid votes) having a uniformly and <em>independently</em>  distributed last digit from other sequences.</p>
 <p>A number of ways in which <a href="#further_results">further examinations</a> could be carried out will also be outlined.</p>
-<p>Such examinations are not suited to prove forgery as a fact, natural human mistakes may leave such marks on numeric data as well, and we could similarly expect some degree of random discrepancy, yet any of these underlines at the very least that certain quality improvements are likely desirable, especially in certain areas.</p>
+<p>The related <a href="#methodology">methodology</a> is also briefly described.</p>
+<p>Such examinations are not suited to prove forgery as a fact, natural human mistakes may leave such marks on numeric data as well, and we could similarly expect some degree of random discrepancy, yet any of these underlines at the very least that certain quality improvements are likely desirable, especially in certain settlements.</p>
 
 </div>
 </div>
@@ -11835,7 +11836,7 @@ The verification is not entirely restricted to these, but a Monte-Carlo simulati
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -11850,7 +11851,7 @@ The verification is not entirely restricted to these, but a Monte-Carlo simulati
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">app5_ent_in_top</span> <span class="k">import</span> <span class="n">plot_entropy_distribution</span>
@@ -11898,7 +11899,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app9_overall_log_likelihood</span> <span class="k">as</span> <span class="nn">app9</span>
@@ -11956,7 +11957,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app6_comparative</span> <span class="k">as</span> <span class="nn">app6</span>
@@ -11980,7 +11981,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[24]:</div>
+<div class="prompt output_prompt">Out[56]:</div>
 
 
 
@@ -12180,7 +12181,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">suspects</span><span class="p">[</span><span class="s2">&quot;p_both_correct_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects</span><span class="p">[</span><span class="s2">&quot;p_all_2&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
@@ -12197,7 +12198,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[25]:</div>
+<div class="prompt output_prompt">Out[57]:</div>
 
 
 
@@ -12419,7 +12420,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">suspects3</span><span class="p">[</span><span class="s2">&quot;p_all_3_%&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suspects3</span><span class="p">[</span><span class="s2">&quot;p_all_3&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> 
@@ -12436,7 +12437,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[26]:</div>
+<div class="prompt output_prompt">Out[58]:</div>
 
 
 
@@ -12851,7 +12852,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">preprocessing</span> <span class="k">import</span> <span class="n">get_preprocessed_data</span>
@@ -12925,7 +12926,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app6_comparative</span> <span class="k">as</span> <span class="nn">app6</span>
@@ -12949,7 +12950,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[28]:</div>
+<div class="prompt output_prompt">Out[60]:</div>
 
 
 
@@ -13037,7 +13038,7 @@ This is expected to be a more accurate probability due to sorting and comparabil
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The entropy based verification should be more reliable over more sizable areas. There are 3 of the districts of the capital listed above. It is at least an interesting coincidence (?) that according to [3] two of those, namely the Budapest XI. and IX. districts (kerület) have seen Fidesz conquering an extraordinarily faint victory in that year (~2..5% ahead of the second candidate).</p>
+<p>The entropy based verification should be more reliable over more sizable areas. There are 3 of the districts of the capital listed above. It is at least an interesting coincidence (?) that according to [<a href="#ref_3">3</a>] two of those, namely the Budapest XI. and IX. districts (kerület) have seen Fidesz conquering an extraordinarily faint victory in that year (~2..5% ahead of the second candidate).</p>
 
 </div>
 </div>
@@ -13055,7 +13056,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app7_fidesz_vs_jobbik</span> <span class="k">as</span> <span class="nn">app7</span>
@@ -13075,7 +13076,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[29]:</div>
+<div class="prompt output_prompt">Out[61]:</div>
 
 
 
@@ -13200,7 +13201,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">AndrasKalman.load</span>
@@ -13241,7 +13242,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id="digit_repeats"></a></p>
 <h3 id="Irregularity-in-consecutively-repeating-last-digits-in-the-data-sets">Irregularity in consecutively repeating last digits in the data sets<a class="anchor-link" href="#Irregularity-in-consecutively-repeating-last-digits-in-the-data-sets">&#182;</a></h3><p>Another way of finding traces of human bias (whether it is unintentional) among the digits is to find how often the last digits of consecutive numbers match and employ some statistic on this frequency. Such repetitions apparently take place with a surprising frequency in some cases.</p>
-<p>Albeit [8] mentions that digit repetition tends to be avoided ("Without  exception,subjects avoided repetition in their sequences, rarely creating repetitive pairs or triplets") we can also suspect that known fraudulent behaviours will be likely avoided by subjects, thus this is examined as below.</p>
+<p>Albeit <a href="#ref_8">[8]</a> mentions that digit repetition tends to be avoided ("Without  exception,subjects avoided repetition in their sequences, rarely creating repetitive pairs or triplets") we can also suspect that known fraudulent behaviours will be likely avoided by subjects, thus this is examined as below.</p>
 <p>However it would be also reasonable to test for the deviation towards avoiding the repetitions as well (this could take place in the future).</p>
 <h4 id="The-top-candidates-(at-most-10%-likeliness-of-regularity)-for-2019">The top candidates (at most 10% likeliness of regularity) for 2019<a class="anchor-link" href="#The-top-candidates-(at-most-10%-likeliness-of-regularity)-for-2019">&#182;</a></h4>
 </div>
@@ -13249,7 +13250,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app8_prob_of_twin_digits</span> <span class="k">as</span> <span class="nn">app8</span>
@@ -13275,7 +13276,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[63]:</div>
 
 
 
@@ -13355,7 +13356,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">app8_df</span><span class="p">[[</span><span class="s2">&quot;Telepules&quot;</span><span class="p">,</span> <span class="s2">&quot;p_ld_Fidesz_twins_2018&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
@@ -13377,7 +13378,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[11]:</div>
+<div class="prompt output_prompt">Out[64]:</div>
 
 
 
@@ -13477,7 +13478,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">app8_suspects</span><span class="p">[[</span><span class="s2">&quot;Telepules&quot;</span><span class="p">,</span> <span class="s2">&quot;p_all_regular&quot;</span><span class="p">]]</span>
@@ -13493,7 +13494,7 @@ Here a little relaxation of the number of votes constraint was applied, the mini
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[33]:</div>
+<div class="prompt output_prompt">Out[65]:</div>
 
 
 
@@ -13667,7 +13668,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app14_digit_correlations_Hun</span> <span class="k">as</span> <span class="nn">app14</span>
@@ -13691,7 +13692,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -13715,14 +13716,14 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Overhearing-top-20">Overhearing top 20<a class="anchor-link" href="#Overhearing-top-20">&#182;</a></h3><p>We can construct a top list based on the ratio of the likeliness of hits vs. the expected likeliness given our simulations. The top 20 least likely municipalities are listed below.</p>
+<h3 id="Overhearing-top-10">Overhearing top 10<a class="anchor-link" href="#Overhearing-top-10">&#182;</a></h3><p>We can construct a top list based on the ratio of the likeliness of hits vs. the expected likeliness given our simulations. The top 10 least likely municipalities are listed below.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">_</span><span class="p">,</span> <span class="n">top_list</span> <span class="o">=</span> <span class="n">app14</span><span class="o">.</span><span class="n">get_top_list</span><span class="p">(</span><span class="n">n_top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -13741,7 +13742,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[26]:</div>
+<div class="prompt output_prompt">Out[67]:</div>
 
 
 
@@ -13852,14 +13853,14 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app15_overall_ranking</span> <span class="k">as</span> <span class="nn">app15</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">app15</span><span class="o">.</span><span class="n">get_overall_list_all_3_years</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">45</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">45</span><span class="p">)[[</span><span class="s2">&quot;Telepules&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">]])</span>
 </pre></div>
 
 </div>
@@ -13876,52 +13877,52 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>                  Telepules       p_1       p_2       p_3             p
-0            Berettyóújfalu  0.000369  0.000947  0.984531  3.441793e-07
-1                      Eger  0.005517  0.000399  0.855775  1.884046e-06
-2              Püspökladány  0.000433  0.009748  0.539489  2.277139e-06
-3              Balatonfüred  0.000540  0.012220  0.826006  5.447409e-06
-4                     Lenti  0.005577  0.006448  0.589700  2.120694e-05
-5                      Baja  0.001028  0.013915  1.500483  2.145905e-05
-6               Veresegyház  0.000653  0.052389  0.806758  2.761832e-05
-7                   Kerepes  0.002059  0.012220  1.213483  3.053211e-05
-8              Kisújszállás  0.002178  0.024275  0.646919  3.420244e-05
-9                    Vecsés  0.000104  0.327020  1.092610  3.721378e-05
-10                   Maglód  0.012952  0.002896  1.319336  4.949491e-05
-11    Budapest XVI. kerület  0.005126  0.009246  1.327656  6.292400e-05
-12                     Tata  0.000140  0.602058  0.826151  6.943108e-05
-13                      Fót  0.000541  0.148501  1.069968  8.599293e-05
-14                  Komárom  0.017094  0.006838  0.761642  8.902759e-05
-15                Tótkomlós  0.002395  0.096257  0.428868  9.885687e-05
-16                      Érd  0.003561  0.040393  0.780264  1.122486e-04
-17              Nagykanizsa  0.002258  0.051006  1.077609  1.240957e-04
-18                   Gyömrő  0.047965  0.002399  1.090239  1.254271e-04
-19                     Ócsa  0.023893  0.004740  1.184809  1.341693e-04
-20                    Pécel  0.001598  0.092998  1.094990  1.626911e-04
-21            Bátonyterenye  0.004067  0.067961  0.622039  1.719192e-04
-22  Budapest XXIII. kerület  0.003448  0.054238  1.103234  2.062919e-04
-23           Százhalombatta  0.017733  0.006381  1.859863  2.104519e-04
-24               Mezőkövesd  0.000619  0.266864  1.662919  2.745621e-04
-25                  Tapolca  0.024385  0.016521  0.774679  3.120964e-04
-26     Budapest II. kerület  0.002063  0.129449  1.180156  3.151275e-04
-27                   Putnok  0.052281  0.008652  0.762992  3.451418e-04
-28             Tiszaföldvár  0.012226  0.039485  0.852262  4.114393e-04
-29                  Marcali  0.009509  0.060431  0.876175  5.034989e-04
-30                 Veszprém  0.031536  0.015625  1.051690  5.182212e-04
-31     Budapest XI. kerület  0.023287  0.023371  1.211395  6.592976e-04
-32            Pilisvörösvár  0.008471  0.078435  1.116608  7.419362e-04
-33            Balatonalmádi  0.027118  0.034142  0.801975  7.425121e-04
-34      Budapest V. kerület  0.038971  0.027043  0.771879  8.134839e-04
-35                 Dombóvár  0.113006  0.008797  0.831709  8.268087e-04
-36    Budapest XXI. kerület  0.025716  0.028933  1.157088  8.609027e-04
-37               Békéscsaba  0.033600  0.029451  0.965261  9.551951e-04
-38                Keszthely  0.014409  0.092050  0.807103  1.070476e-03
-39             Tiszavasvári  0.007580  0.208982  0.708987  1.123043e-03
-40     Budapest XV. kerület  0.006853  0.113333  1.499843  1.164863e-03
-41                Esztergom  0.404800  0.002405  1.270678  1.236876e-03
-42                      Göd  0.013425  0.137994  0.682950  1.265191e-03
-43                    Dabas  0.167325  0.014431  0.578932  1.397935e-03
-44          Mosonmagyaróvár  0.067229  0.018361  1.133514  1.399221e-03
+<pre>                  Telepules             p
+0            Berettyóújfalu  3.441793e-07
+1                      Eger  1.884046e-06
+2              Püspökladány  2.277139e-06
+3              Balatonfüred  5.447409e-06
+4                     Lenti  2.120694e-05
+5                      Baja  2.145905e-05
+6               Veresegyház  2.761832e-05
+7                   Kerepes  3.053211e-05
+8              Kisújszállás  3.420244e-05
+9                    Vecsés  3.721378e-05
+10                   Maglód  4.949491e-05
+11    Budapest XVI. kerület  6.292400e-05
+12                     Tata  6.943108e-05
+13                      Fót  8.599293e-05
+14                  Komárom  8.902759e-05
+15                Tótkomlós  9.885687e-05
+16                      Érd  1.122486e-04
+17              Nagykanizsa  1.240957e-04
+18                   Gyömrő  1.254271e-04
+19                     Ócsa  1.341693e-04
+20                    Pécel  1.626911e-04
+21            Bátonyterenye  1.719192e-04
+22  Budapest XXIII. kerület  2.062919e-04
+23           Százhalombatta  2.104519e-04
+24               Mezőkövesd  2.745621e-04
+25                  Tapolca  3.120964e-04
+26     Budapest II. kerület  3.151275e-04
+27                   Putnok  3.451418e-04
+28             Tiszaföldvár  4.114393e-04
+29                  Marcali  5.034989e-04
+30                 Veszprém  5.182212e-04
+31     Budapest XI. kerület  6.592976e-04
+32            Pilisvörösvár  7.419362e-04
+33            Balatonalmádi  7.425121e-04
+34      Budapest V. kerület  8.134839e-04
+35                 Dombóvár  8.268087e-04
+36    Budapest XXI. kerület  8.609027e-04
+37               Békéscsaba  9.551951e-04
+38                Keszthely  1.070476e-03
+39             Tiszavasvári  1.123043e-03
+40     Budapest XV. kerület  1.164863e-03
+41                Esztergom  1.236876e-03
+42                      Göd  1.265191e-03
+43                    Dabas  1.397935e-03
+44          Mosonmagyaróvár  1.399221e-03
 </pre>
 </div>
 </div>
@@ -13936,14 +13937,14 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id='overall_top_45_for_last_2'></a></p>
 <h3 id="Overall-top-45-suspicious-settlements-for-the-last-2-considered-elections">Overall top 45 suspicious settlements for the last 2 considered elections<a class="anchor-link" href="#Overall-top-45-suspicious-settlements-for-the-last-2-considered-elections">&#182;</a></h3><p>It is probably more interesting to focus on more recent events so that enough attention can be paid to prevent the most likely recent mistakes (if any) from recurring.</p>
-<p>Fortunately there have been at least a couple of events recently and the third one is just around the bend, hopefully providing a clearer vision and a potential for correlated problems in the near future - the top 45 based on the 2018 and 2019 convolved probabilities can be seen below.</p>
+<p>Fortunately there have been at least a couple of events recently and the third one is just around the bend, hopefully providing a good chance as local pecularities, such as personnel, are less likely to change over shorter periods.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app15_overall_ranking</span> <span class="k">as</span> <span class="nn">app15</span>
@@ -14032,7 +14033,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">app10_distribution_of_digits</span> <span class="k">as</span> <span class="nn">app10</span>
@@ -14072,7 +14073,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">app10</span><span class="o">.</span><span class="n">plot_9_to_7_digit_distributions</span><span class="p">()</span>
@@ -14138,7 +14139,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">preprocessing</span> <span class="k">import</span> <span class="n">get_preprocessed_data</span>
@@ -14184,7 +14185,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">15</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span>
@@ -14202,7 +14203,7 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[38]:</div>
+<div class="prompt output_prompt">Out[73]:</div>
 
 
 
@@ -14230,13 +14231,14 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 <li>these charts are already magnified along the horizontal axis, and still appear to be much more regular</li>
 </ul>
 <p>(The equivalent charts for the rest of the parties show up even more regular, for more details see/run the app10... python module.)</p>
+<p>These charts look very promising, they could probably be turned into statistics and be an effective tool to assess situations at a glance, likely if plotted as 2 dimensional scatter plots as well (similarly to the vote turnout fingerprints in <a href="ref_9">[9]</a>).</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">preprocessing</span> <span class="k">import</span> <span class="n">get_preprocessed_data</span>
@@ -14276,20 +14278,21 @@ Anyhow, the series of digits would more frequently than expected, coincide.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3><p>The methodology is based on that for large enough vote counts, the last digit values can be considered i.i.d. uniformly distributed choices of the 10 possible digits.
-Originally some home made metric ((n<em>{most frequent digit} - n</em>{least frequent digit}) / (n_{total  digits}) was used to see how big the fluctuation in digit distributions is. However, while it was pointing towards largely the same geographic areas, and helped with the beginnings of the exploration, it can be fragile and non-standard, so a different, more mature one forms the basis of statistics.</p>
+<p><a id="methodology"></a></p>
+<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3><p>The methodology is based on that for large enough vote counts, the last digit values can be considered close to i.i.d. uniformly distributed choices of the 10 possible digits.</p>
+<h4 id="Entropy-p-values">Entropy p-values<a class="anchor-link" href="#Entropy-p-values">&#182;</a></h4><p>Originally some home made metric ($(n_{most frequent digit} - n_{least frequent digit}) / (n_{total  digits}$) was used to see how big the fluctuation in digit distributions is. However, while it was pointing towards largely the same geographic areas, and helped with the beginnings of the exploration, it can be fragile and non-standard, so a different, more mature/central one forms the basis of statistics.</p>
+<p>The standard information entropy (python scipy.stats.entropy) formula is used <a href="#ref_6">[6]</a>:</p>
+<p>$${\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}$$</p>
+<p>(where the $b=e$, i.e. $log_b$ is $ln$). This is probably much better-known and if in the need of improving the accuracy of the report e.g. in case of doubt, it should with a better potential allow for constructing more convincing arguments based on existing, mature mathematical results, rather than a home made metric.</p>
+<p>Entropy can be understood as a measure that typically reduces when the numbers become more inhomogeneously distributed to the eye. Also, while it is "neutral" towards human preference for certain digits (e.g. 0 is both expected and often appeared to be an unreasonably frequent one), it already shows convincing signs of discrepancies.</p>
+<p>It was for in this respect intentionally ignored that people have an attraction to certain digits (classic "lucky numbers"), as on the one hand cultural nuances may vary geographically within the country, on the other the analysis aims for 'good willed' estimates of discrepancy probabilities. The benefit of that is leaving some room for error: the results should be more likely to hold with this approach, perhaps in part, once correcting for human mistakes - should any come to light in the future.</p>
 <h4 id="Simulation">Simulation<a class="anchor-link" href="#Simulation">&#182;</a></h4><p>One relatively larger scale simulation was kept for the report at this stage (see the app5... module). It is rather slow and surely could be multithreaded/processed and otherwise accelerated (C, C++, ignoring unused values), but keeping it simple (at the cost of being slow) reduces the likeliness of errors creeping in and allows to reflect the thinking that lead to the algorithm. The concept here is to inject randomly generated last digits into the electoral ward vote numbers (for the Fidesz party only) and to examine what distribution of overall entropy (sum of individual entropies) they yield for the top x (ended up being 20) suspects, thereby becoming able to obtain a p-value for the actual data.</p>
 <p>While creating this simulation did it become evident that entropy on its own is not an easily utilizable metric for comparing short sequences of varying length in terms of extracted source entropy. For instance, it would attach the same scores to the sequences [1, 2] and [1, 1, 2, 2], despite that the first is maximized and the second is unusually redundant given the draws in our case come from 10 elements.</p>
 <p>The problems experienced while sorting have led to the construction of the entropy p-values, technically p-values of the possible entropy levels of a multinomial distribution depicting possible outcomes of n draws of 10 elements.</p>
 <p>The items in the simulation were left ranked in ascending entropy order in the first case (app5). Utilizing the below p-values could almost surely improve on the quality of the findings here - see the app9... files, and the below paragraphs for more information.</p>
-<h4 id="Entropy-p-values">Entropy p-values<a class="anchor-link" href="#Entropy-p-values">&#182;</a></h4><p>The standard information entropy (python scipy.stats.entropy) formula is used [6]:</p>
-<p>$${\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}$$</p>
-<p>(where the $b=e$, i.e. $log_b$ is $ln$). This is probably much better-known and if in the need of improving the accuracy of the report e.g. in case of doubt, it should allow for constructing more convincing arguments based on existing, mature mathematical results, rather than a home made metric.</p>
-<p>Entropy can be understood as a measure that typically reduces when the numbers become more inhomogeneously distributed to the eye. Also, while it is "neutral" towards human preference for certain digits (e.g. 0 is both expected and often appeared to be an unreasonably frequent one), it already shows convincing signs of discrepancies.</p>
-<p>It was for in this respect intentionally ignored that people have an attraction to certain digits (classic "lucky numbers"), as on the one hand cultural nuances may vary geographically within the country, on the other the analysis aims for 'good willed' estimates of discrepancy probabilities. The benefit of that is leaving some room for error: the results should be more likely to hold with this approach, perhaps in part, once correcting for human mistakes - should any come to light in the future.</p>
 <h4 id="Entropy-and-simulations">Entropy and simulations<a class="anchor-link" href="#Entropy-and-simulations">&#182;</a></h4><p>Whilst individual entropy p-values are interesting, and can reflect on where the problem, if any, may be concentrated, it is a good idea to confirm their overall significance given the bigger picture. Any rare event will happen occasionally if we are to sample long enough, and while there are apparently well more than one &lt; 5% events, there are over 3100 settlements involved - it is always a good idea to confirm, perhaps in this way, whether it is anything really unusual that seems to have been localized, or it is simply large numbers at play.</p>
 <p>Entropy values were combined together to describe the overall likeliness via a likelihood function as well. This measure here is calculated as the logarithm of the individual settlement probabilities added up. A simulation (four times, with four different random seeds) is taking place to obtain a sample of these from uniform last digit distributions for settlements that are sufficiently large. The distribution is then used as the basis of determining a p-value for the log likelihood value of the actual data.</p>
-<h4 id="Twin-digits">Twin digits<a class="anchor-link" href="#Twin-digits">&#182;</a></h4><p>This has been verified using Poisson distribution p-values. [7]
+<h4 id="Twin-digits">Twin digits<a class="anchor-link" href="#Twin-digits">&#182;</a></h4><p>This has been verified using Poisson distribution p-values. <a href="#ref_7">[7]</a>
 The associated probability value was the $P(repeats \ge actual repeats)$.</p>
 
 </div>
@@ -14301,7 +14304,7 @@ The associated probability value was the $P(repeats \ge actual repeats)$.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Overhearing">Overhearing<a class="anchor-link" href="#Overhearing">&#182;</a></h4><p>Overhearing is measured via the geometric mean of the probabilities of the number of coincident last digits among the $w_k$ wards of the $k$th municipality for select base and projected column pairs:</p>
 <p>$$p_k = exp(\overline {ln(P(X_{w_k}=actual_{b, p}(k)) \text{ for } (b, p) \in (Base \times Projected \setminus \{ (Fidesz, Fidesz), (Ervenyes, Ervenyes) \} ))})$$</p>
-<p>assuming a uniform distribution of the base column last digits. The base columns are the number of valid votes and the votes the Fidesz party has received. They are called base columns as they should be independent (orthogonal) of each other which likens them to basis vectors. (In fact, they should be also orthogonal to the projected columns, which is the crux of the test.) The examination is narrowed down to the "feasibly large" municipalities (each number $\ge$100 and each municiplaity consisting of at least 8 wards).</p>
+<p>assuming a uniform distribution of the base column last digits. The base columns are the number of valid votes and the votes the Fidesz party has received. They are called base columns as they should be independent (orthogonal) of each other which likens them to (albeit not normalised) basis vectors. (In fact, they should be also orthogonal to the projected columns, which is the crux of the test.) The examination is narrowed down to the "feasibly large" municipalities (each number $\ge$100 and each municiplaity consisting of at least 8 wards).</p>
 <p>The projected columns are the major party sequences (Fidesz, DK, Momentum, MSZP, LMP, Jobbik), the valid votes and the total number of registered voters (Ervenyes, Nevjegyzekben). This would lead to $2 (5 + 2) = 14$ pairs, but the Fidesz-Fidesz and Ervenyes-Ervenyes values are left out. On the other hand, both Fidesz-Ervenyes and Ervenyes-Fidesz are counted, i.e. this pair is in a sense doubly counted. (TODO: Might be something to improve on.)</p>
 
 </div>
@@ -14311,8 +14314,9 @@ The associated probability value was the $P(repeats \ge actual repeats)$.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>An average of such probabilities is also calculated from the simulations, one per municipality (this does not tend to be constant), as the geometric mean of the probabilities obtained from simulated data in an identical way to the above.</p>
+<p>An average of such probabilities is also calculated from the simulations, $\overline{p_k}$, one per each municipality (this does not tend to be constant), as the geometric mean of the probabilities obtained from repeated simulations of the data, in an identical way to the above for each simulation.</p>
 <p>A relative probability is finally obtained as $\frac {p_k} {\overline {p_k}} $ which forms the basis of sorting aimed at finding the most interesting municipalities.</p>
+<p>Remark: 2014 and 2018 data could be and were not examined in this way.</p>
 
 </div>
 </div>
@@ -14321,10 +14325,10 @@ The associated probability value was the $P(repeats \ge actual repeats)$.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="About-the-political-significance-of-the-results">About the political significance of the results<a class="anchor-link" href="#About-the-political-significance-of-the-results">&#182;</a></h3><p>The Hungarian elections have kept warranting the Fidesz party a "2/3" governing position. This distinguished majority has allowed the party to carry out modifications of very high importance without confirmation from the opposition, rendering them speaking puppets in the Parliament.</p>
-<p>However - interestingly, by coincidence - this has kept being a very fragile "2/3". Even the loss of a single parliamentary mandate would have broken this fragile "2/3" position (result of 49.27% of the votes in 2018 [1]). Fidesz has barely hit the threshold in 2014 and 2018.</p>
+<h3 id="About-the-political-significance-of-the-results">About the political significance of the results<a class="anchor-link" href="#About-the-political-significance-of-the-results">&#182;</a></h3><p>The Hungarian elections have kept warranting the Fidesz party a "2/3" governing position. This distinguished majority has allowed the party to carry out modifications of very high importance without confirmation from the opposition, rendering them speaking puppets in the Parliament, both interesting and infuriating to watch.</p>
+<p>However - interestingly, by coincidence - this has kept being a very fragile "2/3". Even the loss of a single parliamentary mandate would have broken this fragile "2/3" position (result of 49.27% of the votes in 2018 <a href="ref_1">[1]</a>). Fidesz has barely hit the threshold in 2014 and 2018.</p>
 <p>Could they have gained this effectively huge advantage by - perhaps repeat, "administrative mistakes"?</p>
-<h3 id="Personal-connection-with-the-issue">Personal connection with the issue<a class="anchor-link" href="#Personal-connection-with-the-issue">&#182;</a></h3><p>The author has been confronted with the situation in Eger on multiple occasions for various bonds with the area. In certain wards, people feel like as if they have almost never seen an actual, living Fidesz voter. And yet, they are the majority. Isn't it strange?
+<h3 id="Personal-connection-with-the-issue">Personal connection with the issue<a class="anchor-link" href="#Personal-connection-with-the-issue">&#182;</a></h3><p>The author has been confronted with the situation in Eger on multiple occasions for various bonds with the area. In certain wards, people feel like as if they have almost never seen an actual, living Fidesz voter (this does change when it comes to the vote counters). And yet, they are the majority. Isn't it strange?
 Eger has come out (without particular intention) as a likely candidate for tampering on multiple occasions in the above, especially in 2019.
 The motivation for the analysis was that it was difficult to miss a "poker" of numbers ending with 9's among the 2019 Fidesz votes in Eger - so it seemed the quality of err... data processing has become worse.
 The author also personally visited a certain ward in said settlement and his inquiry about the presence of opoosition delegates was not 'too well received'.</p>
@@ -14341,6 +14345,14 @@ The author also personally visited a certain ward in said settlement and his inq
 <p>The above shows some awkward digit distributions in each considered year.</p>
 <p>Simulations confirm that the 2019 data is highly unlikely to be "regular", unaffected by biased digit choices.</p>
 <p>Certain settlements/cities come up (e.g. Tata, Eger, Budapest V. kerület, Veresegyház, Érd, Pécel, Pomáz, Fót, Berettyóújfalu, Balatonfüred), even regularly, as very likely candidates for closer inspection, and this should not be missed.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Futher-aims">Futher aims<a class="anchor-link" href="#Futher-aims">&#182;</a></h4><p>Beyond the first aim, second, to draw attention of international bodies on the problem of, to say the least, election data processing in Hungary.
 This time it was EP votes at stake, and the EU (for instance, the OSCE) should be watching, closely.
 On the other hand, everyday people are allowed to inspect the voting process, and we should, too.</p>
@@ -14352,9 +14364,9 @@ But there is also room for checking on the digits from multiple parties together
 <p>Then, to demonstrate methods for further verification of past election data on an <em>international scale</em>.
 Not only on grounds of suspicion about others' work - it would be very interesting to find out whether the above discrepancies are typical for some innocent reason rather than anything to be nosy about - i.e. to see if the above suffers from methodological or conceptual issues. (But also on grounds of suspicion :) )</p>
 <p>Fifth, it could and should be hypothesized or possibly investigated whether in the suspect locations any party was likely to benefit from the discrepancies.</p>
-<p>Sixth, there is a lot more data! There were not only general elections to refer to and compare against, even in the years 2014 and 2018. More data could lead to hopefully more convincing and more detailed findings.</p>
-<p>The author expects that a framework (such as a Python package, combined with a standardised format for voting data) for such analyses could be very welcome by a broad range of experts and democrats - democracies will not work without ensuring that the processes are properly put in place, and this means repeat checks. The distributions above were examined in a non-parametric style, reference distributions or functions to deal with the respective PMFs should be a welcome part.</p>
-<p>The author hereby makes a commitment to improve on what the above provides in case of interest, and also wishes good luck to those digging deeper, irrespective of what their - hopefully correct! - findings may be.</p>
+<p>Sixth, there is a lot more data! There were not only general elections to refer to and compare against, even in the years 2014 and 2018. More data could lead to hopefully more convincing and more detailed findings. A baseline could and should also be formulated from data from other European countries, steps have been taken in this direction.</p>
+<p>The author expects that a framework (such as a Python package, combined with a standardised format for voting data ) for such analyses could be very welcome by a broad range of experts and democrats - democracies will not work without ensuring that the processes are properly put in place, and this means repeat checks, even if this is a methodological chase between fraudsters and QA. The distributions above were examined mostly in a non-parametric style, reference distributions or functions to deal with the respective PMFs where missing should be a welcome part.</p>
+<p>The author hereby makes a commitment to improve on what the above provides in case of interest, and also wishes good luck to those digging deeper, irrespective of what their - hopefully correct! - aims and findings may be.</p>
 
 </div>
 </div>
@@ -14365,8 +14377,8 @@ Not only on grounds of suspicion about others' work - it would be very interesti
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements">&#182;</a></h3><p>For the data, thanks go to:</p>
 <ul>
-<li>Platón Party  (2018 and 2019) [4]</li>
-<li>András Kálmán (2014) [5]</li>
+<li>Platón Party  (2018 and 2019) <a href="#ref_4">[4]</a></li>
+<li>András Kálmán (2014) <a href="#ref_5">[5]</a></li>
 </ul>
 
 </div>
@@ -14376,14 +14388,15 @@ Not only on grounds of suspicion about others' work - it would be very interesti
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
-<p>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
-<p>[3] <a href="https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s">https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s</a></p>
-<p>[4] <a href="https://www.facebook.com/platonpart/">https://www.facebook.com/platonpart/</a></p>
-<p>[5] <a href="https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results">https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results</a></p>
-<p>[6] <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory">https://en.wikipedia.org/wiki/Entropy_(information_theory)</a>)</p>
-<p>[7] <a href="https://en.wikipedia.org/wiki/Poisson_distribution">https://en.wikipedia.org/wiki/Poisson_distribution</a></p>
-<p>[8] <a href="https://projects.iq.harvard.edu/gov2126/files/beber_scacco_electionfraud.pdf">What the Numbers Say: A Digit-Based Test for Election Fraud Using New Data from Nigeria</a></p>
+<h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p><a id="ref_1"></a>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
+<p><a id="ref_2"></a>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
+<p><a id="ref_3"></a>[3] <a href="https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s">https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s</a></p>
+<p><a id="ref_4"></a>[4] <a href="https://www.facebook.com/platonpart/">https://www.facebook.com/platonpart/</a></p>
+<p><a id="ref_5"></a>[5] <a href="https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results">https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results</a></p>
+<p><a id="ref_6"></a>[6] <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory">https://en.wikipedia.org/wiki/Entropy_(information_theory)</a>)</p>
+<p><a id="ref_7"></a>[7] <a href="https://en.wikipedia.org/wiki/Poisson_distribution">https://en.wikipedia.org/wiki/Poisson_distribution</a></p>
+<p><a id="ref_8"></a>[8] <a href="https://projects.iq.harvard.edu/gov2126/files/beber_scacco_electionfraud.pdf">What the Numbers Say: A Digit-Based Test for Election Fraud Using New Data from Nigeria</a></p>
+<p><a id="ref_9"></a>[9] <a href="https://www.pnas.org/content/109/41/16469">Statistical detection of systematic election irregularities</a></p>
 
 </div>
 </div>
@@ -14407,7 +14420,7 @@ This is so as the p value is calculable as $p=\sum{p_{c_i} p_{d_i}} = \sum 0.1 p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">load_ext</span> rpy2.ipython
@@ -14420,10 +14433,29 @@ This is so as the p value is calculable as $p=\sum{p_{c_i} p_{d_i}} = \sum 0.1 p
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The rpy2.ipython extension is already loaded. To reload it, use:
+  %reload_ext rpy2.ipython
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R <span class="o">-</span>i ld_Fidesz_freqs<span class="p">,</span>ld_Erv_freqs
@@ -14518,7 +14550,7 @@ The below charts show (both contain 10 replots each with a different random 10-w
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
