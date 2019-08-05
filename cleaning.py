@@ -1,6 +1,7 @@
 import os.path
 import pandas as pd
 import numpy as np
+import json
 
 
 def get_merged_data() -> pd.DataFrame:
@@ -48,3 +49,137 @@ def get_cleaned_data():
     else:
         df = pd.read_csv("cleaned.csv")
     return df
+
+
+def get_2014_cleaned_data():
+    """
+    # TODO: report bogus nature
+
+    Warning: bogus data, e.g.
+
+    [29]:
+    {'received_envelopes': '0',
+     'locals_voted': '497',
+     'total_registered': '1753',
+     'total_voted': '0',
+     'invalid_pages': '9',
+     'valid_pages': '1331',
+     'stamped_pages_in_urn_and_envelopes': '1340'}
+
+    probably the total_voted = 0 is incorrect
+
+    """
+    with open("AndrasKalman/wards_2014-2018-04-19T16-32-08.json", "r") as f:
+        jd = json.load(f)
+
+    dicts = []
+
+    name_translation = {
+        'A HAZA NEM ELADÓ': "A Haza Nem Eladó",
+        'EGYÜTT 2014': "Együtt 2014",
+        'FIDESZ-KDNP': "Fidesz-KDNP",
+        'FKGP': "FKGP",
+        "JESZ": "JESZ",
+        'JOBBIK': "Jobbik",
+        'KTI': "KTI",
+        'LMP': "LMP",
+        'MCP': "MCP",
+        'MSZP-EGYÜTT-DK-PM-MLP': "MSZP-Együtt-DK-PM-MLP",
+        'MUNKÁSPÁRT': "Munkáspárt",
+        'SEM': "SEM",
+        'SMS': "SMS",
+        'SZOCIÁLDEMOKRATÁK': "Szociáldemokraták",
+        'ZÖLDEK': "Zöldek",
+        'ÖP': "ÖP",
+        'ÚDP': "ÚDP",
+        'ÚMP': "ÚMP"
+    }
+
+    for row in jd:
+        party_list_summary = \
+            row["general_list_results"]["party_list_summary"]
+        dict = {
+            "Nevjegyzekben":
+                # 28 has "locals_registered", investigate why
+                int(party_list_summary["total_registered"])
+                if "total_registered" in party_list_summary else
+                int(party_list_summary["locals_registered"]),
+            "Ervenyes":
+                int(party_list_summary["valid_pages"]),
+            "Telepules": row["location"],
+            "Szavazokor": row["num"],
+        }
+        for party_result in row["general_list_results"]["party_results"]:
+            dict[name_translation[party_result["party_name"]]] = \
+                int(party_result["num_of_votes"])
+        dicts.append(dict)
+
+    return pd.DataFrame(dicts)
+
+
+def get_2018_cleaned_data():
+    """
+    :return:
+
+
+    Warning: bogus data, e.g.
+
+    [29]:
+    {'received_envelopes': '0',
+     'locals_voted': '497',
+     'total_registered': '1753',
+     'total_voted': '0',
+     'invalid_pages': '9',
+     'valid_pages': '1331',
+     'stamped_pages_in_urn_and_envelopes': '1340'}
+
+    probably the total_voted = 0 is incorrect
+
+    """
+    with open("AndrasKalman/wards_2018-2018-04-16T08-44-21.json", "r") as f:
+        jd = json.load(f)
+
+    dicts = []
+
+    # TODO
+    # name_translation = {
+    #     'A HAZA NEM ELADÓ': "A Haza Nem Eladó",
+    #     'EGYÜTT 2014': "Együtt 2014",
+    #     'FIDESZ-KDNP': "Fidesz-KDNP",
+    #     'FKGP': "FKGP",
+    #     "JESZ": "JESZ",
+    #     'JOBBIK': "Jobbik",
+    #     'KTI': "KTI",
+    #     'LMP': "LMP",
+    #     'MCP': "MCP",
+    #     'MSZP-EGYÜTT-DK-PM-MLP': "MSZP-Együtt-DK-PM-MLP",
+    #     'MUNKÁSPÁRT': "Munkáspárt",
+    #     'SEM': "SEM",
+    #     'SMS': "SMS",
+    #     'SZOCIÁLDEMOKRATÁK': "Szociáldemokraták",
+    #     'ZÖLDEK': "Zöldek",
+    #     'ÖP': "ÖP",
+    #     'ÚDP': "ÚDP",
+    #     'ÚMP': "ÚMP"
+    # }
+
+    for row in jd:
+        party_list_summary = \
+            row["general_list_results"]["party_list_summary"]
+        dict = {
+            "Nevjegyzekben":
+            # 28 has "locals_registered", investigate why
+                int(party_list_summary["total_registered"])
+                if "total_registered" in party_list_summary else
+                int(party_list_summary["locals_registered"]),
+            "Ervenyes":
+                int(party_list_summary["valid_pages"]),
+            "Telepules": row["location"],
+            "Szavazokor": row["num"],
+        }
+        for party_result in row["general_list_results"]["party_results"]:
+            dict[party_result["party_name"]] = \
+                int(party_result["num_of_votes"])
+        dicts.append(dict)
+
+    return pd.DataFrame(dicts)

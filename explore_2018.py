@@ -58,7 +58,6 @@ def plot_exploratory_charts(df):
     plt.show()
 
 
-
 if __name__ == "__main__":
     df = load_2018_fidesz()
     plot_exploratory_charts(df)

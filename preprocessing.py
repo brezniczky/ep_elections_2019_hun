@@ -4,7 +4,7 @@ import numpy as np
 from cleaning import get_cleaned_data
 
 
-def get_preprocessed_data(add_last_digits=True) -> pd.DataFrame:
+def get_preprocessed_data(add_last_digits: bool=True) -> pd.DataFrame:
     df = get_cleaned_data()
 
     columns = df.columns.copy()
