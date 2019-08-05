@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import pandas as pd
-from scipy.stats import entropy
 import matplotlib.pyplot as plt
 import numpy as np
 from digit_entropy_distribution import prob_of_entr, get_entropy
