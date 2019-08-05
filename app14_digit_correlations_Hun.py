@@ -325,9 +325,9 @@ if __name__ == "__main__":
     # check_correlations()
     # check_equalities()
 
-    # df = check_equalities_2(
-    #     settlement_filter=["Eger", "Tata", "Sopron", "Gyöngyös", "Keszthely"]
-    # )
-    # plot_equality_tests()
-    # df, df_top_list = get_top_list()
+    df = check_equalities_2(
+        settlement_filter=["Eger", "Tata", "Sopron", "Gyöngyös", "Keszthely"]
+    )
+    plot_equality_tests()
+    df, df_top_list = get_top_list()
     print(get_top_list())
