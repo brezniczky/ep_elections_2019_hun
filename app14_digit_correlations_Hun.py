@@ -14,8 +14,10 @@ relevant_cols = ["Nevjegyzekben", "Ervenyes", "Fidesz", "Jobbik",
                  "LMP", "MSZP", "DK", "Momentum"]
 
 ACT_FILENAME = "app14_valid_votes_coincidences.csv"
-BASELINE_FILENAME_FORMAT = ("app14_simulated_baseline/" +
-                            "app14_valid_votes_coincidences_baseline_%d.csv")
+BASELINE_DIR = "app14_simulated_baseline"
+BASELINE_FILENAME_FORMAT = os.path.join(
+    BASELINE_DIR, "app14_valid_votes_coincidences_baseline_%d.csv"
+)
 N_BASELINE_REPEATS = 200
 
 
@@ -212,6 +214,8 @@ def require_simulations():
         filename = get_baseline_filename(i)
         if os.path.exists(filename):
             continue
+        if not os.path.exists(BASELINE_DIR):
+            os.mkdir(BASELINE_DIR)
 
         df = get_preprocessed_data()
 
