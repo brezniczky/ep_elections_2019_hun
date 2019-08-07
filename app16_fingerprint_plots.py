@@ -36,9 +36,6 @@ def plot_fingerprint(winner_votes, valid_votes,
                      weighted=True,
                      zoom_onto=False):
 
-    if zoom_onto:
-        print(filename)
-
     bins = [np.arange(0, 1, 0.01), np.arange(0, 1, 0.01)]
     if zoom_onto:
         bins[1] = 0.4 * bins[1]
@@ -53,7 +50,7 @@ def plot_fingerprint(winner_votes, valid_votes,
     )
     plt.title(title)
     plt.savefig(os.path.join(FINGERPRINT_DIR, filename))
-    # plt.show()
+    plt.show()
 
 
 def plot_2014_fingerprints(parties=PARTIES_2014):
@@ -136,5 +133,5 @@ if __name__ == "__main__":
     if not os.path.exists(FINGERPRINT_DIR):
         os.mkdir(FINGERPRINT_DIR)
     plot_2014_fingerprints()
-    # plot_2018_fingerprints()
-    # plot_2019_fingerprints()
+    plot_2018_fingerprints()
+    plot_2019_fingerprints()
