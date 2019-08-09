@@ -78,6 +78,13 @@ def get_overall_list_last_2_years():
     return merged
 
 
+def generate_files():
+    list1 = get_overall_list_all_3_years()
+    print(list1.head(45))
+    list2 = get_overall_list_last_2_years()
+    print(list2.head(45))
+    list2.to_csv("app15_overall_list_last_2_years.csv", index=False)
+
+
 if __name__ == "__main__":
-    print(get_overall_list_all_3_years().head(45))
-    print(get_overall_list_last_2_years().head(45))
+    generate_files()
