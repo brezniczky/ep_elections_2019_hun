@@ -1,6 +1,8 @@
 from preprocessing import get_preprocessed_data
 from matplotlib.colors import Normalize
-from cleaning import get_2014_cleaned_data, get_2018_cleaned_data
+from cleaning import (get_2010_cleaned_data,
+                      get_2014_cleaned_data,
+                      get_2018_cleaned_data)
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -15,9 +17,12 @@ _ranking = app15.get_overall_list_last_2_years()
 FINGERPRINT_DIR = "fingerprints"
 
 
+PARTIES_2010 = ["Fidesz-KDNP", "Jobbik", "LMP", 'MSZP', "MDF", "MIÉP",
+                "MSZDP"]  # a few were left off here too
+
+
 PARTIES_2014 = ["Fidesz-KDNP", "Jobbik", "LMP", "Együtt 2014",
                 'MSZP-Együtt-DK-PM-MLP']
-# PARTIES_2014 = []
 
 PARTIES_2018 = [
     "FIDESZ - MAGYAR POLGÁRI SZÖVETSÉG-KERESZTÉNYDEMOKRATA NÉPPÁRT",
@@ -31,12 +36,47 @@ PARTIES_2018 = [
 
 PARTIES_2019 = ["Fidesz", "Jobbik", "LMP", "Momentum", "DK",
                 "MSZP", "Mi Hazank"]
-# PARTIES_2019 = []
+
+
+PARTY_2019_TO_2018_DICT = {
+    "Fidesz": "FIDESZ - MAGYAR POLGÁRI SZÖVETSÉG-KERESZTÉNYDEMOKRATA NÉPPÁRT",
+    "Jobbik": 'JOBBIK MAGYARORSZÁGÉRT MOZGALOM',
+    "LMP": 'LEHET MÁS A POLITIKA',
+    "Momentum": 'MOMENTUM MOZGALOM',
+    "DK": 'DEMOKRATIKUS KOALÍCIÓ',
+    "MSZP": "MAGYAR SZOCIALISTA PÁRT-PÁRBESZÉD MAGYARORSZÁGÉRT PÁRT"
+}
+
+
+PARTY_2019_TO_2014_DICT = {
+    "Fidesz": "Fidesz-KDNP",
+    "Jobbik": 'Jobbik',
+    "LMP": 'LMP',
+    "Momentum": None,
+    "DK": 'MSZP-Együtt-DK-PM-MLP',
+    "MSZP": None
+}
+
+
+PARTY_2019_TO_2010_DICT = {
+    "Fidesz": "Fidesz-KDNP",
+    "Jobbik": 'Jobbik',
+    "LMP": 'LMP',
+    "Momentum": None,
+    "DK": None,
+    "MSZP": "MSZP"
+}
 
 
 ZOOM_ONTO = [
     "Együtt 2014", 'EGYÜTT - A KORSZAKVÁLTÓK PÁRTJA'
 ]
+
+
+# it was read by the eye - could be obtained by e.g. clustering in the long run
+SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE = [0.63, 0.455]
+SUSPECT_CENTROID_X_RAD = 0.08
+SUSPECT_CENTROID_Y_RAD = 0.07
 
 
 def plot_fingerprint(winner_votes, valid_votes,
@@ -57,7 +97,9 @@ def plot_fingerprint(winner_votes, valid_votes,
         weights=weights
     )
     plt.title(title)
-    plt.savefig(os.path.join(FINGERPRINT_DIR, filename))
+    full_filename = os.path.join(FINGERPRINT_DIR, filename)
+    plt.savefig(full_filename)
+    print("plot saved as %s" % full_filename)
     plt.show()
 
 
@@ -121,6 +163,34 @@ def plot_histogram2d(d_2_1, d_1_2, binx, biny, show=True, filename=None):
 
     if show:
         plt.show()
+
+
+def plot_2010_fingerprints(parties=PARTIES_2010):
+    # in 2010 there was nomentum lol
+    df_2010 = get_2010_cleaned_data()
+
+    for party_2010 in parties:
+
+        df_2010_top_90 = df_2010[
+            df_2010.Telepules.isin(_ranking.iloc[:90].Telepules)
+        ]
+
+        df_2010_top_91_to_bottom = df_2010[
+            df_2010.Telepules.isin(_ranking.iloc[90:].Telepules)
+        ]
+
+        plot_fingerprint(df_2010_top_91_to_bottom[party_2010],
+                         df_2010_top_91_to_bottom["Ervenyes"],
+                         df_2010_top_91_to_bottom["Nevjegyzekben"],
+                         "2010 least suspicious",
+                         "Figure_2010_%s_top_91_to_bottom.png" % party_2010),
+                         # zoom_onto=party_2010 in ZOOM_ONTO)
+        plot_fingerprint(df_2010_top_90[party_2010],
+                         df_2010_top_90["Ervenyes"],
+                         df_2010_top_90["Nevjegyzekben"],
+                         "2010 most suspicious",
+                         "Figure_2010_%s_top_90.png" % party_2010),
+                         # zoom_onto=party_2010 in ZOOM_ONTO)
 
 
 def plot_2014_fingerprints(parties=PARTIES_2014):
@@ -281,10 +351,103 @@ def plot_fingerprint_diffs(show: bool):
                                filename=filename(2019, party_2019))
 
 
+def list_suspects_near_2019_fingerprint(point, r_x, r_y, filter=True):
+    df = get_preprocessed_data()
+    df = df[df.Telepules.isin(_ranking.iloc[:90].Telepules)]
+    df["Turnout"] = df["Ervenyes"] / df["Nevjegyzekben"]
+    df["Fidesz_rate"] = df["Fidesz"] / df["Ervenyes"]
+    df["In_centroid"] = (((df["Turnout"] - point[0]) / r_x) ** 2 +
+                         ((df["Fidesz_rate"] - point[1]) / r_y) ** 2) ** 0.5 < 1
+    df.sort_values(["Telepules", "Szavazokor"], inplace=True)
+    if filter:
+        df =  df[df["In_centroid"]]
+        df[["Telepules", "Szavazokor"]].to_csv(
+            "app16_fingerprint_suspects_2019.csv",
+            index=False
+        )
+    return df
+
+
+def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
+                      startswith=True,
+                      translate_party_name=True,
+                      return_coords=False,
+                      highlight_last_digit=None):
+    if year == 2019:
+        df = get_preprocessed_data()
+    elif year == 2018:
+        df = get_2018_cleaned_data()
+        if translate_party_name:
+            party = PARTY_2019_TO_2018_DICT[party]
+    elif year == 2014:
+        df = get_2014_cleaned_data()
+        if translate_party_name:
+            party = PARTY_2019_TO_2014_DICT[party]
+    elif year == 2010:
+        df = get_2010_cleaned_data()
+        if translate_party_name:
+            party = PARTY_2019_TO_2010_DICT[party]
+
+    if startswith:
+        df = df[df.Telepules.str.startswith(municipality_str)]
+        if len(set(df["Telepules"].values)) > 1:
+            raise Exception(
+                "Muncipality pattern is not unequivocal.\n"
+                "Please provide a more specific string or set startswith=False."
+            )
+    else:
+        df = df[df.Telepules==municipality_str]
+
+    municipality = set(df["Telepules"].values)
+    if not municipality:
+        print("Municipality string %s was not found." % municipality_str)
+        exit()
+
+    municipality = list(municipality)[0]
+
+    print("total %s/total Ervenyes %.2f %%" %
+          (party, sum(df[party]) / sum(df["Ervenyes"]) * 100))
+    x = df["Ervenyes"] / df["Nevjegyzekben"]
+    y = df[party] / df["Ervenyes"]
+    plt.scatter(x, y)
+
+    title = "%s %s %s" % (year, party, municipality)
+    if highlight_last_digit is not None:
+        is_digit = (df[party] % 10 == highlight_last_digit)  # |
+                    # (df["Ervenyes"] % 10 == highlight_last_digit))
+        xh = x[is_digit]
+        yh = y[is_digit]
+        plt.scatter(xh, yh)
+        title = "%s highlighting digit %s" % (title, highlight_last_digit)
+        print("digit dist:", np.unique(
+            # list(df["Ervenyes"] % 10) +
+            list(df[party] % 10),
+            return_counts=True))
+
+    for ax, ay, award in zip(x, y, df["Szavazokor"]):
+        plt.annotate(int(award), (ax + 0.005, ay))
+
+    plt.title(title)
+
+    plt.show()
+    if return_coords:
+        return x, y
+
+
 if __name__ == "__main__":
     if not os.path.exists(FINGERPRINT_DIR):
         os.mkdir(FINGERPRINT_DIR)
+    plot_2010_fingerprints()
     plot_2014_fingerprints()
     plot_2018_fingerprints()
     plot_2019_fingerprints()
-    plot_fingerprint_diffs(show=False)
+    # plot_fingerprint_diffs(show=False)
+    # df_suspect = (list_suspects_near_2019_fingerprint(
+    #     SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
+    #     SUSPECT_CENTROID_X_RAD,
+    #     SUSPECT_CENTROID_Y_RAD
+    # ))
+    # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=0)
+    # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=5)
+    # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=7)
+    # plot_municipality("Miskolc", "Fidesz", 2014)

@@ -183,3 +183,8 @@ def get_2018_cleaned_data():
         dicts.append(dict)
 
     return pd.DataFrame(dicts)
+
+
+def get_2010_cleaned_data():
+    df = pd.read_csv("2010/hun_2010_general_elections_list.csv")
+    return df
