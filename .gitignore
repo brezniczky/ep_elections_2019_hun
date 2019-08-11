@@ -1,0 +1,8 @@
+CZ/backup/*
+__pycache__/*
+backup/*
+.Rhistory
+app14_simulated_baseline/*
+venv/*
+fingerprints/*
+2010/scraped
