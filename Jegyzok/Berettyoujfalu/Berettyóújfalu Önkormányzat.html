@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Berettyóújfalu Önkormányzat - leírás">
+	<meta name="author" content="SMART Önkormányzat">
+				<base href="https://www.berettyoujfalu.hu/">
+				<!--<base href="https://www.berettyoujfalu.hu/smart-onkormanyzat/">-->
+	<!--<base href="https://www.berettyoujfalu.hu/">-->
+	<meta name="theme-color" content="#005693">	<title>Berettyóújfalu Önkormányzat</title>
+	<!-- Favicon -->
+	<link href="https://berettyoujfalu.smartonkormanyzat.hu/templates/smart/images/cimer-berettyoujfalu2.png" rel="icon" type="image/png" />
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+	<!-- Icons -->
+	<link href="/smart-onkormanyzat/assets/vendor/nucleo/css/nucleo.css" rel="stylesheet" />
+	<link href="/smart-onkormanyzat/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<!-- Argon CSS -->
+	<link type="text/css" href="/smart-onkormanyzat/assets/css/argon.css?v=1.0.1" rel="stylesheet" />
+	
+	<style type="text/css">
+		
+				/* width */
+				::-webkit-scrollbar {
+				  width: 8px;
+				  height: 8px;
+				}
+
+				/* Track */
+				::-webkit-scrollbar-track {
+				  box-shadow: inset 0 0 1px rgba(0,0,0,0.14); 
+				  border-radius: 3px;
+				}
+				 
+				/* Handle */
+				::-webkit-scrollbar-thumb {
+				  background: rgba(0,0,0,0.3); 
+				  border-radius: 10px;
+				}
+
+				/* Handle on hover */
+				::-webkit-scrollbar-thumb:hover {
+				 background: rgba(0,0,0,0.45); 
+				}
+				
+				.carousel-indicators li {
+					background-color: rgba(0,0,0,0.25);
+					border-radius: 4px;
+				}
+				
+				.carousel-indicators li.active {
+					background-color: #005693;
+				}
+				
+				.advertisementx
+				{
+					line-height: 130px;
+					vertical-align: middle;
+				}
+				
+				.advertisementx img
+				{
+					max-height: 88px;
+					padding: 6px 6px;
+					border-radius: 8px;
+					border: 1px solid rgba(0,0,0,0.2);
+				}
+				
+				.fologo img
+				{
+					max-height: 400px;
+					margin: 60px auto 200px auto;
+					display: block;
+					position: relative;
+					z-index: 8;
+					-webkit-filter: drop-shadow(5px 5px 5px #333);
+					filter: drop-shadow(5px 5px 5px #333);
+					-webkit-filter: drop-shadow(5px 5px 5px #333);
+					-webkit-filter: drop-shadow(5px 5px 5px #333);
+				}
+				
+				.fomenu {
+					background: #ffffff;
+					line-height: 40px;
+					min-height: 40px;
+					height: 40px;
+					/*position: fixed;*/
+					position: absolute;
+					top: 0px;
+					z-index: 100000;
+					width: 100%;
+				}
+									
+				.fomenu a {
+					margin: 0px 0px;
+					padding: 0px 0px;
+					cursor: pointer !important;
+				}
+				
+				.breadcrumb {
+					margin-top: 20px;
+					display: inline-block;
+				}
+				
+				.btn-secondary {
+					font-size: 14px;
+					padding: 12px 6px;
+				}
+				
+				dropdown-menu dropdown-menu.show {
+					top: -60px !important;
+					left: 200px !important;
+				}
+				
+				.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle
+				{
+					font-size: 14px;
+					color: #005693 !important;
+					border-color: #ffffff;
+					background-color: #ffffff;
+					padding: 12px 6px;
+				}
+				
+				.section-shaped, .section-shaped .shape-style-1.shape-primary
+				{
+					background-color: #005693;
+					background: #005693;
+				}
+				
+				.headroom--not-top
+				{
+					background-color: rgba(255,255,255,0) !important;
+				}
+				
+				#navbar-main
+				{
+					/*background-color: rgba(53,53,53,0.4);*/
+				}
+				
+				.btn.btn-primary {
+					background-color: #005693 !important;
+					border-color: #005693 !important;
+				}
+				
+				h2 {
+					color: #005693 !important;
+					margin: 10px 0px 30px 0px;
+					padding: 10px 0px 10px 0px;
+					border-top: 1px solid #dddddd;
+					border-bottom: 1px solid #dddddd;
+					background: rgba(255,255,255,0.2);
+					cursor: pointer;
+				}
+				
+				a, .text-primary, .text-info {
+					color: #005693 !important;
+					cursor: pointer !important;
+				}
+				
+				.card {
+					max-height: 100%;
+					height: auto;
+					margin: 0px auto;
+					border: none;
+				}
+				
+				.card.card-gyik {
+					border-radius: 10px;
+					margin-bottom: 10px;
+				}
+				
+				.card.card-gyik .alap {
+					background: rgba(0,0,0,0.60);
+					border-radius: 10px;
+				}
+				
+				.idopontok .idopont {
+					padding: 20px 30px;
+					background: rgba(255,255,255,0.4);
+					border-radius: 8px;
+				}
+				
+				.idopontok .idopont h3 {
+					font-size: 18px;
+					text-align: center;
+					margin-bottom: 30px;
+				}
+				
+				.idopontok .idopont h3.red {
+					color: #cc0000;
+				}
+				
+				.idopontok .idopont h3.green {
+					color: #119966;
+				}
+				
+				.col-lg-12 .card.card-gyik .alap {
+					background: rgba(0,0,0,0.80);
+					border-radius: 10px;
+				}
+				
+				.card.card-gyik .card-body {
+					background: rgba(0,0,0,0.0);
+					color: #ffffff;
+					padding-top: 60px;
+					min-height: 710px;
+				}
+				
+				.card.card-gyik a {
+					color: #ffffff !important;
+				}
+				
+				.card-columns .card, .card.news {
+					border-radius: 6px;
+					/*overflow: hidden;*/
+					border:1px solid #fff;
+					-webkit-filter: drop-shadow(0px 0px 5px #ddd);
+					filter: drop-shadow(0px 0px 5px #ddd);
+					-webkit-filter: drop-shadow(0px 0px 5px #ddd);
+					-webkit-filter: drop-shadow(0px 0px 5px #ddd);
+				}
+				
+				.card .fa {
+					color: #005693 !important;
+					text-align: center;
+					margin: 30px auto 10px auto;
+					font-size: 24px;
+				}
+				
+				.card-header.foszin {
+					background-color: #005693 !important;
+					color: #ffffff;
+					line-height: 80px;
+					height: 80px;
+					vertical-align: middle;
+				}
+				
+				.card-header.foszin .text-muted {
+					color: #ffffff !important;
+					font-weight: 300;
+				}
+									
+				.carousel-item .card-header, .carousel-item .card-body {
+					background: rgba(0,0,0,0.7);
+					background: rgba(255,255,255,0.86);
+					color: #ffffff;
+					color: #333333;
+				}
+				
+				.feher {
+					color: #ffffff !important;
+					font-size: 14px;
+				}
+				
+				.carousel-item a {
+					color: #ffffff !important;
+					color: #333333 !important;
+				}
+				
+				.carousel-control-next, .carousel-control-prev {
+					position: absolute !important;
+					z-index: 100;
+					/*background-color: #005693;*/
+				}
+				
+				.carousel-indicators {
+					bottom:20px;
+				}
+				
+				.carousel-item .card {
+					text-align: center;
+					padding: 0px 0px;
+				}
+				
+				.carousel-item .card .fa {
+					color: #ffffff !important;
+					color: #005693 !important;
+					margin: 0px auto;
+				}
+				
+				.carousel-item .card h5 {
+					margin: 20px auto;
+				}
+				
+				.card-columns {
+					column-count: 3;
+				}
+				
+				.card-columns.programs {
+					column-count:4;
+				}
+				
+				.programs span a {
+					font-size: 12px !important;
+				}
+				
+				.col-md-4 {
+					margin-bottom: 20px;
+				}
+				
+				.card-body {
+					text-align: center;
+				}
+				
+				.card-header {
+					padding: 0px 0px;
+					margin: 0px 0px;
+					background: none;
+					border-bottom: 0px;
+				}
+				
+				.card-header img, .card-header video {
+					 margin: 0px 0px;
+					 padding: 6px 6px;
+					 border: none;
+				}
+				
+				.card img {
+					width: 100%;
+					height: auto !important;
+				}
+				
+				section:nth-last-child(1) {
+					padding-bottom: 0px;
+					padding-top: 20px;
+				}
+				
+				section:first-child {
+					margin-top: 0px;
+				}
+				
+				.mt-md {
+					margin-top: 0px !important;
+					margin-bottom: 20px;
+				}
+				
+				.footer.has-cards {
+					padding-top:380px;
+				}
+				
+				.smartmodules {
+					color: #ffffff;
+					font-size: 14px;
+					line-height: 22px;
+				}
+				
+				.custom-checkbox a {
+					font-size: 12px;
+				}
+				
+				.onkinfo .col-md-6 {
+					padding:0px 0px;
+				}
+				
+				.onkinfo p {
+					margin-top: 20px;
+				}
+				
+				section.onkkep {
+					padding:0px 0px;
+				}
+				
+				section.onkkep img {
+					width: 120px;
+				}
+				
+				.bgi {
+					background: #f4f5f7;
+				}
+				
+				.footer {
+					width: 100%;
+					position: relative;
+					bottom: 0px;
+					z-index: 2;
+					background-color: rgba(0,0,0,0.8) !important;
+					color: #ffffff !important;
+					padding: 10px 0px;
+				}
+				
+				.footer .nav .nav-item .nav-link, .footer .footer-link {
+					color: #ffffff !important;
+				}
+				
+				.footer .nav .nav-item .nav-link:hover, .footer .footer-link:hover {
+					color: #dddddd !important;
+				}
+									
+				a h3 {
+					font-size: 16px;
+					color: #005693;
+					padding-left: 0px;
+					/*border-left: 1px solid #cccccc;*/
+					/*background-image: linear-gradient(to right, #cccccc , #ffffff);*/
+					background-repeat: no-repeat;
+					background-size: 20px;
+				}
+				a h4 {
+					font-size: 14px;
+					padding-left: 28px;
+					/*border-left: 1px solid #eeeeee;*/
+					/*background-image: linear-gradient(to right, #eeeeee , #ffffff);*/
+					background-repeat: no-repeat;
+					background-size: 20px;
+				}
+				a h5 {
+					font-size: 13px;
+					padding-left: 38px;
+					color: #333333;
+					padding-left: 24px;
+					/*border-left: 1px solid #f6f6f6;*/
+					/*background-image: linear-gradient(to right, #f6f6f6 , #ffffff);*/
+					background-repeat: no-repeat;
+					background-size: 20px;
+				}
+				
+				
+				ul.kepgaleriak, ul.videogaleriak {
+					list-style-type: none;
+					padding-inline-start: 0px;
+					max-width: 100%;
+					text-align: left;
+					background: rgba(255,255,255,0.65);
+					padding: 20px 20px;
+					border: 1px solid rgba(0,0,0,0.1);
+					border-radius: 8px;
+				}
+				
+				ul.kepgaleriak li, ul.videogaleriak li
+				{
+					width: 140px;
+					height: 250px;
+					margin-right: 15px;
+					line-height: 80px;
+					vertical-align: middle;
+					margin:auto auto;
+					display: inline-block;
+					overflow-y: hidden;
+					background: rgba(0,0,0,0.02);
+					border: 1px solid rgba(0,0,0,0.06);
+					border-radius: 6px;
+					font-size: 13px;
+				}
+				
+				ul.kepgaleriak2 {
+					list-style-type: none;
+					padding-inline-start: 0px;
+					text-align: left;
+					background: rgba(255,255,255,0.65);
+					padding: 20px 20px;
+					border: 1px solid rgba(0,0,0,0.1);
+					border-radius: 8px;
+				}
+				
+				.kepgaleriak2 .carousel-item.active p {
+					font-size: 14px;
+					font-weight: 400;
+					position: absolute;
+					z-index: 100;
+					top: 120px;
+					width: 100%;
+					height: 80px;
+					background: rgba(255,255,255,0.75) !important;
+					background-color: rgba(255,255,255,0.75) !important;
+					display: block;
+					padding: 10px 10px;
+				}
+				
+				.kepgaleriak2 .carousel-item.active p .cim {
+					font-weight: 700;
+					color: #333333;
+				}
+				
+				.kepgaleriak2 .carousel-item.active p .datum {
+					font-weight: 400;
+					font-style: italic;
+					color: #696969;
+				}
+				
+				#carouselExampleIndicators2 {
+					height: 200px;
+					min-height: 200px;
+					max-height: 200px;
+					overflow-y: hidden;
+					/*min-width: 100%;*/
+				}
+				
+				#carouselExampleIndicators2 img {
+					height: 200px;
+					/*min-width: 100%;*/
+					width: auto;
+				}
+				
+				ul.kepgaleriak li p, ul.videogaleriak li p
+				{
+					font-weight: 400;
+					font-size: 13px;
+					color: #005693;
+					text-align: center;
+					line-height: 19px;
+					padding: 6px 6px;
+				}
+				
+				ul.kepgaleriak li small, ul.videogaleriak li small
+				{
+					font-size: 13px;
+					color: #999999;
+				}
+				
+				ul.kepgaleriak li .keptarto, ul.videogaleriak li .keptarto
+				{
+					width: 138px;
+					height: 140px;
+					background-size: cover !important;
+				}
+				
+				ul.kepgaleriak li img, ul.videogaleriak li img
+				{
+					max-width: 100%;
+					height: auto;
+					line-height: auto;
+					vertical-align: middle;
+					margin:auto auto;
+				}
+				
+				.timeline, .timeline-horizontal {
+					list-style: none;
+					padding: 20px;
+					position: relative;
+				}
+				.timeline:before {
+					top: 40px;
+					bottom: 0;
+					position: absolute;
+					content: " ";
+					width: 3px;
+					background-color: #eeeeee;
+					left: 50%;
+					margin-left: -1.5px;
+				}
+				.timeline .timeline-item {
+					margin-bottom: 20px;
+					position: relative;
+					max-width: 300px;
+				}
+				.timeline .timeline-item:before,
+				.timeline .timeline-item:after {
+					content: "";
+					display: table;
+				}
+				.timeline .timeline-item:after {
+					clear: both;
+				}
+				.timeline .timeline-item .timeline-badge {
+					color: #fff;
+					width: 54px;
+					height: 54px;
+					line-height: 52px;
+					font-size: 22px;
+					text-align: center;
+					position: absolute;
+					top: 18px;
+					left: 50%;
+					margin-left: -25px;
+					background-color: #7c7c7c;
+					border: 3px solid #ffffff;
+					z-index: 100;
+					border-top-right-radius: 50%;
+					border-top-left-radius: 50%;
+					border-bottom-right-radius: 50%;
+					border-bottom-left-radius: 50%;
+				}
+				.timeline h4 { font-size:15px; }
+				.timeline .timeline-item .timeline-badge i,
+				.timeline .timeline-item .timeline-badge .fa,
+				.timeline .timeline-item .timeline-badge .glyphicon {
+					top: 2px;
+					left: 0px;
+				}
+				.timeline .timeline-item .timeline-badge.primary {
+					background-color: #1f9eba;
+				}
+				.timeline .timeline-item .timeline-badge.info {
+					background-color: #5bc0de;
+				}
+				.timeline .timeline-item .timeline-badge.success {
+					background-color: #59ba1f;
+				}
+				.timeline .timeline-item .timeline-badge.warning {
+					background-color: #d1bd10;
+				}
+				.timeline .timeline-item .timeline-badge.danger {
+					background-color: #ba1f1f;
+				}
+				.timeline .timeline-item .timeline-panel {
+					position: relative;
+					width: 46%;
+					float: left;
+					right: 16px;
+					border: 1px solid #c0c0c0;
+					background: #ffffff;
+					border-radius: 2px;
+					padding: 0px;
+					-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+					box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+				}
+				.timeline .timeline-item .timeline-panel:before {
+					position: absolute;
+					top: 26px;
+					right: -16px;
+					display: inline-block;
+					border-top: 16px solid transparent;
+					border-left: 16px solid #c0c0c0;
+					border-right: 0 solid #c0c0c0;
+					border-bottom: 16px solid transparent;
+					content: " ";
+				}
+				.timeline .timeline-item .timeline-panel .timeline-title {
+					margin-top: 0;
+					/*background: rgba(255,255,255,0.6);*/
+					color: inherit;
+				}
+				.timeline .timeline-heading {
+					max-height: 120px;
+					overflow-y: hidden;
+				}
+				.timeline .timeline-heading img {
+					padding: 0px 0px;
+					margin: 0px 0px;
+					max-width: 100%;
+				}				
+				.timeline .timeline-item .timeline-panel .timeline-body > p,
+				.timeline .timeline-item .timeline-panel .timeline-body > ul {
+					margin-bottom: 0;
+				}
+				.timeline .timeline-item .timeline-panel .timeline-body > p + p {
+					margin-top: 5px;
+				}
+				.timeline-body {
+					min-height: 100px;
+					height: 100px;
+					max-height: 100px;
+					padding: 10px;
+				}
+				.timeline p {
+					font-size: 14px;
+					line-height: 21px;
+					font-weight: 400;
+					text-align: center !important;
+				}
+				.timeline .timeline-item:last-child:nth-child(even) {
+					float: right;
+				}
+				.timeline .timeline-item:nth-child(even) .timeline-panel {
+					float: right;
+					left: 16px;
+				}
+				.timeline .timeline-item:nth-child(even) .timeline-panel:before {
+					border-left-width: 0;
+					border-right-width: 14px;
+					left: -14px;
+					right: auto;
+				}
+				.timeline-horizontal {
+					list-style: none;
+					position: relative;
+					padding: 20px 0px 20px 0px;
+					display: inline-block;
+				}
+				.timeline-horizontal:before {
+					height: 3px;
+					top: auto;
+					bottom: 26px;
+					left: 56px;
+					right: 0;
+					width: 100%;
+					margin-bottom: 20px;
+				}
+				.timeline-horizontal .timeline-item {
+					display: table-cell;
+					height: 300px !important;
+					max-height: 300px !important;
+					min-height: 300px !important;
+					overflow-y: hidden;
+					width: 20%;
+					min-width: 300px;
+					float: none !important;
+					padding-left: 0px;
+					padding-right: 20px;
+					margin: 0 auto;
+					vertical-align: bottom;
+				}
+				.timeline-horizontal .timeline-item .timeline-panel {
+					top: auto;
+					bottom: 64px;
+					display: inline-block;
+					float: none !important;
+					left: 0 !important;
+					right: 0 !important;
+					width: 100%;
+					margin-bottom: 20px;
+					height: 200px;
+				}
+				.timeline-horizontal .timeline-item .timeline-panel:before {
+					top: auto;
+					bottom: -16px;
+					left: 28px !important;
+					right: auto;
+					border-right: 16px solid transparent !important;
+					border-top: 16px solid #c0c0c0 !important;
+					border-bottom: 0 solid #c0c0c0 !important;
+					border-left: 16px solid transparent !important;
+				}
+				.timeline-horizontal .timeline-item:before,
+				.timeline-horizontal .timeline-item:after {
+					display: none;
+				}
+				.timeline-horizontal .timeline-item .timeline-badge {
+					top: auto;
+					bottom: 0px;
+					left: 43px;
+				}
+				.timeline .timeline-item .timeline-badge {
+					font-size: 13px;
+					width: auto;
+					border-radius: 6px;
+					color: #ffffff;
+					padding: 0px 10px;
+				}
+				.timeline .timeline-item .timeline-badge a {
+					color: #ffffff !important;
+				}
+		.nyelv {
+	position: relative;
+	top: 20px;
+	margin: 0px 0px;
+	padding: 0px 0px;
+	float: right;
+	display: block;
+	min-width: 85px;
+	width: auto;
+	height: 33px;
+	line-height: 33px;
+	vertical-align: middle;
+	border-radius: 6px;
+	border: 1px solid #cccccc;
+	background: rgba(255,255,255,0.20);
+}
+
+.nyelv a {
+	width: 23px;
+	height: 17px;
+	margin: 7px 4px 0px 4px;
+	padding: 0px 0px 0px 0px;
+	display: block;
+	float: left;
+}
+
+.nyelv .ro {
+	background: rgba(255,255,255,0.20) url("/data-files/lang/RO.png") center center no-repeat;
+}
+.nyelv .hu {
+	background: rgba(255,255,255,0.20) url("/data-files/lang/HU.png") center center no-repeat;
+}
+.nyelv .en {
+	background: rgba(255,255,255,0.20) url("/data-files/lang/GB.png") center center no-repeat;
+}
+.nyelv .de {
+	background: rgba(255,255,255,0.20) url("/data-files/lang/DE.png") center center no-repeat;
+	display: none;
+}
+
+.nyelv .active {
+	-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+	filter: grayscale(100%);
+}
+
+#idojaraskamera1, #idojaraskamera2  {
+	position: absolute;
+	top: 200px;
+	right: 0px;
+	padding: 10px;
+	z-index: -100;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+	display: block;
+	background: rgba(255,255,255,1.0) url('https://berettyoujfalu.smartonkormanyzat.hu/data-files/app/app-berettyoujfalu-1580x800v3.jpg') top center;
+	background-size: cover;
+	width: 280px;
+	height: 410px;
+	cursor: default;
+}
+
+.weatherinfo-table {
+	background: rgba(255,255,255,0.9);
+	border-radius: 6px;
+	padding: 10px 10px;
+	border: 1px solid #cccccc;
+	margin-top: 20px;
+}
+
+.weatherinfo-table .temp-date {
+	font-size: 18px;
+	font-weight: 600;
+	margin-top: 20px;
+}
+
+.weatherinfo-table .temp-time {
+	font-size: 15px;
+	font-weight: 400;
+	font-style: italic;
+}
+
+.weatherinfo-table .temp-img {
+	display: block;
+	background: #feba33 !important;
+	width: 100%;
+	padding: 10px 10px;
+	margin: 0px 0px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-top: 1px solid #cccccc;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+}
+
+.weatherinfo-table .temp-celsius {
+	font-size: 34px;
+	font-weight: 500;
+	display: block;
+	background: rgba(0,0,0,0.2) !important;
+	width: 100%;
+	padding: 10px 10px;
+	margin: 0px 0px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border: 1px solid #cccccc;
+}
+
+#idojaraskamera1.show, #idojaraskamera2.show  {
+	z-index: 120;
+}
+
+#idojaraskamera1 .fa-close, #idojaraskamera2 .fa-close {
+	cursor: pointer;
+	margin: 0px 0px -20px 0px;
+	padding: 8px;
+	border-radius: 50%;
+	background-color: rgba(0,0,0,0.2);
+} 
+
+.idojaras {
+	position: absolute;
+	top: 200px;
+	right: 0px;
+	z-index: 110;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+	display: block;
+	background: rgba(255,255,255,0.20) url("/smart-onkormanyzat/assets/svg/idojaras.svg") center center no-repeat;
+	width: 100px;
+	height: 70px;
+}
+.kamera {
+	position: absolute;
+	top: 300px;
+	right: 0px;
+	z-index: 110;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+	display: block;
+	background: rgba(255,255,255,0.20) url("/smart-onkormanyzat/assets/svg/kamera.svg") center center no-repeat;
+	width: 100px;
+	height: 70px;
+}
+.idojaras:hover {
+	cursor: pointer;
+	background: rgba(255,255,255,0.40) url("/smart-onkormanyzat/assets/svg/idojaras.svg") center center no-repeat;
+}
+.kamera:hover {
+	cursor: pointer;
+	background: rgba(255,255,255,0.40) url("/smart-onkormanyzat/assets/svg/kamera.svg") center center no-repeat;
+}
+#helyiturista {
+	margin: -185px auto 60px auto;
+	display: block;
+	position: relative;
+	z-index: 110;
+	text-align: center;
+	width: 400px;
+	height: 100px;
+}
+#helyiturista a {
+	padding-top: 20px;
+	color: #333333 !important;
+}
+#helyiturista a:hover, #helyiturista a.active {
+color: #005693 !important;}
+#smartkereses {
+	margin: -50px auto 60px auto;
+	display: block;
+	position: relative;
+	z-index: 110;
+	text-align: center;
+	width: 200px;
+	height: 50px;
+}
+#smartkereses a {
+	padding-top: 15px;
+	color: #333333 !important;
+	border-radius: 6px;
+	display: inline-block;
+	background: rgba(255,255,255,0.90);
+	background-size: 25px 22px;
+	width: 200px;
+	height: 50px;
+}
+#smartkereses a:hover {
+	cursor: pointer;
+	background: rgba(255,255,255,0.60);
+}
+.turista .fa, .helyi .fa {
+	display: block;
+	margin: 0px auto 0px auto;
+	font-size: 24px;
+	line-height: 40px;
+	vertical-align: middle;
+}
+.turista {
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+	display: inline-block;
+	/*background: rgba(255,255,255,0.90) url("/smart-onkormanyzat/assets/images/turista.png") center 36px no-repeat;*/
+	background: rgba(255,255,255,0.90);
+	background-size: 25px 22px;
+	width: 200px;
+	height: 100px;
+}
+.helyi {
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+	display: inline-block;
+	/*background: rgba(255,255,255,0.90) url("/smart-onkormanyzat/assets/images/helyi.png") center 36px no-repeat;*/
+	background: rgba(255,255,255,0.90);
+	background-size: 25px 22px;
+	width: 200px;
+	height: 100px;
+}
+.turista:hover, .turista.active {
+	cursor: pointer;
+	/*background: rgba(255,255,255,0.60) url("/smart-onkormanyzat/assets/images/turista.png") center 36px no-repeat;*/
+	background: rgba(255,255,255,0.60);
+	background-size: 25px 22px;
+}
+.helyi:hover, .helyi.active {
+	cursor: pointer;
+	/*background: rgba(255,255,255,0.60) url("/smart-onkormanyzat/assets/images/helyi.png") center 36px no-repeat;*/
+	background: rgba(255,255,255,0.60);
+	background-size: 25px 22px;
+}
+section {
+	background: rgba(233,237,240,0.90);
+}
+section:nth-child(2n) {
+	background: rgba(255,255,255,0.96);
+}
+#myVideo {
+	position: fixed;
+	z-index: 0;
+	right: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100%;
+}
+.myVideos {
+	max-width: 100% !important;
+	height: auto !important;
+}
+.bgi {
+	background: none;
+}
+.header-global {
+	height: 100px;
+}
+.section-hero
+{
+	background-size: cover !important;
+}
+.navbar-brand img {
+	height: auto !important;
+}
+.navbar-expand-lg > .container
+{
+	/*background:rgba(255,255,255,0.92);*/
+	background:rgba(255,255,255,0.0);
+	border-radius: .25rem;
+}
+.nav-link-inner--text
+{
+	color:#333333;
+}
+.navbar-toggler {
+	font-size: 1.25rem;
+	line-height: 1;
+	padding: 1px 1px;
+	margin: 20px 4px 4px 4px;
+	border: 1px solid rgba(0,0,0,0.3) !important;
+	border-radius: .25rem;
+	background-color: #ffffff;
+}
+.col-md-12 img {
+	max-width: 100%;
+}
+.advertisement {
+	margin-bottom: 40px;
+}
+.advertisement ul, .advertisementx ul {
+	max-width: 100%;
+	list-style-type: none;
+	padding-inline-start: 0px;
+}
+.advertisement li, .advertisementx li {
+	display: inline-block;
+	max-width: 100%;
+	/*max-width: 240px;*/
+	padding: 10px 10px;
+}
+.advertisement img {
+	max-width: 100%;
+}
+
+@media (min-width: 992px)
+	.navbar-expand-lg .navbar-nav .nav-link {
+		padding-right: 2px !important;
+		padding-left: 2px !important;
+	}
+	
+	.navbar-nav .nav-item {
+		margin-right: 0px;
+	}
+}
+
+
+@media (max-width: 990px) {
+	
+	#navbarNavDropdown, .navbar-collapse {
+		margin-top: 60px !important;
+		position: relative !important;
+	}
+}
+
+@media (max-width: 992px) {
+	
+	.card-columns {
+		column-count: 1;
+	}
+	
+	.card-columns.programs {
+		column-count: 1;
+	}
+	
+	#navbarNavDropdown, .navbar-collapse {
+		margin-top: 60px !important;
+		position: relative !important;
+	}
+	
+	.navbar-toggler-icon span {
+		font-size: 14px !important;
+		line-height: 30px;
+		vertical-align: middle;
+		display: block;
+	}
+}
+
+.smapp {
+	background: url('/smart-onkormanyzat/assets/images/app_screen_300-berettyoujfalu.png') bottom right no-repeat;}
+
+@media (max-width: 770px) {
+	
+	.fologo img {
+		display: none;
+	}
+	
+	#helyiturista {
+		margin: 120px auto 0px auto;
+		width: 200px;
+		height: 220px;
+	}
+	
+	.turista, .helyi {
+		border-radius: 6px;
+		display: block;
+		margin-bottom: 10px;
+	}
+	
+	#smartkereses {
+		margin: 0px auto 0px auto;
+	}
+	
+	#navbarNavDropdown {
+		margin-top: 60px !important;
+	}
+	
+	.smapp {
+		background: none;
+	}
+	
+}
+
+.qrcode img {
+	margin-right: 10px;
+	padding: 6px 6px;
+	border-radius: 8px;
+	border: 1px solid rgba(0,0,0,0.2);
+}
+
+a, a:hover {
+	cursor: pointer !important;
+}
+
+.smartlinks a {
+	margin: 10px 10px;
+	padding: 10px 10px;
+	min-width: 25vw;
+	border: 1px solid #cccccc;
+	border-radius: 8px;
+	display: inline-block;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.12);
+}
+
+@media (max-width: 768px) {
+	
+	.smartlinks a {
+		display: block;
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+	}
+	
+}
+
+.smartlinks a:hover {
+	box-shadow: none;
+}
+
+.smartlinks h3 {
+	margin-bottom: 25px;
+}
+
+.keresesform {
+	width: 70%;
+	margin: 20px 15%;
+}
+
+.akadalymentes-valto {
+	display: block;
+	background: rgba(255,255,255,0.20) url("/smart-onkormanyzat/assets/images/akadalymentes.png") center center no-repeat;
+	position: relative;
+	top: 20px;
+	margin: 0px 10px 0px 10px;
+	padding: 0px 0px;
+	float: right;
+	width: auto;
+	min-width: 33px;
+	height: 33px;
+	line-height: 33px;
+	vertical-align: middle;
+	border-radius: 6px;
+	border: 1px solid #cccccc;
+}
+
+.dropdown-toggle::after {
+	margin-left: 0px;
+}	</style>
+		
+			<!-- Core -->
+			<script src="/smart-onkormanyzat/assets/vendor/jquery/jquery.min.js"></script>
+			<script src="/smart-onkormanyzat/assets/vendor/popper/popper.min.js"></script>
+			<script src="/smart-onkormanyzat/assets/vendor/bootstrap/bootstrap.min.js"></script>
+		<script src="/smart-onkormanyzat/assets/vendor/headroom/headroom.min.js"></script>
+	<!-- Optional JS -->
+	<script src="/smart-onkormanyzat/assets/vendor/onscreen/onscreen.min.js"></script>
+	<script src="/smart-onkormanyzat/assets/vendor/nouislider/js/nouislider.min.js"></script>
+		
+			<script src="/smart-onkormanyzat/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+		<!-- Argon JS -->
+	<!--<script src="assets/js/argon.js?v=1.0.1"></script>-->
+</head>
+
+<body>
+		
+	<div class="fomenu">
+		
+		<style>
+			.dropdown-submenu { position: relative; }
+			.dropdown-submenu a::after { transform: rotate(-90deg); position: absolute; right: 6px; top: .8em; }
+			.dropdown-submenu .dropdown-menu, .dropdown-submenu .dropdown-submenu, .dropdown-menu .dropdown-menu  { top: 0; left: 100% !important; margin-left: .1rem; margin-right: .1rem; }
+			
+			.nav-link { white-space: nowrap; width: 100% }
+			
+			.navbar > .container, .navbar > .container-fluid {
+				display: block;
+			}
+			
+			.dropdown {
+				display:block;
+			}
+			
+			
+			.dropdown-submenu a::after {
+				transform: rotate(-90deg);
+				position: absolute;
+				right: 6px;
+				top: 1.8em;
+			}
+			
+			.navbar { padding: 0px 0px; }
+			/*.navbar img { height: 60px; }*/
+			.navbar-brand img { max-height: 60px; margin-left: 14px !important; }
+			
+			.navbar-light.bg-light { background-color: #ffffff !important; }
+			
+			.navbar-nav .dropdown-menu:before { display: none; }
+			
+			.navbar-toggler, .navbar-toggler-icon { float:right !important; }
+			
+			@media (min-width: 992px)
+			{
+				.navbar-nav { width: 100%; }
+				
+				.navbar-nav .nav-item.show [data-toggle='dropdown']::after {
+					transform: rotate(-90deg);
+				}
+				
+				body, html {
+					min-width: 280px;
+					width: 100%;
+					overflow-x: hidden;
+				}
+			}
+		</style>
+		
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+				
+			<a class="navbar-brand float-left" href="/hu"><img src="/templates/smart/images/cimer-berettyoujfalu2.png"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon">
+					<span class="fa fa-align-justify"></span>
+				</span>
+			</button>
+			<!--<a href="/smart-onkormanyzat/akadalymentes-verzio" class="akadalymentes-valto" title="Akadálymentes weboldal"></a>-->
+			<a href="/akadalymentes-verzio" class="akadalymentes-valto" title="Akadálymentes weboldal"></a>
+			<div class="nyelv">
+				<a href="/en" class="en" title="Choose your language!"></a>
+				<a href="/ro" class="ro" title="Alege limba ta!"></a>
+				<a href="/de" class="de" title="Wähle deine Sprache!"></a>
+				<a href="/hu" class="hu active" title="Válasszon nyelvet!"></a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<!--
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Dropdown link
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<li><a class="dropdown-item" href="#">Action</a></li>
+							<li><a class="dropdown-item" href="#">Another action</a></li>
+							<li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Submenu</a>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item" href="#">Submenu action</a></li>
+									<li><a class="dropdown-item" href="#">Another submenu action</a></li>
+									<li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Subsubmenu</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
+											<li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
+										</ul>
+									</li>
+									<li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Second subsubmenu</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
+											<li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					-->
+					<!--
+				</ul>
+			</div>
+		</nav>
+		-->
+		
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/varosunk" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-bank"></span> Városunk
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+						
+									<li>
+										<a class="dropdown-item" href="/polgarmesteri-koszonto">Polgármesteri Köszöntő</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/varostortenet">Várostörténet</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/buszkesegeink">Büszkeségeink</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/testvervarosaink">Testvérvárosaink</a>
+									</li>
+								
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/helyi-telefonkonyv" id="navbarDropdownMenuLink12" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Helyi telefonkönyv
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/berettyoujfalu-varosi-telefonkonyv">Berettyóújfalu Városi Telefonkönyv</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/egeszsegugy"> Egészségügy</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/kozzetetel" id="navbarDropdownMenuLink91" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Közzététel
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/kozbeszerzesek">Közbeszerzések</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/kozponti-cimregiszter-hirdetmenyei">Központi címregiszter hirdetményei</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/rendezvenytartasi-engedelyek"> Rendezvénytartási engedélyek</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/modositott-kozbeszerzesi-terv-2012">Módosított közbeszerzési terv 2012</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/allaspalyazatok" id="navbarDropdownMenuLink13" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Álláspályázatok
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/hazi-gyermekorvosi-praxis-palyazat">Házi gyermekorvosi praxis pályázat</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/koszi-gazdasagi-vezeto">KÖSZI Gazdasági vezető</a>
+											</li>
+										</ul>
+								</ul>
+							</li>
+						
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/hirek" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-newspaper-o"></span> Hírek
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+						
+									<li>
+										<a class="dropdown-item" href="/hirdetmenyek">Hirdetmények</a>
+									</li>
+								
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/palyazatok" id="navbarDropdownMenuLink20" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Pályázatok
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/helyi-palyazatok">Helyi pályázatok</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/eu-s-palyazataink">EU-s pályázataink</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/helyi-media" id="navbarDropdownMenuLink21" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Helyi média
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/bihari-hirlap">Bihari Hírlap</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/berettyo-tv">Berettyó TV</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/berettyohir">Berettyóhír</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/berettyo-radio">Berettyó Rádió</a>
+											</li>
+										</ul>
+								</ul>
+							</li>
+						
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/valasztas" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-gavel"></span> Választás
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+						
+									<li>
+										<a class="dropdown-item" href="/onkormanyzati-valasztas-2019">Önkormányzati választás 2019.</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/europa-parlamenti-valasztas-2019">Európa parlamenti választás - 2019</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/orszaggyulesi-valasztas-2018">Országgyűlési választás 2018</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/valtozas-az-onkormanyzat-osszeteteleben">Változás az önkormányzat összetételében</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/helyi-nepszavazas-2017">Helyi népszavazás 2017.</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/orszagos-nepszavazas-2016">Országos népszavazás 2016.</a>
+									</li>
+								
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/korabbi-valasztasok" id="navbarDropdownMenuLink29" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Korábbi választások
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/valtozas-a-nemzetisegi-onkormanyzat-osszeteteleben">Változás a nemzetiségi önkormányzat összetételében</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/onkormanyzati-valasztas-2014">Önkormányzati választás 2014.</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/europa-parlamenti-valasztas-2014">Európa parlamenti választás 2014.</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/orszaggyulesi-valasztas-2014">Országgyűlési választás 2014</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/orszaggyulesi-valasztas-2010">Országgyűlési választás 2010</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/onkormanyzati-valasztas-2010">Önkormányzati választás 2010</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/kisebbsegi-valasztas-2010">Kisebbségi választás 2010</a>
+											</li>
+										</ul>
+								</ul>
+							</li>
+						
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/varoshaza" id="navbarDropdownMenuLink4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-building"></span> Városháza
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink4">
+						
+									<li>
+										<a class="dropdown-item" href="/elektronikus-ugyintezes">Elektronikus ügyintézés</a>
+									</li>
+								
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/onkormanyzat" id="navbarDropdownMenuLink40" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Önkormányzat
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/polgarmester">Polgármester</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/alpolgarmester">Alpolgármester</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/jegyzo">Jegyző</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/aljegyzo">Aljegyző</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/kepviselotestulet">Képviselőtestület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bizottsagok">Bizottságok</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/polgarmesteri-hivatal" id="navbarDropdownMenuLink41" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Polgármesteri Hivatal
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/bemutatkozas-altalanos-informaciok">Bemutatkozás (általános információk)</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/ugyintezes">Ügyintézés</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/titkarsag">Titkárság</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/igazgatasi-iroda">Igazgatási Iroda</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/penzugyi-iroda">Pénzügyi Iroda</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/adocsoport">Adócsoport</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/varosfejlesztesi-iroda">Városfejlesztési Iroda</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/epiteshatosagi-csoport">Építéshatósági Csoport</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/roma-nemzetisegi-onkormanyzat" id="navbarDropdownMenuLink42" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Roma Nemzetiségi Önkormányzat
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/roma-nemzetisegi-onkormanyzat-jegyzokonyvei">Roma Nemzetiségi Önkormányzat jegyzőkönyvei</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/dokumentumtar" id="navbarDropdownMenuLink43" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Dokumentumtár
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/rendeletek">Rendeletek</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/hatarozatok">Határozatok</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bizottsagi-meghivok-es-jegyzokonyvek">Bizottsági meghívók és jegyzőkönyvek</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/kepviselotestuleti-ulesek">Képviselőtestületi ülések</a>
+											</li>
+										</ul>
+								</ul>
+							</li>
+						
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/intezmenyek" id="navbarDropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-mortar-board"></span> Intézmények
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink5">
+						
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/oktatasi-intezmenyek" id="navbarDropdownMenuLink72" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Oktatási intézmények
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/bolcsodek-ovodak">Bölcsődék,Óvodák</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/altalanos-iskolak">Általános iskolák</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/kozepiskolak-szakkepzo-iskolak">Középiskolák, szakképző iskolák</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/egyeb-oktatas">Egyéb oktatás</a>
+											</li>
+										</ul>
+									<li>
+										<a class="dropdown-item" href="/szocialis-intezmenyek">Szociális intézmények</a>
+									</li>
+								
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/egeszsegugyi-intezmenyek" id="navbarDropdownMenuLink74" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Egészségügyi intézmények
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/grof-tisza-istvan-korhaz">Gróf Tisza István Kórház</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/kulturalis-intezmenyek" id="navbarDropdownMenuLink75" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Kulturális intézmények
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/bkk">BKK  </a>
+											</li>
+										</ul>
+									<li>
+										<a class="dropdown-item" href="/egyhazak">Egyházak</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/kozszolgaltatok-elerhetosegei">Közszolgáltatók elérhetőségei</a>
+									</li>
+								
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/civil-szervezetek" id="navbarDropdownMenuLink78" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Civil szervezetek
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/kadar-vitez-varosvedo-fejleszto-es-kulturalis-egyesulet">Kádár Vitéz Városvédő, Fejlesztő és Kulturális Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/osszefogas-berettyoszentmartonert-egyesulet">Összefogás Berettyószentmártonért Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/berettyo-bihar-vallalkozoi-egyesulet">Berettyó-Bihar Vállalkozói Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bihari-nepmuveszeti-egyesulet">Bihari Népművészeti Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/parola-kozhasznu-egyesulet"> Parola Közhasznú Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bihari-szabadmuvelodesi-es-nepfoiskolai-egyesulet">Bihari Szabadművelődési és Népfőiskolai Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/berettyoparti-nyugdijasok-egyesulete">Berettyóparti Nyugdíjasok Egyesülete</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/morotva-egyesulet">Morotva Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/kristalyvirag-kozhasznu-alapitvany">Kristályvirág Közhasznú Alapítvány</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/hivatasos-tuzoltok-fuggetlen-szakszervezete">Hivatásos Tűzoltók Független Szakszervezete</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bihari-termeszetbarat-egyesulet">Bihari Természetbarát Egyesület</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bihari-muzeumert-alapitvany">Bihari Múzeumért Alapítvány</a>
+											</li>
+										
+											<li>
+												<a class="dropdown-item" href="/bihari-muzeum-barati-kore">Bihari Múzeum Baráti Köre</a>
+											</li>
+										</ul>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/gazdalkodo-intezmenyek" id="navbarDropdownMenuLink79" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Gazdálkodó intézmények
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/kozintezmenyek-szolgaltato-irodaja">Közintézmények Szolgáltató Irodája</a>
+											</li>
+										</ul>
+									<li>
+										<a class="dropdown-item" href="/rendorseg-mentok-katasztrofavedelem">Rendőrség, mentők, katasztrófavédelem</a>
+									</li>
+								
+								</ul>
+							</li>
+						
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/programok" id="navbarDropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-bullhorn"></span> Programok
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink6">
+						
+									<li>
+										<a class="dropdown-item" href="/esemenyek">Események</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/rendezvenyek">Rendezvények</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/webkamera">Webkamera</a>
+									</li>
+								
+								</ul>
+							</li>
+						
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/turizmus" id="navbarDropdownMenuLink7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="fa fa-hotel"></span> Turizmus
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink7">
+						
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="/nevezetessegek" id="navbarDropdownMenuLink86" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Nevezetességek
+										</a>
+										<ul class="dropdown-menu">
+								
+											<li>
+												<a class="dropdown-item" href="/berettyoujfalu-turisztikai-bemutatasa"> Berettyóújfalu turisztikai bemutatása</a>
+											</li>
+										</ul>
+									<li>
+										<a class="dropdown-item" href="/bihar-termalliget">Bihar Termálliget</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/szallashelyek">Szálláshelyek</a>
+									</li>
+								
+									<li>
+										<a class="dropdown-item" href="/vendeglatohelyek">Vendéglátóhelyek</a>
+									</li>
+								
+								</ul>
+							</li>
+						
+				</ul>
+			</div>
+			</div></div></div>
+		</nav>
+		
+			<script type="text/javascript">
+				$('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+					if (!$(this).next().hasClass('show')) {
+						$(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+					}
+					var $subMenu = $(this).next(".dropdown-menu");
+					$subMenu.toggleClass('show');
+					
+					$(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+						$('.dropdown-submenu .show').removeClass("show");
+					});
+					
+					return false;
+				});
+			</script>
+			</div>
+		<main>
+				
+				
+				
+				
+				<section class="section">
+			<div class="container">
+						</div>
+		</section>
+		
+				
+					
+								<section class="section">
+									<div class="container">
+										<div class="row">
+											<div class="col-md-6 text-center">
+							
+											<h6 class="text-left"><strong><a href="kepgaleriak">Képgalériák</a></strong></h6>
+											<ul class="kepgaleriak2">
+												<div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+													<ol class="carousel-indicators">
+										
+														<li data-target="#carouselExampleIndicators2" data-slide-to="0" class="active"></li>
+										
+														<li data-target="#carouselExampleIndicators2" data-slide-to="1"></li>
+										
+														<li data-target="#carouselExampleIndicators2" data-slide-to="2"></li>
+										
+														<li data-target="#carouselExampleIndicators2" data-slide-to="3"></li>
+										
+												</ol>
+												<div class="carousel-inner">
+											
+											<div class="carousel-item active">
+												<a href="galeria/legifotok" target="_self">
+													<img src="https://www.berettyoujfalu.hu/data-files/kepgaleria/1/legi01.jpg" class="d-block w-100" alt="">
+													<p>
+														<span class="cim">Légifotók</span><br>
+														<span class="datum">2019-05-20 15:07:03</span>
+													</p>
+												</a>
+											</div>
+										
+											<div class="carousel-item">
+												<a href="galeria/varosunk-panoramaja-a-reformatus-templom-tornyabol" target="_self">
+													<img src="https://www.berettyoujfalu.hu/data-files/kepgaleria/2/varosunk01.jpg" class="d-block w-100" alt="">
+													<p>
+														<span class="cim">Városunk panorámája a Református templom tornyából</span><br>
+														<span class="datum">2019-05-20 15:19:45</span>
+													</p>
+												</a>
+											</div>
+										
+											<div class="carousel-item">
+												<a href="galeria/berettyoujfalu-ipari-park" target="_self">
+													<img src="https://www.berettyoujfalu.hu/data-files/kepgaleria/3/ipari01.jpg" class="d-block w-100" alt="">
+													<p>
+														<span class="cim">Berettyóújfalu ipari park</span><br>
+														<span class="datum">2019-05-20 15:21:55</span>
+													</p>
+												</a>
+											</div>
+										
+											<div class="carousel-item">
+												<a href="galeria/gombos-ferenc-varoskepei" target="_self">
+													<img src="https://www.berettyoujfalu.hu/data-files/kepgaleria/4/gf01.jpg" class="d-block w-100" alt="">
+													<p>
+														<span class="cim">Gombos Ferenc városképei</span><br>
+														<span class="datum">2019-05-20 15:38:06</span>
+													</p>
+												</a>
+											</div>
+										
+												</div>
+												<a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+													<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+													<span class="sr-only">Previous</span>
+												</a>
+												<a class="carousel-control-next" href="#carouselExampleIndicators2" role="button" data-slide="next">
+													<span class="carousel-control-next-icon" aria-hidden="true"></span>
+													<span class="sr-only">Next</span>
+												</a>
+											</div>
+											</ul>
+										</div>
+										
+												<div class="col-md-6 text-center">
+													<h6 class="text-left"><strong><a href="https://www.youtube.com/user/BerettyoTV" target="_blank">YouTube</a></strong></h6>
+													<!--<ul class="videogaleriak">
+											<li>
+												<div class="keptarto" style="background: url('https://berettyoujfalu.smartonkormanyzat.hu/app/5/2019_02_12_14_48_59_81952000.jpg') center center no-repeat;"></div>
+												<p>
+													<small>2019-02-27</small><br>
+													Iparipark
+												</p>
+											</li>
+										
+											<li>
+												<div class="keptarto" style="background: url('https://berettyoujfalu.smartonkormanyzat.hu/app/5/2019_02_12_14_44_28_42066800.jpg') center center no-repeat;"></div>
+												<p>
+													<small>2019-02-12</small><br>
+													Városképek
+												</p>
+											</li>
+										</ul>-->
+													<ul class="kepgaleriak2">
+													<iframe width="100%" height="195" src="https://www.youtube.com/embed/?listType=user_uploads&list=BerettyoTV" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</section>
+											<section class="section onkinfo">
+			<div class="container">
+				<div class="row smartlinks">
+					<div class="col-md-12 text-center">
+						<h3 class="text-center">SMART Önkormányzat</h3>
+					</div>
+					<div class="col-md-12 text-center">
+												<a href="/smart-onkormanyzat/gyik">
+							<span class="fa fa-question-circle"></span> GYIK						</a>
+												<a href="/smart-onkormanyzat/kerdoiveim">
+							<span class="fa fa-list-ul"></span> Kérdőív						</a>
+												<!--
+						<a href="interaktiv-galeria">
+							<span class="fa fa-image"></span> Interaktív galéria						</a>
+						-->
+											</div>
+				</div>
+			</div>
+		</section>
+					
+		<section class="section onkinfo">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center smapp">
+												<div class="row">
+							<div class="col-md-8 text-left">
+																<h4 class="text-left">Berettyóújfalu applikáció</h4>
+								<p class="text-left">
+									<strong>Töltse le ingyenes mobilappunkat és értesüljün időben mindenről!</strong>
+									<br><br>
+									Megtalálható minden olyan információ, ami elsősorban a helyi lakosoknak szól (intézmények, szolgáltatók, kiadványok, sport, pályázatok...) és ezeket mind egy kattintással el tudja érni telefonon, vagy tud útvonalat tervezni az applikációval.
+									<br><br>
+									<a href="https://play.google.com/store/apps/details?id=hu.smapp.berettyoujfalu" target="_blank"><img src="/smart-onkormanyzat/assets/images/googleplay.png" alt="" /></a>
+									<a href="https://apps.apple.com/us/app/beretty%C3%B3%C3%BAjfalu/id1464581671?l=hu&ls=1" target="_blank"><img src="/smart-onkormanyzat/assets/images/appstore.png" alt="" /></a>
+									<div class="qrcode text-left">
+									<a href="https://play.google.com/store/apps/details?id=hu.smapp.berettyoujfalu" target="_blank"><img src="https://chart.googleapis.com/chart?chs=88x88&amp;cht=qr&amp;chl=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dhu.smapp.berettyoujfalu&amp;choe=UTF-8" width="88" height="88" border="0" alt="" /></a><a href="https://apps.apple.com/us/app/beretty%C3%B3%C3%BAjfalu/id1464581671?l=hu&ls=1" target="_blank"><img src="https://chart.googleapis.com/chart?chs=88x88&amp;cht=qr&amp;chl=https%3A%2F%2Fapps.apple.com%2Fus%2Fapp%2Fberetty%25C3%25B3%25C3%25BAjfalu%2Fid1464581671%3Fl%3Dhu%26ls%3D1&amp;choe=UTF-8" width="88" height="88" border="0" alt="" /></a>									</div>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+			
+		<section class="section onkinfo">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-2"></div>
+					<div class="col-md-8 text-center">
+						<h2 class="text-center">Facebook</h2>
+						<iframe src="" id="fbpageplugin" width="500" height="500" style="border:none;overflow:hidden; max-width:100%; padding:0px 0px 0px 0px; margin:10px auto;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+						<!--
+						<iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fberettyoujfalu%2F&tabs=timeline&width=500&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="500" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+						-->
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</div>
+		</section>
+		
+						<section class="section onkinfo">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 text center">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-6">
+											<h4 class="text-center">Berettyó Kártya</h4>
+											<p class="text-justify">
+												Berettyóújfalu Város Képviselőtestülete a 2017/28 (II.23) számú határozatában kezdeményezte egy új településkártya beindítását. A <strong>rendelet értelmében minden <u>állandó</u> berettyóújfalui lakcímmel rendelkező 18. életévét betöltött személy <u>alanyi jogon</u> kapja meg ezt a kártyát, de bárki számára megvásárolható 2.000 Ft +ÁFA  (2.540 Ft) áron szeptember 14-től a rendezvényházban</strong> (Szent István tér 11.) 
+											</p>
+											<p class="text-center">
+												<img src="/smart-onkormanyzat/assets/images/berettyokartya.png" alt="" />
+											</p>
+										</div>
+										<div class="col-md-6 text-center">
+											<h4 class="text-center">Bihari Hírlap</h4>
+											<br>
+											<div class="row">
+												<div class="col-md-3"></div>
+												<div class="text-center col-md-6">
+																										<a href="https://www.biharihirlap.hu/biharihirlap_lapoz/2019/07" target="_blank" title="Bihari Hírlap"><img src="https://www.biharihirlap.hu/biharihirlap_lapoz/2019/07/files/shot.png" class="w-75" alt="" /></a>
+													<br><br>
+													<small>Tilos a biharihirlap.hu bármely fotójának, írott anyagának, vagy részletének a szerző illetve a kiadó írásbeli engedélye nélküli újraközlése.</small>
+												</div>
+												<div class="col-md-3"></div>
+											</div>
+										</div>
+									</div>
+								</div>									
+							</div>
+						</div>
+					</div>
+				</section>
+							
+		<section class="section onkinfo">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<div class="row">
+							<div class="col-md-6 text-center">
+								<p>
+									
+												<strong>4100 Berettyóújfalu</strong><br>
+												Dózsa Gy. u. 17-19.<br>
+												polghiv(kukac)berettyoujfalu(pont)hu<br>
+												Telefon: +36-54-505-450<br>
+												Fax: +36-54-505-414, +36-54-505-424<br>
+												Régi weboldal: <a href="http://archiv.berettyoujfalu.hu/" target="_blank">archiv.berettyoujfalu.hu</a>
+																			</p>
+							</div>
+							<div class="col-md-6 text-center">
+								<p>
+									
+												Félfogadás:<br>
+												Hétfő: 8.00 - 16.00<br>
+												Kedd: 13.00 - 16.00<br>
+												Csütörtök: 8.00 - 16.00<br>
+																			</p>
+							</div>
+						</div>
+					</div>
+					<!--
+					<div class="col-md-4 text-center">					
+						<iframe src="" id="fbpageplugin" width="260" height="130" style="border:none;overflow:hidden; max-width:100%; padding:0px 0px 0px 0px; margin:10px auto;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+					</div>
+					-->
+				</div>
+			</div>
+		</section>
+	</main>
+	<footer class="footer">
+		<div class="container">
+			<div class="row text-left">
+				<div class="col-md-6">
+					<ul class="nav nav-footer">
+						<li class="nav-item">
+							<a href="/" class="feher">
+								Copyright &copy; 2019 Berettyóújfalu Önkormányzat							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<ul class="nav nav-footer">
+						<li class="nav-item">
+							<a href="impresszum" class="nav-link">Impresszum</a>
+						</li>
+						<li class="nav-item">
+							<a href="tajekoztato" class="nav-link">Tájékoztató</a>
+						</li>
+						<li class="nav-item">
+							<a href="adatvedelem" class="nav-link">Adatvédelmi tájékoztató</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- FB -->
+	<script type="text/javascript">
+				$('#fbpageplugin').attr('src',"https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fberettyoujfalu%2F&tabs=timeline&width=500&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId");
+	</script>
+</body>
+
+</html>
