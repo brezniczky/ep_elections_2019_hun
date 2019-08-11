@@ -54,7 +54,7 @@ PARTY_2019_TO_2014_DICT = {
     "LMP": 'LMP',
     "Momentum": None,
     "DK": 'MSZP-Együtt-DK-PM-MLP',
-    "MSZP": None
+    # "MSZP": 'MSZP-Együtt-DK-PM-MLP'
 }
 
 
@@ -165,112 +165,51 @@ def plot_histogram2d(d_2_1, d_1_2, binx, biny, show=True, filename=None):
         plt.show()
 
 
+def plot_fingerprints_for_year(parties, year):
+    df_functions = {
+        2010: get_2010_cleaned_data,
+        2014: get_2014_cleaned_data,
+        2018: get_2018_cleaned_data,
+        2019: get_preprocessed_data,
+    }
+    df = df_functions[year]()
+    for party in parties:
+        df_top_90 = df[
+            df.Telepules.isin(_ranking.iloc[:90].Telepules)
+        ]
+        df_top_91_to_bottom = df[
+            df.Telepules.isin(_ranking.iloc[90:].Telepules)
+        ]
+
+        plot_fingerprint(df_top_91_to_bottom[party],
+                         df_top_91_to_bottom["Ervenyes"],
+                         df_top_91_to_bottom["Nevjegyzekben"],
+                         "%d least suspicious" % year,
+                         "Figure_%d_%s_top_91_to_bottom.png" %
+                         (year, party),
+                         zoom_onto=party in ZOOM_ONTO)
+        plot_fingerprint(df_top_90[party],
+                         df_top_90["Ervenyes"],
+                         df_top_90["Nevjegyzekben"],
+                         "%d most suspicious" % year,
+                         "Figure_%d_%s_top_90.png" % (year, party),
+                         zoom_onto=party in ZOOM_ONTO)
+
+
 def plot_2010_fingerprints(parties=PARTIES_2010):
-    # in 2010 there was nomentum lol
-    df_2010 = get_2010_cleaned_data()
-
-    for party_2010 in parties:
-
-        df_2010_top_90 = df_2010[
-            df_2010.Telepules.isin(_ranking.iloc[:90].Telepules)
-        ]
-
-        df_2010_top_91_to_bottom = df_2010[
-            df_2010.Telepules.isin(_ranking.iloc[90:].Telepules)
-        ]
-
-        plot_fingerprint(df_2010_top_91_to_bottom[party_2010],
-                         df_2010_top_91_to_bottom["Ervenyes"],
-                         df_2010_top_91_to_bottom["Nevjegyzekben"],
-                         "2010 least suspicious",
-                         "Figure_2010_%s_top_91_to_bottom.png" % party_2010),
-                         # zoom_onto=party_2010 in ZOOM_ONTO)
-        plot_fingerprint(df_2010_top_90[party_2010],
-                         df_2010_top_90["Ervenyes"],
-                         df_2010_top_90["Nevjegyzekben"],
-                         "2010 most suspicious",
-                         "Figure_2010_%s_top_90.png" % party_2010),
-                         # zoom_onto=party_2010 in ZOOM_ONTO)
+    plot_fingerprints_for_year(parties, 2010)
 
 
 def plot_2014_fingerprints(parties=PARTIES_2014):
-    # in 2014 there was nomentum lol
-    df_2014 = get_2014_cleaned_data()
-
-    for party_2014 in parties:
-
-        df_2014_top_90 = df_2014[
-            df_2014.Telepules.isin(_ranking.iloc[:90].Telepules)
-        ]
-
-        df_2014_top_91_to_bottom = df_2014[
-            df_2014.Telepules.isin(_ranking.iloc[90:].Telepules)
-        ]
-
-        plot_fingerprint(df_2014_top_91_to_bottom[party_2014],
-                         df_2014_top_91_to_bottom["Ervenyes"],
-                         df_2014_top_91_to_bottom["Nevjegyzekben"],
-                         "2014 least suspicious",
-                         "Figure_2014_%s_top_91_to_bottom.png" % party_2014,
-                         zoom_onto=party_2014 in ZOOM_ONTO)
-        plot_fingerprint(df_2014_top_90[party_2014],
-                         df_2014_top_90["Ervenyes"],
-                         df_2014_top_90["Nevjegyzekben"],
-                         "2014 most suspicious",
-                         "Figure_2014_%s_top_90.png" % party_2014,
-                         zoom_onto=party_2014 in ZOOM_ONTO)
+    plot_fingerprints_for_year(parties, 2014)
 
 
 def plot_2018_fingerprints(parties=PARTIES_2018):
-
-    df_2018 = get_2018_cleaned_data()
-
-    for party_2018 in parties:
-
-        df_2018_top_90 = df_2018[
-            df_2018.Telepules.isin(_ranking.iloc[:90].Telepules)
-        ]
-        df_2018_top_91_to_bottom = df_2018[
-            df_2018.Telepules.isin(_ranking.iloc[90:].Telepules)
-        ]
-        plot_fingerprint(df_2018_top_91_to_bottom[party_2018],
-                         df_2018_top_91_to_bottom["Ervenyes"],
-                         df_2018_top_91_to_bottom["Nevjegyzekben"],
-                         "2018 least suspicious",
-                         "Figure_2018_%s_top_91_to_bottom.png" % party_2018,
-                         zoom_onto=party_2018 in ZOOM_ONTO)
-        plot_fingerprint(df_2018_top_90[party_2018],
-                         df_2018_top_90["Ervenyes"],
-                         df_2018_top_90["Nevjegyzekben"],
-                         "2018 most suspicious",
-                         "Figure_2018_%s_top_90.png" % party_2018,
-                         zoom_onto=party_2018 in ZOOM_ONTO)
+    plot_fingerprints_for_year(parties, 2018)
 
 
 def plot_2019_fingerprints(parties=PARTIES_2019):
-
-    df_2019 = get_preprocessed_data()
-
-    for party_2019 in parties:
-
-        df_2019_top_90 = df_2019[
-            df_2019.Telepules.isin(_ranking.iloc[:90].Telepules)
-        ]
-        df_2019_top_91_to_bottom = df_2019[
-            df_2019.Telepules.isin(_ranking.iloc[90:].Telepules)
-        ]
-        plot_fingerprint(df_2019_top_91_to_bottom[party_2019],
-                         df_2019_top_91_to_bottom["Ervenyes"],
-                         df_2019_top_91_to_bottom["Nevjegyzekben"],
-                         "2019 least suspicious",
-                         "Figure_2019_%s_top_91_to_bottom.png" % party_2019,
-                         zoom_onto=party_2019 in ZOOM_ONTO)
-        plot_fingerprint(df_2019_top_90[party_2019],
-                         df_2019_top_90["Ervenyes"],
-                         df_2019_top_90["Nevjegyzekben"],
-                         "2019 most suspicious",
-                         "Figure_2019_%s_top_90.png" % party_2019,
-                         zoom_onto=party_2019 in ZOOM_ONTO)
+    plot_fingerprints_for_year(parties, 2019)
 
 
 def check_fingerprint_diff(df, party, show=True, filename=None):
@@ -441,13 +380,15 @@ if __name__ == "__main__":
     plot_2014_fingerprints()
     plot_2018_fingerprints()
     plot_2019_fingerprints()
-    # plot_fingerprint_diffs(show=False)
-    # df_suspect = (list_suspects_near_2019_fingerprint(
-    #     SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
-    #     SUSPECT_CENTROID_X_RAD,
-    #     SUSPECT_CENTROID_Y_RAD
-    # ))
+
+    plot_fingerprint_diffs(show=False)
+    df_suspect = (list_suspects_near_2019_fingerprint(
+        SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
+        SUSPECT_CENTROID_X_RAD,
+        SUSPECT_CENTROID_Y_RAD
+    ))
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=0)
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=5)
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=7)
     # plot_municipality("Miskolc", "Fidesz", 2014)
+    # plot_municipality("Szeged", 'MSZP', 2018, highlight_last_digit=None)
