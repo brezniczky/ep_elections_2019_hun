@@ -5,6 +5,7 @@ from cleaning import (get_2010_cleaned_data,
                       get_2018_cleaned_data)
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import os
 import app15_overall_ranking as app15
 
@@ -165,14 +166,18 @@ def plot_histogram2d(d_2_1, d_1_2, binx, biny, show=True, filename=None):
         plt.show()
 
 
-def plot_fingerprints_for_year(parties, year):
+def _get_df(year):
     df_functions = {
         2010: get_2010_cleaned_data,
         2014: get_2014_cleaned_data,
         2018: get_2018_cleaned_data,
         2019: get_preprocessed_data,
     }
-    df = df_functions[year]()
+    return df_functions[year]()
+
+
+def plot_fingerprints_for_year(parties, year):
+    df = _get_df(year)
     for party in parties:
         df_top_90 = df[
             df.Telepules.isin(_ranking.iloc[:90].Telepules)
@@ -290,16 +295,23 @@ def plot_fingerprint_diffs(show: bool):
                                filename=filename(2019, party_2019))
 
 
-def list_suspects_near_2019_fingerprint(point, r_x, r_y, filter=True):
-    df = get_preprocessed_data()
+def _select_2019_prime_suspect_wards(df, point, r_x, r_y):
     df = df[df.Telepules.isin(_ranking.iloc[:90].Telepules)]
+    df_saved = df  # to prevent overwriting values etc.
+    df = df.copy()
     df["Turnout"] = df["Ervenyes"] / df["Nevjegyzekben"]
     df["Fidesz_rate"] = df["Fidesz"] / df["Ervenyes"]
     df["In_centroid"] = (((df["Turnout"] - point[0]) / r_x) ** 2 +
                          ((df["Fidesz_rate"] - point[1]) / r_y) ** 2) ** 0.5 < 1
+    return df_saved[df["In_centroid"]]
+
+
+def list_suspects_near_2019_fingerprint(point, r_x, r_y, save_generated=True):
+    df = get_preprocessed_data()
+    df = _select_2019_prime_suspect_wards(df, point, r_x, r_y)
+
     df.sort_values(["Telepules", "Szavazokor"], inplace=True)
-    if filter:
-        df =  df[df["In_centroid"]]
+    if save_generated:
         df[["Telepules", "Szavazokor"]].to_csv(
             "app16_fingerprint_suspects_2019.csv",
             index=False
@@ -307,31 +319,22 @@ def list_suspects_near_2019_fingerprint(point, r_x, r_y, filter=True):
     return df
 
 
-def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
-                      startswith=True,
-                      translate_party_name=True,
-                      return_coords=False,
-                      highlight_last_digit=None):
-    if year == 2019:
-        df = get_preprocessed_data()
-    elif year == 2018:
-        df = get_2018_cleaned_data()
-        if translate_party_name:
-            party = PARTY_2019_TO_2018_DICT[party]
-    elif year == 2014:
-        df = get_2014_cleaned_data()
-        if translate_party_name:
-            party = PARTY_2019_TO_2014_DICT[party]
-    elif year == 2010:
-        df = get_2010_cleaned_data()
-        if translate_party_name:
-            party = PARTY_2019_TO_2010_DICT[party]
+def _translate_party_name(party, year):
+    dicts = {
+        2018: PARTY_2019_TO_2018_DICT,
+        2014: PARTY_2019_TO_2014_DICT,
+        2010: PARTY_2019_TO_2010_DICT,
+    }
+    return dicts[year][party] if year != 2019 else party
 
+
+def _select_municipality(df, municipality_str, startswith):
+    # municipality: have to rename this to city - who can type this ...
     if startswith:
         df = df[df.Telepules.str.startswith(municipality_str)]
         if len(set(df["Telepules"].values)) > 1:
             raise Exception(
-                "Muncipality pattern is not unequivocal.\n"
+                "Municipality pattern is not unequivocal.\n"
                 "Please provide a more specific string or set startswith=False."
             )
     else:
@@ -344,6 +347,44 @@ def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
 
     municipality = list(municipality)[0]
 
+    return df, municipality
+
+
+_suspect_2019_wards = None
+
+def _get_suspect_2019_wards():
+    global _suspect_2019_wards
+    if _suspect_2019_wards is None:
+        _suspect_2019_wards = list_suspects_near_2019_fingerprint(
+            SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
+            SUSPECT_CENTROID_X_RAD, SUSPECT_CENTROID_Y_RAD,
+            save_generated=False
+        )
+    return _suspect_2019_wards
+
+
+def _select_suspicious_in_2019(df):
+    df_2 = _get_suspect_2019_wards()
+    # TODO: data type compat. should be ensured on load
+    df["Szavazokor"] = df["Szavazokor"].astype(int)
+    df_2["Szavazokor"] = df_2["Szavazokor"].astype(int)
+    df = pd.merge(df, df_2[["Telepules", "Szavazokor"]])
+    return df
+
+
+def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
+                      startswith=True,
+                      translate_party_name=True,
+                      return_coords=False,
+                      highlight_last_digit=None,
+                      highlight_suspicious=False):
+    if translate_party_name:
+        party = _translate_party_name(party, year)
+
+    df = _get_df(year)
+
+    df, municipality = _select_municipality(df, municipality_str, startswith)
+
     print("total %s/total Ervenyes %.2f %%" %
           (party, sum(df[party]) / sum(df["Ervenyes"]) * 100))
     x = df["Ervenyes"] / df["Nevjegyzekben"]
@@ -351,11 +392,14 @@ def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
     plt.scatter(x, y)
 
     title = "%s %s %s" % (year, party, municipality)
+    for ax, ay, award in zip(x, y, df["Szavazokor"]):
+        plt.annotate(int(award), (ax + 0.005, ay))
+
     if highlight_last_digit is not None:
         is_digit = (df[party] % 10 == highlight_last_digit)  # |
                     # (df["Ervenyes"] % 10 == highlight_last_digit))
-        xh = x[is_digit]
-        yh = y[is_digit]
+        xh = df["x"][is_digit]
+        yh = df["y"][is_digit]
         plt.scatter(xh, yh)
         title = "%s highlighting digit %s" % (title, highlight_last_digit)
         print("digit dist:", np.unique(
@@ -363,8 +407,11 @@ def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
             list(df[party] % 10),
             return_counts=True))
 
-    for ax, ay, award in zip(x, y, df["Szavazokor"]):
-        plt.annotate(int(award), (ax + 0.005, ay))
+    if highlight_suspicious:
+        df["x"] = x
+        df["y"] = y
+        df = _select_suspicious_in_2019(df)
+        plt.scatter(df["x"], df["y"])
 
     plt.title(title)
 
@@ -385,10 +432,19 @@ if __name__ == "__main__":
     df_suspect = (list_suspects_near_2019_fingerprint(
         SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
         SUSPECT_CENTROID_X_RAD,
-        SUSPECT_CENTROID_Y_RAD
+        SUSPECT_CENTROID_Y_RAD,
+        save_generated=True
     ))
+
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=0)
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=5)
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=7)
     # plot_municipality("Miskolc", "Fidesz", 2014)
     # plot_municipality("Szeged", 'MSZP', 2018, highlight_last_digit=None)
+    # plot_municipality("Budapest III", 'Fidesz', 2019, highlight_last_digit=None, suspicious_only=True)
+
+    # plot_municipality("Budapest III", 'Fidesz', 2019, highlight_last_digit=None,
+    #                   highlight_suspicious=True)
+    # plot_municipality("Budapest III", 'Fidesz', 2018, highlight_suspicious=True)
+    # plot_municipality("Budapest III", 'Fidesz', 2014, highlight_suspicious=True)
+    # plot_municipality("Budapest III", 'Fidesz', 2010, highlight_suspicious=True)
