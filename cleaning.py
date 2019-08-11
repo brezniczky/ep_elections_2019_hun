@@ -4,6 +4,14 @@ import numpy as np
 import json
 
 
+def _translate_capital_district_name(col):
+    col = col.copy()
+    extr = col.str.extract(r"^(Budapest [^.]+)\.")
+    is_hit = ~pd.isnull(extr[0])
+    col.loc[is_hit] = extr[0][is_hit].str.cat(['. kerület'] * sum(is_hit))
+    return col
+
+
 def get_merged_data() -> pd.DataFrame:
     if not os.path.exists("merged.csv"):
         filename = r'EP_2019_szavaz_k_ri_eredm_ny.xlsx'
@@ -48,6 +56,8 @@ def get_cleaned_data():
         df.to_csv("cleaned.csv", index=False)
     else:
         df = pd.read_csv("cleaned.csv")
+
+    df["Telepules"] = _translate_capital_district_name(df["Telepules"])
     return df
 
 
@@ -114,7 +124,9 @@ def get_2014_cleaned_data():
                 int(party_result["num_of_votes"])
         dicts.append(dict)
 
-    return pd.DataFrame(dicts)
+    df = pd.DataFrame(dicts)
+    df["Telepules"] = _translate_capital_district_name(df["Telepules"])
+    return df
 
 
 def get_2018_cleaned_data():
@@ -182,9 +194,12 @@ def get_2018_cleaned_data():
                 int(party_result["num_of_votes"])
         dicts.append(dict)
 
-    return pd.DataFrame(dicts)
+    df = pd.DataFrame(dicts)
+    df["Telepules"] = _translate_capital_district_name(df["Telepules"])
+    return df
 
 
 def get_2010_cleaned_data():
     df = pd.read_csv("2010/hun_2010_general_elections_list.csv")
+    df["Telepules"] = _translate_capital_district_name(df["Telepules"])
     return df
