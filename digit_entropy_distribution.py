@@ -2,6 +2,7 @@ from scipy.stats import entropy, poisson
 import numpy as np
 from functools import lru_cache
 import pandas as pd
+from joblib import Memory
 
 
 _DEFAULT_SEED = 1234
@@ -13,6 +14,9 @@ _DEFAULT_LL_SEED = 1234
 _DEFAULT_LL_ITERATIONS = 1000
 _DEFAULT_PE_RANDOM_SEED = 1234
 _DEFAULT_PE_ITERATIONS = 12345
+
+
+mem = Memory("./.digit_entropy_distribution_cache", verbose=0)
 
 
 def get_entropy(x):
@@ -54,6 +58,7 @@ def prob_of_twins(x):
     return 1 - poisson((len(x) - 1) / 10).cdf(count - 1)
 
 
+@mem.cache()
 def generate_sample(n_wards,
                     seed=_DEFAULT_SEED,
                     iterations=_DEFAULT_ITERATIONS,
@@ -70,7 +75,7 @@ def generate_sample(n_wards,
     return np.array(entrs)
 
 
-@lru_cache(maxsize=1000)
+@lru_cache(1000)
 def get_cdf_fun(n_wards,
                 seed=_DEFAULT_SEED,
                 iterations=_DEFAULT_ITERATIONS,

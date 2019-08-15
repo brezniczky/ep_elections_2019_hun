@@ -3,10 +3,14 @@ import pandas as pd
 import numpy.random as rnd
 from scipy import stats
 from functools import lru_cache
+from joblib import Memory
 
 
-@lru_cache(100)
-def digit_correlation_cdf(n_digits, seed=1234, n_iterations=10000):
+mem = Memory("./digit_correlations_cache", verbose=0)
+
+
+@mem.cache()
+def _get_digit_correlation_data(n_digits, seed=1234, n_iterations=10000):
     corrs = []
     rnd.seed(seed)
     for i in range(n_iterations):
@@ -16,6 +20,13 @@ def digit_correlation_cdf(n_digits, seed=1234, n_iterations=10000):
         corrs.append(act_corr[1, 0])
 
     corrs = sorted(corrs)
+    return corrs
+
+
+@lru_cache(100)
+def digit_correlation_cdf(n_digits, seed=1234, n_iterations=10000):
+    # a small but efficient tribute to The Corrs :)
+    corrs = _get_digit_correlation_data(n_digits, seed, n_iterations)
 
     def cdf(x):
         return np.digitize(x, corrs, right=False) / len(corrs)
@@ -30,24 +41,30 @@ def equality_prob(a1: np.array, a2: np.array):
     return (a1 == a2).mean()
 
 
-@lru_cache(100)
-def digit_equality_prob_mc_cdf(n_digits, seed=1234, n_iterations=50000):
-    corrs = []
+@mem.cache()
+def get_digit_equality_prob_mc_data(n_digits, seed, n_iterations):
+    probs = []
     rnd.seed(seed)
     for i in range(n_iterations):
         digits_1 = rnd.choice(range(10), n_digits)
         digits_2 = rnd.choice(range(10), n_digits)
         act_prob = (digits_1 == digits_2).mean()
-        corrs.append(act_prob)
+        probs.append(act_prob)
 
-    corrs = sorted(corrs)
+    probs = sorted(probs)
+    return probs
+
+
+@lru_cache(100)
+def digit_equality_prob_mc_cdf(n_digits, seed=1234, n_iterations=50000):
+    probs = get_digit_equality_prob_mc_data(n_digits, seed, n_iterations)
 
     def cdf(x):
-        return np.digitize(x, corrs, right=False) / len(corrs)
+        return np.digitize(x, probs, right=False) / len(probs)
 
     cdf.iterations = n_iterations
-    cdf.max_x = corrs[-1]
-    cdf.min_x = corrs[0]
+    cdf.max_x = probs[-1]
+    cdf.min_x = probs[0]
     return cdf
 
 
