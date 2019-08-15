@@ -1,4 +1,3 @@
-
 from cleaning import get_2014_cleaned_data, get_2010_cleaned_data
 from app16_fingerprint_plots import plot_municipality
 
@@ -74,4 +73,3 @@ Name: Fidesz-KDNP, dtype: float64
 """
 
 # Budapest XXII. district. An extremely beautiful demonstration
-
