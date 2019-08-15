@@ -20,6 +20,7 @@ import pandas as pd
 import numpy as np
 from digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
+from arguments import is_quiet
 
 
 def save_results(df_fidesz_jobbik_joint, suspects):
@@ -100,8 +101,9 @@ Seed = 1235
 if __name__ == "__main__":
     if not "df" in globals():
         df, suspects = generate_data()
-    for suspect in suspects.Telepules:
-        plot_location(suspect)
+    if not is_quiet():
+        for suspect in suspects.Telepules:
+            plot_location(suspect)
 
     total_likely_denom = (int(round(1 / np.prod(suspects.p))))
     print("Total suspect likeliness (all of \"just these\" happening by chance):\n"

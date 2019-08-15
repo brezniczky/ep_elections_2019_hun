@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+from arguments import is_quiet
 
 
 relevant_cols = ["Nevjegyzekben", "Ervenyes", "Fidesz", "Jobbik",
@@ -332,6 +333,7 @@ if __name__ == "__main__":
     df = check_equalities_2(
         settlement_filter=["Eger", "Tata", "Sopron", "Gyöngyös", "Keszthely"]
     )
-    plot_equality_tests()
+    if not is_quiet():
+        plot_equality_tests()
     df, df_top_list = get_top_list()
     print(get_top_list())

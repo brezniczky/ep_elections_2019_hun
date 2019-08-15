@@ -1,4 +1,7 @@
 """
+(Approach included in the notebook currently, but excluded
+from the generic processing sequence.)
+
 Here particular electoral settlements will be focused on.
 
 Only those are of interest where
@@ -22,6 +25,7 @@ from scipy.stats import entropy
 import pandas as pd
 import matplotlib.pyplot as plt
 from typing import List
+from arguments import is_quiet
 
 
 def total_freq_ent(counts):
@@ -136,7 +140,8 @@ def load_results():
 def plot_entropy_distribution_of(actual_total_ent: float,
                                  probabilities: List[float],
                                  entropies: List[float],
-                                 save_filename = None):
+                                 save_filename = None,
+                                 is_quiet=False):
     # welcome to the late night boilerplate horror show
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -150,13 +155,14 @@ def plot_entropy_distribution_of(actual_total_ent: float,
             u"P \u2248 %.2f %%" % (np.mean(probabilities) * 100))
     if save_filename is not None:
         plt.savefig(save_filename)
-    plt.show()
+    if is_quiet:
+        plt.show()
 
 
 def plot_entropy_distribution():
     actual_total_ent, probabilities, entropies = load_results()
     plot_entropy_distribution_of(actual_total_ent,
-                                 probabilities, entropies)
+                                 probabilities, entropies, is_quiet=is_quiet())
 
 
 if __name__ == "__main__":

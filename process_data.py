@@ -2,7 +2,6 @@ import runpy
 
 
 MODULE_NAMES = [
-    "app5_ent_in_top",
     "explore_2018",
     "app6_comparative",
     "app7_fidesz_vs_jobbik",

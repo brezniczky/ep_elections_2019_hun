@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from digit_entropy_distribution import prob_of_entr, get_entropy
+from arguments import is_quiet
 
 
 def load_2018_fidesz():
@@ -60,7 +61,8 @@ def plot_exploratory_charts(df):
 
 if __name__ == "__main__":
     df = load_2018_fidesz()
-    plot_exploratory_charts(df)
+    if not is_quiet():
+        plot_exploratory_charts(df)
     """
     Question: what are the suspect5 cities in
     case of this data set?

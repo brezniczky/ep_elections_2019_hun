@@ -9,9 +9,11 @@ virtualenv venv -p python3
 source venv/bin/activate
 pip install -r requirements.txt
 cd AndrasKalman
-unzip hungarian-parliamentary-elections-results.zip
+unzip -o hungarian-parliamentary-elections-results.zip
 cd ..
 
-python process_data.py
+python app5_ent_in_top.py
+python explore_2018.py --quiet
+python process_data.py --quiet
 
 jupyter nbconvert --to html --execute report.ipynb

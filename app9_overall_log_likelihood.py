@@ -5,14 +5,13 @@ the n least likely candidates.
 """
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from preprocessing import get_preprocessed_data
 from digit_entropy_distribution import (
-    get_entropy, prob_of_entr,
     get_log_likelihood, get_likelihood_cdf
 )
 from collections import OrderedDict
 from app5_ent_in_top import plot_entropy_distribution_of
+from arguments import is_quiet
 
 
 # TODO: remove via refactoring into dependency
@@ -139,6 +138,7 @@ def plot_summary():
         actual_likelihood,
         probabilities,
         finite_sample,
+        is_quiet=is_quiet()
     )
 
 
@@ -175,6 +175,9 @@ if __name__ == "__main__":
 
 """
 Fun:
+import matplotlib.pyplot as plt
+
+
 plt.hist(pd.concat([df.ld_Jobbik, df.ld_DK, df.ld_LMP, df.ld_MKKP, df.ld_MSZP, df.ld_Momentum]))
 
 for d in range(9, 7, -1):
