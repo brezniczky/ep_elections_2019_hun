@@ -147,7 +147,7 @@ def test_area(df, area, starts_with_only=False):
     return df
 
 
-def check_equalities_2(settlement_filter = None, df = None):
+def check_equalities_2(settlement_filter=None, df=None):
     if df is None:
         df = get_preprocessed_data()
     if settlement_filter is not None:

@@ -61,6 +61,7 @@ def get_xlsx(filename):
 def get_big_cleaned_data():
     sheet_list_csv_filename = "PL/wyniki_gl_na_kand_po_obwodach_sheet_list.csv"
     sheet_csv_filename = "PL/wyniki_gl_na_kand_po_obwodach_sheet_%s.csv"
+
     if os.path.exists(sheet_list_csv_filename):
         try:
             df_sheets = pd.read_csv(sheet_list_csv_filename, encoding="utf-8")
@@ -77,7 +78,7 @@ def get_big_cleaned_data():
     xlsx_filename = "PL/wyniki_gl_na_kand_po_obwodach.xlsx"
     xls = get_xlsx(xlsx_filename)
 
-    """ I can just save it as a bunch of CSV's and worry later rapidly
+    """ I can just save it as a bunch of CSVs and worry later rapidly
         about the elegant format depending on the scenario """
     dfs = []
     sheet_ids = []
@@ -98,7 +99,7 @@ def get_big_cleaned_data():
     return dfs
 
 
-def check_column_code_stats(df, silent=False):
+def check_column_code_stats(df, quiet=False):
     codes = df[[df.columns[0]]]
     codes.columns = ["area_code"]
     stats = (
@@ -107,12 +108,13 @@ def check_column_code_stats(df, silent=False):
         .rename(columns={"area_code": "area_code_count"})
         .reset_index()
     )
-    if not silent:
-        print("codes frequencies:")
+    if not quiet:
+        print("code frequencies:")
         for i in range(len(stats)):
             row = stats.iloc[i]
             print("  ", row[0], row[1])
     return stats
+
 
 def get_feasible_subseries(arr, min_votes):
     arr = arr[arr >= (min_votes - 5) + np.random.choice(range(10), len(arr))]
@@ -135,45 +137,10 @@ def check_digit_doubling(df):
         dup_cnt = sum(digs[1:] == digs[:-1])
         dup_freq = dup_cnt / (len(digs) - 1)
         print("  digit replication rel. freq.:", dup_freq, )
-        p = 1 - st.poisson((len(digs) -- 1) / 10).cdf(dup_cnt)
+        p = 1 - st.poisson((len(digs) - 1) / 10).cdf(dup_cnt)
         print("  probability: %.2f %%" % (p * 100))
         print("  two last digits are equal rel. freq.:", dbls / len(digs))
         print()
-
-
-def get_windowed_entropy(series, window_size=entropy_window_size):
-    ent = 0
-    for i in range(len(series) - window_size + 1):
-        ent += get_entropy(series[i:(i + window_size)])
-    return ent
-
-
-def check_windowed_entropies(df):
-    """ this unfortunately visibly yields too much of variance in the
-        statistic to construct a confident result
-
-        the plan was to generally reflect on a - to the eye, apparent -
-        memory effect in the last digit sequences.
-
-        not sensitive enough (or my eyes were too eager to find
-        anything) - may need some filtering etc. not going deeply into
-        that at this point
-    """
-    def print_series(col, nrs):
-        nrs = get_feasible_subseries(nrs, 50)
-        digs = nrs % 10
-        ent = get_windowed_entropy(digs, window_size=entropy_window_size)
-        ent_per_window = ent / (len(digs) - entropy_window_size + 1)
-
-        print(col)
-        print("  series len:", len(digs))
-        print("  entropy:", ent)
-        print("  entropy per window:", ent_per_window)
-
-    df = df[cols]
-    for col in cols:
-        print_series(col, df[col].values)
-    print_series("ideal", 100 + np.random.choice(range(10), len(df)))
 
 
 def get_feasible_areas(df, vote_cols, min_n_wards, min_votes):
@@ -305,7 +272,6 @@ if __name__ == "__main__":
     #     "1 FOTYGA Anna Elżbieta",
     # ]
     # df = get_cleaned_data()
-    # # check_windowed_entropies(df)
     # # check_digit_doubling(df)
     # # print("Self test (should provide probabilities far from zero)")
     # # check_likelihoods(df, self_test=True)
