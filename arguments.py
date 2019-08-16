@@ -1,5 +1,8 @@
 """
 Shared arguments - currently only supports the mighty quietness.
+
+# TODO: add --ground-up or --complete or --reset or --restart or ...? --clean?
+#       or --ignore-installed  ~   --ignore-cached  ~
 """
 from argparse import ArgumentParser
 

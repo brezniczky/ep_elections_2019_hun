@@ -121,6 +121,7 @@ Uses simulations, slow.
 
 Relies on non-parametric CDFs generated above.
 """
+# TODO: towns argument should be generalized or municipalities
 def get_log_likelihood(digits, slice_limits, bottom_n,
                        seed, iterations, towns=None, return_probs=False,
                        avoid_inf=False, quiet=False):
@@ -202,6 +203,8 @@ def get_likelihood_cdf(slice_limits, bottom_n,
 
 
 class LogLikelihoodDigitGroupEntropyTest():
+
+    # TODO: align this is_quiet interpretation with the one from arguments.py
 
     @staticmethod
     def get_slice_limits(group_ids):
@@ -298,11 +301,24 @@ class LogLikelihoodDigitGroupEntropyTest():
         )
 
 
+def test():
+    res = list(LodigeTest.get_slice_limits([1, 2, 2, 3, 3, 3]))
+    assert (
+        res ==
+            [(0, 1),
+             (1, 3),
+             (3, 6)]
+    )
+
+
 """ Short name for now... """
 LodigeTest = LogLikelihoodDigitGroupEntropyTest
 
 
 if __name__ == "__main__":
+    # TODO: of course move this to a test suite someday
+    test()
+
     # print(prob_of_entr(47, 2.1485))
     # expect ~ 0.133 (got with seed=1234) depending on the seed
     test = LodigeTest(

@@ -6,9 +6,7 @@ the n least likely candidates.
 import numpy as np
 import pandas as pd
 from preprocessing import get_preprocessed_data
-from drdigit.digit_entropy_distribution import (
-    get_log_likelihood, get_likelihood_cdf
-)
+from drdigit.digit_entropy_distribution import LodigeTest
 from collections import OrderedDict
 from app5_ent_in_top import plot_entropy_distribution_of
 from arguments import is_quiet
@@ -19,22 +17,6 @@ _DEFAULT_ITERATIONS = 10
 _DEFAULT_RANDOM_SEED = 1234
 _DEFAULT_PE_RANDOM_SEED = 1234
 _DEFAULT_PE_ITERATIONS = 50000
-
-
-def get_slice_limits(settlement_values):
-    values = np.unique(settlement_values)
-    settlement_index = {
-        name: i for name, i in zip(values, range(len(values)))
-    }
-    assert settlement_index != sorted(settlement_index), \
-           "Settlement values must be in a sorted order!"
-
-    indexes = pd.Series([settlement_index[s] for s in settlement_values])
-    prev_indexes = pd.Series([-1] + list(indexes[:-1]))
-    next_indexes = pd.Series(list(indexes[1:]) + [len(indexes)])
-    starts = np.where(indexes != prev_indexes)[0]
-    ends = np.where(indexes != next_indexes)[0] + 1
-    return zip(starts, ends)
 
 
 def get_feasible_settlements(df, min_n_wards, min_fidesz_votes):
@@ -79,6 +61,7 @@ def run_simulation(bottom_n,
                    pe_seed=_DEFAULT_PE_RANDOM_SEED,
                    pe_iterations=_DEFAULT_PE_ITERATIONS,
                    party_name="Fidesz"):
+
     if seeds is None:
         if seed is None:
             seeds = [_DEFAULT_RANDOM_SEED]
@@ -86,6 +69,8 @@ def run_simulation(bottom_n,
             seeds = [seed]
     else:
         assert seed is None, "Only seed or seeds should be specified not both"
+    del seed
+
 
     df = get_preprocessed_data()
     feasible_settlements = \
@@ -94,17 +79,27 @@ def run_simulation(bottom_n,
     df = df[df["Telepules"].isin(feasible_settlements)]
     df = df.sort_values(["Telepules"])
 
-    slice_limits = list(get_slice_limits(df["Telepules"]))
+    cdfs = []
+    probabilities = []
+    for seed in seeds:
+        test = LodigeTest(
+            df["ld_" + party_name],
+            df["Telepules"],
+            bottom_n,
+            iterations,
+            seed,
+            pe_iterations,
+            pe_seed,
+            quiet=False
+        )
 
-    actual_likelihood = get_log_likelihood(
-        df["ld_" + party_name].values,
-        slice_limits,
-        bottom_n,
-        pe_seed, pe_iterations,
-        towns=np.unique(df["Telepules"])
-    )
+        """ TODO: move the seeder loop into the reused module? would make sense
+                  only that it's a generic bootstrapping thing
+        """
+        # slightly redundant:
+        probabilities.append(test.p)
+        cdfs.append(test.cdf)
 
-    print("Actual likelihood:", actual_likelihood)
     # beware: this all hinges on a "by coincidence" independence
     # the seed is reset each time a new ward count is encountered by
     # the individual ward entropy cdf generator
@@ -114,16 +109,10 @@ def run_simulation(bottom_n,
     # due to the actual entropy log likelihood probability calculations
     # so no more resets, "seeds" are taking control now:
     # (and yes, some reconsiderations are due in the longer run, if any)
-    cdfs = []
-    probabilities = []
-    for seed in seeds:
-        cdf = get_likelihood_cdf(slice_limits, bottom_n,
-                                 seed, iterations,
-                                 pe_seed, pe_iterations)
-        cdfs.append(cdf)
-        probabilities.append(cdf(actual_likelihood))
 
-    print("Actual (mean) likelihood prob:", cdf(actual_likelihood))
+    # each test should say the same anyway, pick the last
+    actual_likelihood = test.likelihood
+    print("Actual (mean) likelihood prob:", actual_likelihood)
     print("Seeds:", seeds)
     print("Likelihood probabilities:", probabilities)
 
@@ -142,18 +131,7 @@ def plot_summary():
     )
 
 
-def test():
-    res = list(get_slice_limits([1, 2, 2, 3, 3, 3]))
-    assert (
-        res ==
-            [(0, 1),
-             (1, 3),
-             (3, 6)]
-    )
-
-
 if __name__ == "__main__":
-    test()
     # min_wards=8
     # run_simulation(bottom_n=20)  # 1k: 0.021, 10k: 0.0236
     # run_simulation(bottom_n=20, seed=1235)  # 1k: 0.041
