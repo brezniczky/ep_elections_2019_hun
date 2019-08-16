@@ -9,10 +9,15 @@ from argparse import ArgumentParser
 
 def is_quiet():
     parser = ArgumentParser()
-    parser.add_argument("--quiet",  action="store_true")
+    parser.add_argument("--quiet", action="store_true")
 
-    args = parser.parse_args()
-    return args.quiet
+    # we're conflicting with whatever's around us (often Jupyter)
+    args = parser.parse_known_args()[0]
+    if "quiet" in args:
+        return args.quiet
+    # ugly - quick workaround to be able to re-generate the final ipynb ==> HTML
+    # this fallback case is to be expected to take place from within Jupyter NB
+    return False
 
 
 if __name__ == "__main__":
