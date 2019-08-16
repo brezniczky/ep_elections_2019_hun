@@ -10,11 +10,13 @@ import pandas as pd
 import os.path
 import scipy.stats as st
 import numpy as np
-from digit_entropy_distribution import get_entropy, LodigeTest
+from drdigit.digit_entropy_distribution import get_entropy, LodigeTest
 import matplotlib.pyplot as plt
 from collections import OrderedDict, defaultdict
 from functools import lru_cache
-from digit_distribution_charts import plot_party_vote_by_digit_relationships
+from drdigit.digit_distribution_charts \
+    import plot_party_vote_by_digit_relationships
+
 
 
 cols = [

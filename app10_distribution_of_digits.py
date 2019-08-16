@@ -10,10 +10,10 @@ TODO:
 import matplotlib.pyplot as plt
 import numpy as np
 from preprocessing import get_preprocessed_data
-from digit_distribution_charts import (
+from drdigit.digit_distribution_charts import (
     plot_party_vote_by_digit_relationships, USE_MEAN_DIGIT_GROUP
 )
-from digit_correlations import digit_correlation_cdf
+from drdigit.digit_correlations import digit_correlation_cdf
 
 
 def plot_votes_of_digits_hist(df, party, digit_groups, n_bins=20,

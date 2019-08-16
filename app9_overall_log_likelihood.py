@@ -6,7 +6,7 @@ the n least likely candidates.
 import numpy as np
 import pandas as pd
 from preprocessing import get_preprocessed_data
-from digit_entropy_distribution import (
+from drdigit.digit_entropy_distribution import (
     get_log_likelihood, get_likelihood_cdf
 )
 from collections import OrderedDict

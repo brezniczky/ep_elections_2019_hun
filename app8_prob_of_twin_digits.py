@@ -2,7 +2,7 @@ import pandas as pd
 from preprocessing import get_preprocessed_data
 from AndrasKalman.load import load_2014
 from explore_2018 import load_2018_fidesz
-from digit_entropy_distribution import prob_of_twins
+from drdigit.digit_entropy_distribution import prob_of_twins
 from collections import OrderedDict
 
 

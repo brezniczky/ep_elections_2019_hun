@@ -1,5 +1,5 @@
 from preprocessing import get_preprocessed_data
-from digit_correlations import (
+from drdigit.digit_correlations import (
     correlation_prob_coeff_df, equality_prob_coeff_df,
     get_matrix_lambda_num, get_col_lambda_num, get_col_mean_prob,
     get_matrix_mean_prob

@@ -1,8 +1,9 @@
 from CZ.scraper import load_or_generate_tabular_results
-import digit_entropy_distribution as ded
+import drdigit.digit_entropy_distribution as ded
 import pandas as pd
-from digit_entropy_distribution import LodigeTest
-from digit_distribution_charts import plot_party_vote_by_digit_relationships
+from drdigit.digit_entropy_distribution import LodigeTest
+from drdigit.digit_distribution_charts \
+    import plot_party_vote_by_digit_relationships
 import numpy as np
 """
 

@@ -18,7 +18,7 @@ And this we can hopefully catch with a reasonable accuracy.
 from AndrasKalman.load import load_2014, plot_location
 import pandas as pd
 import numpy as np
-from digit_entropy_distribution import get_entropy, prob_of_entr
+from drdigit.digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
 from arguments import is_quiet
 

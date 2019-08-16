@@ -4,7 +4,8 @@ Only a quick check
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from digit_distribution_charts import plot_party_vote_by_digit_relationships
+from drdigit.digit_distribution_charts \
+    import plot_party_vote_by_digit_relationships
 
 
 def get_cleaned_data():

@@ -1,5 +1,5 @@
 from preprocessing import get_preprocessed_data
-from digit_entropy_distribution import get_entropy, prob_of_entr
+from drdigit.digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
 import pandas as pd
 from AndrasKalman.load import load_2014

@@ -2,7 +2,7 @@ from collections import OrderedDict
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from digit_entropy_distribution import prob_of_entr, get_entropy
+from drdigit.digit_entropy_distribution import prob_of_entr, get_entropy
 from arguments import is_quiet
 
 
