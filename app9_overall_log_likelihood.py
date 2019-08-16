@@ -6,10 +6,10 @@ the n least likely candidates.
 import numpy as np
 import pandas as pd
 from preprocessing import get_preprocessed_data
-from drdigit.digit_entropy_distribution import LodigeTest
-from collections import OrderedDict
 from app5_ent_in_top import plot_entropy_distribution_of
 from arguments import is_quiet
+from drdigit.digit_entropy_distribution import LodigeTest
+from drdigit.digit_filtering import get_feasible_settlements
 
 
 # TODO: remove via refactoring into dependency
@@ -17,19 +17,6 @@ _DEFAULT_ITERATIONS = 10
 _DEFAULT_RANDOM_SEED = 1234
 _DEFAULT_PE_RANDOM_SEED = 1234
 _DEFAULT_PE_ITERATIONS = 50000
-
-
-def get_feasible_settlements(df, min_n_wards, min_fidesz_votes):
-    d = OrderedDict()
-    agg = (
-        df[["Telepules", "Fidesz"]]
-        .groupby(["Telepules"])
-        .aggregate(OrderedDict([("Telepules", len), ("Fidesz", min)]))
-    )
-    agg.columns = ["n_wards", "min_fidesz_votes"]
-    agg = agg.reset_index()
-    return agg.loc[(agg.n_wards >= min_n_wards) &
-                   (agg.min_fidesz_votes >= min_fidesz_votes)]["Telepules"]
 
 
 def save_results(actual_likelihood, probabilities, sample):
