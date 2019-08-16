@@ -155,7 +155,7 @@ def plot_entropy_distribution_of(actual_total_ent: float,
             u"P \u2248 %.2f %%" % (np.mean(probabilities) * 100))
     if save_filename is not None:
         plt.savefig(save_filename)
-    if is_quiet:
+    if not is_quiet:
         plt.show()
 
 

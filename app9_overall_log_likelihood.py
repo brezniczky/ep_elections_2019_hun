@@ -13,10 +13,10 @@ from drdigit.digit_filtering import get_feasible_settlements
 
 
 # TODO: remove via refactoring into dependency
-_DEFAULT_ITERATIONS = 10
+_DEFAULT_ITERATIONS = 12345
 _DEFAULT_RANDOM_SEED = 1234
 _DEFAULT_PE_RANDOM_SEED = 1234
-_DEFAULT_PE_ITERATIONS = 50000
+_DEFAULT_PE_ITERATIONS = 10000
 
 
 def save_results(actual_likelihood, probabilities, sample):
@@ -61,8 +61,7 @@ def run_simulation(bottom_n,
 
     df = get_preprocessed_data()
     feasible_settlements = \
-        get_feasible_settlements(df, min_n_wards=8, min_fidesz_votes=100,
-                                 smooth_ld_selectivity=False)  # to be True ...
+        get_feasible_settlements(df, min_n_wards=8, min_fidesz_votes=100)
     print("Found", len(feasible_settlements), "feasible settlements")
     df = df[df["Telepules"].isin(feasible_settlements)]
     df = df.sort_values(["Telepules"])
@@ -130,7 +129,9 @@ if __name__ == "__main__":
     # run_simulation(bottom_n=15, iterations=100) # 100: 0.01, 1k: 0.027, 2k: 0.0295
     # run_simulation(bottom_n=20, iterations=1000, seeds=[1234],
     #                party_name="Ervenyes")
-    run_simulation(bottom_n=20, iterations=1000, seeds=[1234, 1235, 1236, 1237],
+    run_simulation(bottom_n=20,
+                   iterations=5000,
+                   seeds=[1234, 1235, 1236, 1237],
                    party_name="Fidesz")
 
     # min_wards=4
