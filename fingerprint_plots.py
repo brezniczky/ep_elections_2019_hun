@@ -5,7 +5,7 @@ import os
 
 
 def plot_fingerprint(winner_votes, valid_votes,
-                     registered_voters, title, filename,
+                     registered_voters, title, filename=None,
                      weighted=True,
                      zoom_onto=False,
                      fingerprint_dir="",
@@ -24,9 +24,10 @@ def plot_fingerprint(winner_votes, valid_votes,
         weights=weights
     )
     plt.title(title)
-    full_filename = os.path.join(fingerprint_dir, filename)
-    plt.savefig(full_filename)
-    print("plot saved as %s" % full_filename)
+    if filename is not None:
+        full_filename = os.path.join(fingerprint_dir, filename)
+        plt.savefig(full_filename)
+        print("plot saved as %s" % full_filename)
     if not quiet:
         plt.show()
 

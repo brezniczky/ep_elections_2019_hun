@@ -111,7 +111,7 @@ def _get_df(year):
     return df_functions[year]()
 
 
-def plot_fingerprints_for_year(parties, year):
+def plot_fingerprints_for_year(parties, year, save):
     df = _get_df(year)
     for party in parties:
         df_top_90 = df[
@@ -124,34 +124,36 @@ def plot_fingerprints_for_year(parties, year):
         plot_fingerprint(df_top_91_to_bottom[party],
                          df_top_91_to_bottom["Ervenyes"],
                          df_top_91_to_bottom["Nevjegyzekben"],
-                         "%d least suspicious" % year,
-                         "Figure_%d_%s_top_91_to_bottom.png" %
-                         (year, party),
+                         ("%d least suspicious" % year,
+                          "Figure_%d_%s_top_91_to_bottom.png" %
+                          (year, party))
+                         if save else None,
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR)
         plot_fingerprint(df_top_90[party],
                          df_top_90["Ervenyes"],
                          df_top_90["Nevjegyzekben"],
-                         "%d most suspicious" % year,
-                         "Figure_%d_%s_top_90.png" % (year, party),
+                         ("%d most suspicious" % year,
+                          "Figure_%d_%s_top_90.png" % (year, party))
+                         if save else None,
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR)
 
 
-def plot_2010_fingerprints(parties=PARTIES_2010):
-    plot_fingerprints_for_year(parties, 2010)
+def plot_2010_fingerprints(parties=PARTIES_2010, save=True):
+    plot_fingerprints_for_year(parties, 2010, save)
 
 
-def plot_2014_fingerprints(parties=PARTIES_2014):
-    plot_fingerprints_for_year(parties, 2014)
+def plot_2014_fingerprints(parties=PARTIES_2014, save=True):
+    plot_fingerprints_for_year(parties, 2014, save)
 
 
-def plot_2018_fingerprints(parties=PARTIES_2018):
-    plot_fingerprints_for_year(parties, 2018)
+def plot_2018_fingerprints(parties=PARTIES_2018, save=True):
+    plot_fingerprints_for_year(parties, 2018, save)
 
 
-def plot_2019_fingerprints(parties=PARTIES_2019):
-    plot_fingerprints_for_year(parties, 2019)
+def plot_2019_fingerprints(parties=PARTIES_2019, save=True):
+    plot_fingerprints_for_year(parties, 2019, save)
 
 
 def plot_fingerprint_diffs(show: bool):
