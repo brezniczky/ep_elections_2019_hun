@@ -3,10 +3,10 @@ import runpy
 
 MODULE_NAMES = [
     "explore_2018",
-    "app6_comparative",
+    "app9_overall_log_likelihood",
+    "app6_comparative",  # app6 relies on app9
     "app7_fidesz_vs_jobbik",
     "app8_prob_of_twin_digits",
-    "app9_overall_log_likelihood",
     "app14_digit_correlations_Hun",
 ]
 

@@ -2,6 +2,7 @@ import os.path
 import pandas as pd
 import numpy as np
 import json
+from arguments import output_exists, load_output, save_output
 
 
 def _translate_capital_district_name(col):
@@ -13,7 +14,7 @@ def _translate_capital_district_name(col):
 
 
 def get_merged_data() -> pd.DataFrame:
-    if not os.path.exists("merged.csv"):
+    if not output_exists("merged.csv"):
         filename = r'EP_2019_szavaz_k_ri_eredm_ny.xlsx'
         # filename = r'short.xlsx'
         print("file: %s" % filename)
@@ -30,14 +31,14 @@ def get_merged_data() -> pd.DataFrame:
             dfs.append(df)
 
         df = pd.concat(dfs)
-        df.to_csv("merged.csv", index=False)
+        save_output(df, "merged.csv")
     else:
-        df = pd.read_csv("merged.csv")
+        df = load_output("merged.csv")
     return df
 
 
 def get_cleaned_data():
-    if not os.path.exists("cleaned.csv"):
+    if not output_exists("cleaned.csv"):
         df = get_merged_data()
         """ there is a mostly NaN row (someone left a total count in)
             --> remove!
@@ -53,9 +54,9 @@ def get_cleaned_data():
         if len(nan_line_idxs) != 1 or (nan_line_idxs[0] != 1405):
             raise Exception("Only a certain NaN line was expected, please check the data.")
         df.drop(nan_line_idxs[0], inplace=True)
-        df.to_csv("cleaned.csv", index=False)
+        save_output(df, "cleaned.csv")
     else:
-        df = pd.read_csv("cleaned.csv")
+        df = load_output("cleaned.csv")
 
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
     return df

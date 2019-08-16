@@ -20,18 +20,17 @@ import pandas as pd
 import numpy as np
 from drdigit.digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
-from arguments import is_quiet
+from arguments import is_quiet, load_output, save_output
 
 
 def save_results(df_fidesz_jobbik_joint, suspects):
-    df_fidesz_jobbik_joint.to_csv("app7_fidesz_jobbik_joint.csv",
-                                     index=False)
-    suspects.to_csv("app7_suspects.csv", index=False)
+    save_output(df_fidesz_jobbik_joint, "app7_fidesz_jobbik_joint.csv")
+    save_output(suspects, "app7_suspects.csv")
 
 
 def load_results():
-    df_fidesz_jobbik_joint = pd.read_csv("app7_fidesz_jobbik_joint.csv")
-    suspects = pd.read_csv("app7_suspects.csv")
+    df_fidesz_jobbik_joint = load_output("app7_fidesz_jobbik_joint.csv")
+    suspects = load_output("app7_suspects.csv")
     return df_fidesz_jobbik_joint, suspects
 
 

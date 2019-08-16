@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import os
 import app15_overall_ranking as app15
+from arguments import save_output
 
 # todo: 1. a degree amount of refactoring :) :(
 
@@ -219,9 +220,9 @@ def list_suspects_near_2019_fingerprint(point, r_x, r_y, save_generated=True):
 
     df.sort_values(["Telepules", "Szavazokor"], inplace=True)
     if save_generated:
-        df[["Telepules", "Szavazokor"]].to_csv(
+        save_output(
+            df[["Telepules", "Szavazokor"]],
             "app16_fingerprint_suspects_2019.csv",
-            index=False
         )
     return df
 

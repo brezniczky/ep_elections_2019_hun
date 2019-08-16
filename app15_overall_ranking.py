@@ -2,6 +2,7 @@ import pandas as pd
 import app6_comparative as app6
 import app8_prob_of_twin_digits as app8
 import app14_digit_correlations_Hun as app14
+from arguments import save_output
 
 
 def get_overall_list_all_3_years():
@@ -83,7 +84,7 @@ def generate_files():
     print(list1.head(45))
     list2 = get_overall_list_last_2_years()
     print(list2.head(45))
-    list2.to_csv("app15_overall_list_last_2_years.csv", index=False)
+    save_output(list2, "app15_overall_list_last_2_years.csv")
 
 
 if __name__ == "__main__":

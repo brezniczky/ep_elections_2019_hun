@@ -4,6 +4,7 @@ from AndrasKalman.load import load_2014
 from explore_2018 import load_2018_fidesz
 from drdigit.digit_entropy_distribution import prob_of_twins
 from collections import OrderedDict
+from arguments import load_output, save_output
 
 
 def get_twins(df):
@@ -31,13 +32,13 @@ def get_suspects(df, p=0.05):
 
 
 def save_results(df_p_twins, suspects):
-    df_p_twins.to_csv("app8_twins.csv", index=False)
-    suspects.to_csv("app8_suspects.csv", index=False)
+    save_output(df_p_twins, "app8_twins.csv")
+    save_output(suspects, "app8_suspects.csv")
 
 
 def load_results():
-    df_p_twins = pd.read_csv("app8_twins.csv")
-    suspects = pd.read_csv("app8_suspects.csv")
+    df_p_twins = load_output("app8_twins.csv")
+    suspects = load_output("app8_suspects.csv")
     return df_p_twins, suspects
 
 

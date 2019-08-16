@@ -25,7 +25,7 @@ from scipy.stats import entropy
 import pandas as pd
 import matplotlib.pyplot as plt
 from typing import List
-from arguments import is_quiet
+from arguments import is_quiet, load_output, save_output
 
 
 def total_freq_ent(counts):
@@ -115,23 +115,23 @@ def get_simulated_total_ent_prob(df_raw, actual_total_ent, iterations):
 def save_results(actual_total_ent, probabilities, entropies):
     df = pd.DataFrame(dict(names=["actual_total_ent"],
                            values=[actual_total_ent]))
-    df.to_csv("app5_actual_total_ent.csv", index=False)
+    save_output(df, "app5_actual_total_ent.csv")
 
     df = pd.DataFrame(dict(probability=probabilities))
-    df.to_csv("app5_ent_in_top_probs.csv", index=False)
+    save_output(df, "app5_ent_in_top_probs.csv")
 
     df = pd.DataFrame(dict(entropy=entropies))
-    df.to_csv("app5_ent_in_top_entropies.csv", index=False)
+    save_output(df, "app5_ent_in_top_entropies.csv")
 
 
 def load_results():
-    df = pd.read_csv("app5_actual_total_ent.csv")
+    df = load_output("app5_actual_total_ent.csv")
     actual_total_ent = df["values"][0]
 
-    df = pd.read_csv("app5_ent_in_top_probs.csv")
+    df = load_output("app5_ent_in_top_probs.csv")
     probabilities = df.probability
 
-    df = pd.read_csv("app5_ent_in_top_entropies.csv")
+    df = load_output("app5_ent_in_top_entropies.csv")
     entropies = df.entropy
 
     return actual_total_ent, probabilities, entropies

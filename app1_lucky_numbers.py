@@ -13,7 +13,9 @@ In its very draft and fragmented state here it is as a note to self.
 import numpy as np
 import matplotlib.pyplot as plt
 from preprocessing import get_preprocessed_data
-from digit_stat_data import get_last_digit_stats, get_suspects2
+from digit_stat_data import (get_last_digit_stats, get_suspects2,
+                             MAX_TO_MEAN_THRESHOLD, MIN_VOTERS_THRESHOLD)
+from arguments import save_output
 
 
 df = get_preprocessed_data()
@@ -32,9 +34,9 @@ print("Suspicious areas based on max to mean digit occurrence ratio")
 
 suspects2.sort_values(["max_to_mean"], ascending=[False], inplace=True)
 print(suspects2)
-suspects2.to_csv("suspects2.csv", encoding="utf8")
 
-suspects2.reset_index()
+suspects2.reset_index(inplace=True)
+save_output(suspects2, "suspects2.csv")
 
 
 """

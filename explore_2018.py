@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from drdigit.digit_entropy_distribution import prob_of_entr, get_entropy
-from arguments import is_quiet
+from arguments import is_quiet, save_output
 
 
 def load_2018_fidesz():
@@ -96,4 +96,4 @@ if __name__ == "__main__":
     df_Fidesz_entr.sort_values(["prob_of_entr"], inplace=True)
 
 
-    df_Fidesz_entr.to_csv("Fidesz_entr_prob_2018.csv", index=False)
+    save_output(df_Fidesz_entr, "Fidesz_entr_prob_2018.csv")

@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from preprocessing import get_preprocessed_data
 from app5_ent_in_top import plot_entropy_distribution_of
-from arguments import is_quiet
+from arguments import is_quiet, save_output, load_output
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_settlements
 
@@ -22,21 +22,21 @@ _DEFAULT_PE_ITERATIONS = 10000
 def save_results(actual_likelihood, probabilities, sample):
     df = pd.DataFrame(dict(names=["actual_likelihood"],
                            values=[actual_likelihood]))
-    df.to_csv("app9_likelihood.csv", index=False)
+    save_output(df, "app9_likelihood.csv")
 
     df = pd.DataFrame(dict(probability=probabilities))
-    df.to_csv("app9_probabilities.csv", index=False)
+    save_output(df, "app9_probabilities.csv")
 
     df = pd.DataFrame(dict(likelihood=sample))
-    df.to_csv("app9_sample.csv", index=False)
+    save_output(df, "app9_sample.csv")
 
 
 def load_results():
     actual_likelihood = \
-        pd.read_csv("app9_likelihood.csv").iloc[0]["values"]
+        load_output("app9_likelihood.csv").iloc[0]["values"]
     probabilities = \
-        pd.read_csv("app9_probabilities.csv").probability
-    sample = pd.read_csv("app9_sample.csv").likelihood
+        load_output("app9_probabilities.csv").probability
+    sample = load_output("app9_sample.csv").likelihood
 
     return actual_likelihood, probabilities, sample
 

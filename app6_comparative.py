@@ -3,6 +3,7 @@ from drdigit.digit_entropy_distribution import get_entropy, prob_of_entr
 from collections import OrderedDict
 import pandas as pd
 from AndrasKalman.load import load_2014
+from arguments import load_output, save_output
 
 
 if not "df" in globals():
@@ -17,18 +18,16 @@ def save_results(
         df_comparative_sorted_by_all_3,
         suspects3
     ):
-    df_comparative.to_csv("app6_comparative_result.csv", index=False)
-    suspects.to_csv("app6_suspects.csv", index=False)
-    df_comparative_sorted_by_both.to_csv(
-        "app6_comparative_result_sort_by_both_incorr.csv",
-        index=False
+    save_output(df_comparative, "app6_comparative_result.csv")
+    save_output(suspects, "app6_suspects.csv")
+    save_output(
+        df_comparative_sorted_by_both,
+        "app6_comparative_result_sort_by_both_incorr.csv"
     )
-    suspects2.to_csv("app6_suspects2.csv", index=False)
-    df_comparative_sorted_by_all_3.to_csv(
-        "app6_comparative_sorted_by_all_3.csv",
-        index=False
-    )
-    suspects3.to_csv("app6_suspects3.csv", index=False)
+    save_output(suspects2, "app6_suspects2.csv")
+    save_output(df_comparative_sorted_by_all_3,
+                "app6_comparative_sorted_by_all_3.csv")
+    save_output(suspects3, "app6_suspects3.csv")
 
 
 def load_results():
@@ -49,17 +48,18 @@ def load_results():
         party votes (in 2019) in each ward in each suspect settlement
         in order to be considered,
     """
-    df_comparative = pd.read_csv("app6_comparative_result.csv")
-    suspects = pd.read_csv("app6_suspects.csv")
-    df_comparative_sorted_by_both = pd.read_csv(
+
+    df_comparative = load_output("app6_comparative_result.csv")
+    suspects = load_output("app6_suspects.csv")
+    df_comparative_sorted_by_both = load_output(
         "app6_comparative_result_sort_by_both_incorr.csv"
     )
-    suspects2 = pd.read_csv("app6_suspects2.csv")
+    suspects2 = load_output("app6_suspects2.csv")
 
-    df_comparative_sorted_by_all_3 = pd.read_csv(
+    df_comparative_sorted_by_all_3 = load_output(
         "app6_comparative_sorted_by_all_3.csv"
     )
-    suspects3 = pd.read_csv("app6_suspects3.csv")
+    suspects3 = load_output("app6_suspects3.csv")
 
     return (
         df_comparative,
@@ -110,7 +110,7 @@ def generate_data():
 
     df_Fidesz_ent.sort_values(["prob_of_entr"], inplace=True)
 
-    df_Fidesz_ent_2018 = pd.read_csv("Fidesz_entr_prob_2018.csv")
+    df_Fidesz_ent_2018 = load_output("Fidesz_entr_prob_2018.csv")
     df_Fidesz_ent_2014 = load_2014_data()
 
 
