@@ -61,7 +61,8 @@ def run_simulation(bottom_n,
 
     df = get_preprocessed_data()
     feasible_settlements = \
-        get_feasible_settlements(df, min_n_wards=8, min_fidesz_votes=100)
+        get_feasible_settlements(df, min_n_wards=8, min_fidesz_votes=100,
+                                 smooth_ld_selectivity=False)  # to be True ...
     print("Found", len(feasible_settlements), "feasible settlements")
     df = df[df["Telepules"].isin(feasible_settlements)]
     df = df.sort_values(["Telepules"])

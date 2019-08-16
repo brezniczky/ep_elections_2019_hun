@@ -10,13 +10,13 @@ import pandas as pd
 import os.path
 import scipy.stats as st
 import numpy as np
-from drdigit.digit_entropy_distribution import get_entropy, LodigeTest
 import matplotlib.pyplot as plt
 from collections import OrderedDict, defaultdict
 from functools import lru_cache
+from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_distribution_charts \
     import plot_party_vote_by_digit_relationships
-
+from drdigit.digit_filtering import get_feasible_subseries
 
 
 cols = [
@@ -116,11 +116,6 @@ def check_column_code_stats(df, quiet=False):
             row = stats.iloc[i]
             print("  ", row[0], row[1])
     return stats
-
-
-def get_feasible_subseries(arr, min_votes):
-    arr = arr[arr >= (min_votes - 5) + np.random.choice(range(10), len(arr))]
-    return arr
 
 
 def check_digit_doubling(df):
