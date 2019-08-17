@@ -9,7 +9,7 @@ from preprocessing import get_preprocessed_data
 from app5_ent_in_top import plot_entropy_distribution_of
 from arguments import is_quiet, save_output, load_output
 from drdigit.digit_entropy_distribution import LodigeTest
-from drdigit.digit_filtering import get_feasible_settlements
+from drdigit.digit_filtering import get_feasible_groups
 
 
 # TODO: remove via refactoring into dependency
@@ -61,7 +61,7 @@ def run_simulation(bottom_n,
 
     df = get_preprocessed_data()
     feasible_settlements = \
-        get_feasible_settlements(df, min_n_wards=8, min_fidesz_votes=100)
+        get_feasible_groups(df, min_n_wards=8, min_votes=100)
     print("Found", len(feasible_settlements), "feasible settlements")
     df = df[df["Telepules"].isin(feasible_settlements)]
     df = df.sort_values(["Telepules"])

@@ -1,8 +1,11 @@
 from collections import OrderedDict
 import numpy as np
+import pandas as pd
+from typing import List
 
 
 def _digit_noise_series(n: int) -> np.ndarray:
+    # TODO: hm... random seeds?
     # TODO: not 100% about the return value type hint
     """
     Whenever the PMF of vote values is monotonously decreasing, the aggregated
@@ -19,22 +22,46 @@ def _digit_noise_series(n: int) -> np.ndarray:
     return np.random.choice(range(10), n) - 4.5
 
 
-def get_feasible_settlements(df, min_n_wards, min_fidesz_votes,
-                             smooth_ld_selectivity=True):
+def get_feasible_groups(df: pd.DataFrame, min_n_wards: int, min_votes: int,
+                        value_colname: str="Fidesz",
+                        group_colname: str="Telepules",
+                        smooth_ld_selectivity: bool=True) -> pd.Series:
     agg = (
-        df[["Telepules", "Fidesz"]]
-        .groupby(["Telepules"])
-        .aggregate(OrderedDict([("Telepules", len), ("Fidesz", min)]))
+        df[[group_colname, value_colname]]
+        .groupby([group_colname])
+        .aggregate(OrderedDict([(group_colname, len), (value_colname, min)]))
     )
-    agg.columns = ["n_wards", "min_fidesz_votes"]
+    min_value_colname = "min_%s_votes" % value_colname
+    agg.columns = ["n_wards", min_value_colname]
     agg = agg.reset_index()
 
-    vote_mins = agg.min_fidesz_votes
+    vote_mins = agg[min_value_colname]
     if smooth_ld_selectivity:
         vote_mins += _digit_noise_series(len(agg))
 
     return agg.loc[(agg.n_wards >= min_n_wards) &
-                   (vote_mins >= min_fidesz_votes)]["Telepules"]
+                   (vote_mins >= min_votes)][group_colname]
+
+
+def get_feasible_rows(df: pd.DataFrame, min_votes: int,
+                      vote_cols: List[int],
+                      smooth_ld_selectivity: bool=True) -> pd.DataFrame:
+    """
+    Filter row by row for eligible values, but ignore the settlement ward
+    counts. Can be useful for taking a look at areas with very few wards.
+
+    :param df: Data frame to filter.
+    :param min_votes: Rows with with each field containing at least this many
+        votes will be returned.
+    :param vote_cols: Interesting columns specified by a list-like of indexes.
+    :param smooth_ld_selectivity: Whether to use smoothing to avoid the
+        potential digit-specificity of the filter value to a degree.
+    :return: The filtered data frame.
+    """
+    if smooth_ld_selectivity:
+        min_votes = _digit_noise_series(len(df)) + min_votes
+    is_okay = df.iloc[:, vote_cols].apply(min, axis=1) >= min_votes
+    return df[is_okay]
 
 
 def get_feasible_subseries(arr, min_votes):
