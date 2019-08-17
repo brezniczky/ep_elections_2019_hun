@@ -23,7 +23,7 @@ def _get_digit_correlation_data(n_digits, seed=1234, n_iterations=10000):
     return corrs
 
 
-@lru_cache(100)
+@lru_cache(1000)
 def digit_correlation_cdf(n_digits, seed=1234, n_iterations=10000):
     # a small but efficient tribute to The Corrs :)
     corrs = _get_digit_correlation_data(n_digits, seed, n_iterations)
@@ -55,7 +55,7 @@ def get_digit_equality_prob_mc_data(n_digits, seed, n_iterations):
     return probs
 
 
-@lru_cache(100)
+@lru_cache(1000)
 def digit_equality_prob_mc_cdf(n_digits, seed=1234, n_iterations=50000):
     probs = get_digit_equality_prob_mc_data(n_digits, seed, n_iterations)
 
@@ -68,6 +68,7 @@ def digit_equality_prob_mc_cdf(n_digits, seed=1234, n_iterations=50000):
     return cdf
 
 
+@lru_cache(1000)
 def digit_equality_prob_analytical_cdf(n):
     inner_cdf = stats.binom(n, 0.1).cdf
 
