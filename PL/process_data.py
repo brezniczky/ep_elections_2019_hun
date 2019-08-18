@@ -1,15 +1,16 @@
-from PL.preprocessing import get_big_cleaned_data, merge_lista_results
+from PL.preprocessing import (get_big_cleaned_data, merge_lista_results,
+                              MergedDataInfo)
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_rows, get_feasible_groups
 from drdigit.scoring import get_group_scores
+from drdigit.fingerprint_plots import plot_fingerprint
 import numpy as np
 
 
 SEED = 1236
 LL_ITERATIONS = 1000
+FINGERPRINT_DIR = "fingerprints_Poland"
 
-
-_ranking = None
 
 # Per row checks yield a considerable
 
@@ -100,9 +101,9 @@ def check_overall_entropy_values_per_municipality(merged):
         print("p-value: %.2f" % p)
 
 
-def check_ranking(dfs):
+def check_ranking(merged, info):
     # import ipdb; ipdb.set_trace()
-    merged, info = merge_lista_results(dfs, return_overview_cols=True)
+
 
     # TODO: should possibly row filter before this
     feasible_df = get_feasible_rows(
@@ -126,11 +127,7 @@ def check_ranking(dfs):
     return scores
 
 
-def print_top_20(dfs, ranking):
-    merged, info = merge_lista_results(
-        dfs,
-        return_overview_cols=True
-    )
+def print_top_k(merged, info, ranking, k):
     printed_cols = [
         info.area_column,
         info.nr_of_registered_voters_column,
@@ -140,11 +137,46 @@ def print_top_20(dfs, ranking):
     ]
     display_colnames = ["area", "registered", "valid_votes",
                         "lista_3", "lista_4"]
-    for i, area_code in zip(range(20), ranking.index[:20]):
+    for i, area_code in zip(range(k), ranking.index[:k]):
         print("\n#%d" % (i + 1))
         printed_df = merged[merged[info.area_column] == area_code][printed_cols]
         printed_df.columns = display_colnames
         print(printed_df)
+
+
+def plot_PL_fingerprint(merged, info, areas, group_desc, lista_index):
+    act_df = merged[merged[info.area_column].isin(areas)]
+    plot_fingerprint(
+        party_votes=act_df[info.get_lista_column(lista_index)],
+        valid_votes=act_df[info.valid_votes_column],
+        registered_voters=act_df[info.nr_of_registered_voters_column],
+        title="Poland %s, 2019 EP, lista %d" %
+              (group_desc, lista_index),
+        fingerprint_dir=FINGERPRINT_DIR,
+        filename="%s lista %d.png" % (group_desc, lista_index),
+        quiet=True,
+    )
+
+
+def plot_fingerprints(merged, info: MergedDataInfo, ranking):
+    n = len(ranking)
+
+    plot_params = [
+        [ranking.index[:90], "1-90"],
+        [ranking.index[91:180], "91-180"],
+        [ranking.index[:300], "1-300"],
+        [ranking.index[301:600], "301-600"],
+        [ranking.index[:int(n / 8)], "top 12.5%"],
+        [ranking.index[int(n / 8):], "top 12.5% excluded"],
+        [ranking.index[:int(n / 4)], "top 25%"],
+        [ranking.index[int(n / 4):], "top 25% excluded"],
+        [ranking.index[:int(n / 2)], "top 50%"],
+        [ranking.index[int(n / 2):], "top 50% excluded"],
+    ]
+
+    for areas, group_desc in plot_params:
+        for lista_index in [1, 2, 3, 4]:
+            plot_PL_fingerprint(merged, info, areas, group_desc, lista_index)
 
 
 def process_data():
@@ -152,17 +184,20 @@ def process_data():
     np.random.seed(1234)
 
     dfs = get_big_cleaned_data()
+
+    merged, info = merge_lista_results(dfs, return_overview_cols=True)
+
     # merged = merge_lista_results(
     #     dfs,
     #     lista_idxs_to_exclude=[8, 9, 10]
     # )
     # check_overall_entropy_values_per_row(merged)
     # check_overall_entropy_values_per_municipality(merged)
-    ranking = check_ranking(dfs)
-    print_top_20(dfs, ranking)
-    return ranking
+    ranking = check_ranking(merged, info)
+    print_top_k(merged, info, ranking, 20)
+    plot_fingerprints(merged, info, ranking)
+    return dfs, ranking
 
 
 if __name__ == "__main__":
-    ranking = process_data()
-    print(ranking.head(20))
+    dfs, ranking = process_data()
