@@ -43,24 +43,25 @@ def get_feasible_groups(df: pd.DataFrame, min_n_wards: int, min_votes: int,
                    (vote_mins >= min_votes)][group_colname]
 
 
-def get_feasible_rows(df: pd.DataFrame, min_votes: int,
-                      vote_cols: List[int],
+def get_feasible_rows(df: pd.DataFrame, min_value: int,
+                      min_value_col_idxs: List[int],
                       smooth_ld_selectivity: bool=True) -> pd.DataFrame:
     """
     Filter row by row for eligible values, but ignore the settlement ward
     counts. Can be useful for taking a look at areas with very few wards.
 
     :param df: Data frame to filter.
-    :param min_votes: Rows with with each field containing at least this many
-        votes will be returned.
-    :param vote_cols: Interesting columns specified by a list-like of indexes.
+    :param min_value: Rows with with each interesting column containing at least
+        this many votes will be returned.
+    :param min_value_col_idxs: Interesting columns specified by a list-like of
+        indexes.
     :param smooth_ld_selectivity: Whether to use smoothing to avoid the
         potential digit-specificity of the filter value to a degree.
     :return: The filtered data frame.
     """
     if smooth_ld_selectivity:
-        min_votes = _digit_noise_series(len(df)) + min_votes
-    is_okay = df.iloc[:, vote_cols].apply(min, axis=1) >= min_votes
+        min_value = _digit_noise_series(len(df)) + min_value
+    is_okay = df.iloc[:, min_value_col_idxs].apply(min, axis=1) >= min_value
     return df[is_okay]
 
 

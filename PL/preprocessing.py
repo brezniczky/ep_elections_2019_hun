@@ -1,7 +1,13 @@
+from typing import List
 import pandas as pd
 from functools import lru_cache
 import os.path
 from collections import OrderedDict
+
+
+_AREA_CODE_COLNAME = "Kod terytorialny gminy"
+_VALID_VOTES_COLNAME = "Liczba kart ważnych"
+_VOTERS_ELIGIBLE_TO_VOTE_COLNAME = "Liczba wyborców uprawnionych do głosowania"
 
 
 def get_cleaned_data():
@@ -71,24 +77,89 @@ def get_big_cleaned_data():
     return dfs
 
 
-def merge_lista_results(dfs, lista_idxs_to_exclude):
+def get_lista_col_idx(col):
+    return int(col.split(" ")[2])
+
+
+class MergedDataInfo():
+
+    def __init__(self, area_columm, valid_votes_column,
+                 nr_of_registered_voters_column, lista_columns):
+        self._area_column = area_columm
+        self._valid_votes_column = valid_votes_column
+        self._nr_of_registered_voters_column = nr_of_registered_voters_column
+        self._lista_columns = lista_columns
+
+    def __repr__(self):
+        return ("MergedDataInfo(\n"
+                "    valid_votes_column: %s,\n "
+                "    nr_of_registered_voters_column: %s,\n"
+                "    lista_columns: %s\n"
+                ")"
+                % (self.valid_votes_column, self.nr_of_registered_voters_column,
+                   ", ".join(self.lista_columns))
+                )
+
+    area_column = \
+        property(lambda self: self._area_column)  # type: str
+
+    valid_votes_column = \
+        property(lambda self: self._valid_votes_column)  # type: str
+
+    nr_of_registered_voters_column = \
+        property(lambda self: self._nr_of_registered_voters_column)  # type: str
+
+    lista_columns = \
+        property(lambda self: self._lista_columns)  # type: List[str]
+
+    @lru_cache()
+    def get_lista_column(self, index: int) -> str:
+        for lista_column in self.lista_columns:
+            if get_lista_col_idx(lista_column) == index:
+                return lista_column
+        raise KeyError("Lista column for index %d is not contained." % index)
+
+
+"""
+TODO: add another, per csv auto-selected column: that of the most popular candidate per lista
+"""
+def merge_lista_results(dfs,
+                        # don't ask :) 7, 8, 9 looked too sparse I think
+                        # TODO: but #8 just fails with some error ;)
+                        lista_idxs_to_exclude=[8],
+                        return_overview_cols=False):
+    """
+
+    :param dfs: The data frames to merge, consisting of standard and "lista"
+        (candidate preference) columns.
+    :param lista_idxs_to_exclude: (Ballot) number (1...) of lists to exclude.
+    :param return_overview_cols: Instructs to return the overview columns
+        additionally. These will be described in the second member of the return
+        tuple.
+
+    :return: A single data frame if return_overview_cols is False. Otherwise
+        a tuple of a data frame and a MergedListaInfo to help with navigating
+        around.
+    """
     print("merging \"lista\" columns...")
-    merged = []
-    lista_cols = set()
+    lista_col_names = set()
 
     for df in dfs:
         for col in df.columns:
             if col.startswith("Lista nr"):
-                lista_cols.add(col)
+                lista_col_names.add(col)
 
-    def get_lista_col_idx(col):
-        return int(col.split(" ")[2])
+    lista_col_names = sorted(lista_col_names, key=get_lista_col_idx)
+    lista_col_names = [col for col in lista_col_names
+                       if get_lista_col_idx(col)
+                       not in lista_idxs_to_exclude]
+    cols_to_keep = [_AREA_CODE_COLNAME] + lista_col_names
 
-    lista_cols = sorted(lista_cols, key=get_lista_col_idx)
-    lista_cols = [col for col in lista_cols
-                  if get_lista_col_idx(col)
-                  not in lista_idxs_to_exclude]
-    cols_to_keep = ["Kod terytorialny gminy"] + lista_cols
+    if return_overview_cols:
+        cols_to_keep += [
+            _VALID_VOTES_COLNAME,
+            _VOTERS_ELIGIBLE_TO_VOTE_COLNAME,
+        ]
 
     dfs_to_merge = []
     for df in dfs:
@@ -105,6 +176,14 @@ def merge_lista_results(dfs, lista_idxs_to_exclude):
         if col.startswith("Lista"):
             merged["ld_" + col] = merged[col] % 10
 
-    return merged
-
-
+    if not return_overview_cols:
+        return merged
+    else:
+        info = MergedDataInfo(
+            _AREA_CODE_COLNAME,
+            _VALID_VOTES_COLNAME,
+            # fingers crossed it's the right one :)
+            _VOTERS_ELIGIBLE_TO_VOTE_COLNAME,
+            lista_columns=lista_col_names,
+        )
+        return merged, info

@@ -37,27 +37,31 @@ def digit_correlation_cdf(n_digits, seed=1234, n_iterations=10000):
     return cdf
 
 
-def equality_prob(a1: np.array, a2: np.array):
-    return (a1 == a2).mean()
+def equality_rel_freq(a1: np.array, a2: np.array):
+    ans = (a1 == a2).mean()
+    return ans
 
 
 @mem.cache()
-def get_digit_equality_prob_mc_data(n_digits, seed, n_iterations):
+def get_digit_equality_rel_freq_mc_data(n_digits, seed, n_iterations):
+    raise Exception("This needs updating! "
+                    "See digit_equality_prob_analytical_cdf ...")
     probs = []
     rnd.seed(seed)
     for i in range(n_iterations):
         digits_1 = rnd.choice(range(10), n_digits)
         digits_2 = rnd.choice(range(10), n_digits)
-        act_prob = (digits_1 == digits_2).mean()
-        probs.append(act_prob)
+        act_rel_freq = (digits_1 == digits_2).mean()
+        probs.append(act_rel_freq)
 
     probs = sorted(probs)
     return probs
 
 
+# TODO: update the ipynb/html!
 @lru_cache(1000)
 def digit_equality_prob_mc_cdf(n_digits, seed=1234, n_iterations=50000):
-    probs = get_digit_equality_prob_mc_data(n_digits, seed, n_iterations)
+    probs = get_digit_equality_rel_freq_mc_data(n_digits, seed, n_iterations)
 
     def cdf(x):
         return np.digitize(x, probs, right=False) / len(probs)
@@ -70,10 +74,19 @@ def digit_equality_prob_mc_cdf(n_digits, seed=1234, n_iterations=50000):
 
 @lru_cache(1000)
 def digit_equality_prob_analytical_cdf(n):
+    """
+    Probability of at least k digits being equal out of n pairs, described as
+    the relative frequency k/n.
+
+    :param n: number of pairs with i.i.d. p=0.1 equality events.
+    :return: function telling the probability from the single relative frequency
+        parameter.
+    """
     inner_cdf = stats.binom(n, 0.1).cdf
 
     def cdf(rel_freq):
-        return inner_cdf(rel_freq * n)
+        # TODO: possibly do not operate on rel_freq... inaccurate values ~ waste
+        return 1 - inner_cdf(int(round(rel_freq * n - 1)))
 
     return cdf
 
@@ -110,14 +123,23 @@ def equality_prob_coeff_df(df: pd.DataFrame):
     cdf = digit_equality_prob_cdf(len(df))
     for row in df.columns:
         for col in df.columns:
-            prob = equality_prob(df[row].values, df[col].values)
+            prob = equality_rel_freq(df[row].values, df[col].values)
             try:
-                ans_df.loc[row][col] = 1 - cdf(prob)
+                ans_df.loc[row][col] = cdf(prob)
             except Exception as ex:
-                import ipdb;
-                ipdb.set_trace()
+                import ipdb; ipdb.set_trace()
                 print(ex)
+                raise
     return ans_df
+
+
+def equality_prob_vector(base_column: np.array, indep_columns: np.array):
+    cdf = digit_equality_prob_cdf(len(base_column))
+    ans = [
+        cdf(equality_rel_freq(base_column, indep_column))
+        for indep_column in indep_columns
+    ]
+    return np.array(ans)
 
 
 def get_matrix_lambda_num(df: pd.DataFrame) -> float:
@@ -153,11 +175,34 @@ def get_matrix_mean_prob(df: pd.DataFrame) -> float:
 
 
 if __name__ == "__main__":
-    cdf = digit_correlation_cdf(8531)
-    print("probability correlations higher than 0.01985", 1 - cdf(0.01985))
-    cdf = digit_equality_prob_mc_cdf(8531)
-    print("nonparam. probability equalities higher than 0.11", 1 - cdf(0.11))
-    cdf2 = digit_equality_prob_analytical_cdf(8531)
-    for i in range(100):
-        x = cdf2(0.11)
-    print("param. probability equalities higher than 0.11", 1 - cdf2(0.11))
+    # cdf = digit_correlation_cdf(8531)
+    # print("probability correlations higher than 0.01985", 1 - cdf(0.01985))
+    # cdf = digit_equality_prob_mc_cdf(8531)
+    # print("nonparam. probability equalities higher than 0.11", 1 - cdf(0.11))
+    # cdf2 = digit_equality_prob_analytical_cdf(8531)
+    # for i in range(100):
+    #     x = cdf2(0.11)
+    # print("param. probability equalities higher than 0.11", 1 - cdf2(0.11))
+
+    rel_freq = equality_rel_freq(
+        np.array([1, 2]),
+        np.array([1, 2])
+    )
+    assert(rel_freq == 1.0)
+
+    rel_freq = equality_rel_freq(
+        np.array([1, 2]),
+        np.array([1, 0])
+    )
+    assert(rel_freq == 0.5)
+
+    cdf = digit_equality_prob_cdf(2)
+    # P(rel_req=1, i.e. at least 2 matches out of 2) = 0.1 ^ 2
+    assert(abs(cdf(1) - 0.01) < 0.0001)
+
+    vec = equality_prob_vector(
+        base_column=np.array([1, 2]),
+        indep_columns=[np.array([1, 2]), np.array([1, 3]), np.array([10, 11])],
+    )
+
+    assert(sum(abs(vec - np.array([0.01, 0.19, 1.0]))) < 0.0001)

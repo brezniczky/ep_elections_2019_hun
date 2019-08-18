@@ -59,7 +59,7 @@ def get_overall_list_last_2_years():
 
     app14_df = app14.get_top_list()[1]
     # chose not to "power back" - per column pair effects can be interrelated
-    # this is probably falls on the conservative side, which may not be that bad
+    # this probably falls on the conservative side, which may not be that bad
     # (otherwise: theoretically 12, but valid / Fidesz votes are doubly counted)
     app14_df["p"] = app14_df.rel_mean_prob  # ** 11
     app14_df = app14_df[["Telepules", "p"]]

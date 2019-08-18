@@ -100,28 +100,69 @@ def check_overall_entropy_values_per_municipality(merged):
         print("p-value: %.2f" % p)
 
 
-def check_ranking(merged):
+def check_ranking(dfs):
+    # import ipdb; ipdb.set_trace()
+    merged, info = merge_lista_results(dfs, return_overview_cols=True)
+
     # TODO: should possibly row filter before this
-    row_feasible_lista = merged.iloc[:, [0, 4]]
-    row_feasible_lista = get_feasible_rows(row_feasible_lista, 100, [1])
-    scores = get_group_scores(row_feasible_lista.iloc[:, 0],
-                              row_feasible_lista.iloc[:, 1])
+    feasible_df = get_feasible_rows(
+        merged,
+        100,
+        [list(merged.columns).index(info.get_lista_column(4))]
+    )
+
+    scores = get_group_scores(feasible_df[info.area_column],
+                              feasible_df[info.get_lista_column(4)].values % 10,
+                              overhearing_base_columns=[
+                                  feasible_df[info.valid_votes_column].values % 10,
+                                  feasible_df[info.get_lista_column(4)].values % 10,
+                              ],
+                              overhearing_indep_columns=[
+                                  feasible_df[info.get_lista_column(3)].values % 10,
+                              ],
+                              )
 
     scores.sort_values(inplace=True)
     return scores
 
 
-def process_data():
-    dfs = get_big_cleaned_data()
-    merged = merge_lista_results(
+def print_top_20(dfs, ranking):
+    merged, info = merge_lista_results(
         dfs,
-        lista_idxs_to_exclude=[8, 9, 10]
+        return_overview_cols=True
     )
-    check_overall_entropy_values_per_row(merged)
-    check_overall_entropy_values_per_municipality(merged)
-    global _ranking  # for debugging stuff
-    _ranking = check_ranking(merged)
+    printed_cols = [
+        info.area_column,
+        info.nr_of_registered_voters_column,
+        info.valid_votes_column,
+        info.get_lista_column(3),
+        info.get_lista_column(4),
+    ]
+    display_colnames = ["area", "registered", "valid_votes",
+                        "lista_3", "lista_4"]
+    for i, area_code in zip(range(20), ranking.index[:20]):
+        print("\n#%d" % (i + 1))
+        printed_df = merged[merged[info.area_column] == area_code][printed_cols]
+        printed_df.columns = display_colnames
+        print(printed_df)
+
+
+def process_data():
+    # TODO: ... a proper random seeding strategy ...
+    np.random.seed(1234)
+
+    dfs = get_big_cleaned_data()
+    # merged = merge_lista_results(
+    #     dfs,
+    #     lista_idxs_to_exclude=[8, 9, 10]
+    # )
+    # check_overall_entropy_values_per_row(merged)
+    # check_overall_entropy_values_per_municipality(merged)
+    ranking = check_ranking(dfs)
+    print_top_20(dfs, ranking)
+    return ranking
 
 
 if __name__ == "__main__":
-    process_data()
+    ranking = process_data()
+    print(ranking.head(20))
