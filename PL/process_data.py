@@ -3,13 +3,21 @@ from PL.preprocessing import (get_big_cleaned_data, merge_lista_results,
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_rows, get_feasible_groups
 from drdigit.scoring import get_group_scores
-from drdigit.fingerprint_plots import plot_fingerprint
+from drdigit.fingerprint_plots import (
+    plot_fingerprint, plot_animated_fingerprints
+)
 import numpy as np
 
 
-SEED = 1236
+"""
+Run the script wiht LL_ITERATIONS set to 5000 to get < 10% probabilities.
+"""
+
+SEED = 1234
 LL_ITERATIONS = 1000
 FINGERPRINT_DIR = "fingerprints_Poland"
+
+SAMPLE_RATIO = None # for a bit of robustness asseessment, set to e.g. 0.95
 
 
 # Per row checks yield a considerable
@@ -39,20 +47,29 @@ FINGERPRINT_DIR = "fingerprints_Poland"
 # down
 
 
+def _apply_bootstrap(feasible_lista):
+    if SAMPLE_RATIO is not None:
+        # ended up giving in to bootstrap style (i.e. with replacement)
+        indexes = sorted(np.random.choice(range(len(feasible_lista)),
+                                          int(len(feasible_lista) *
+                                              SAMPLE_RATIO),
+                                          replace=True))
+        feasible_lista = feasible_lista.iloc[indexes]
+    return feasible_lista
+
+
 def check_overall_entropy_values_per_row(merged):
     np.random.seed(SEED)
 
     print("Relaxed (by row municipality filtering) entropy tests")
     # # most "lista"s cannot be tested in this way since their values are too low
-    for lista_index in [3, 4]:  # [1, 2, 3, 4, 5, 6, 7]:
+    for lista_index in [3, 4]:  #  [1, 2, 3, 4, 5, 6, 7]:
         print("Testing lista %d ..." % lista_index)
         row_feasible_lista = merged.iloc[:, [0, lista_index]]
         row_feasible_lista = get_feasible_rows(row_feasible_lista, 300, [1])
 
-        indexes = sorted(np.random.choice(range(len(row_feasible_lista)),
-                                          int(len(row_feasible_lista) * 0.95),
-                                          replace=False))
-        row_feasible_lista = row_feasible_lista.iloc[indexes]
+        row_feasible_lista = _apply_bootstrap(row_feasible_lista)
+
         if len(row_feasible_lista) > 0:
             print("found %d feasible values in %d municipalities" %
                   (len(row_feasible_lista),
@@ -86,6 +103,7 @@ def check_overall_entropy_values_per_municipality(merged):
         )
         print("%d feasible settlements were identified for lista %d" %
               (len(feasible_settlements), lista_index))
+        feasible_settlements = _apply_bootstrap(feasible_settlements)
         city_feasible_lista = \
             merged[merged.iloc[:, 0].isin(feasible_settlements)]
         print("These involve %d wards" % len(city_feasible_lista))
@@ -102,9 +120,6 @@ def check_overall_entropy_values_per_municipality(merged):
 
 
 def check_ranking(merged, info):
-    # import ipdb; ipdb.set_trace()
-
-
     # TODO: should possibly row filter before this
     feasible_df = get_feasible_rows(
         merged,
@@ -179,23 +194,70 @@ def plot_fingerprints(merged, info: MergedDataInfo, ranking):
             plot_PL_fingerprint(merged, info, areas, group_desc, lista_index)
 
 
+def plot_animated_fingerprint_pairs(merged, info: MergedDataInfo, ranking):
+    n = len(ranking)
+
+    for top_perc in [25, 33, 50]:
+        n_top = int(n * top_perc / 100)
+        n_transl = n - n_top
+        n_frames = 20
+
+        frame_inclusions = []
+        frame_title_exts = []
+        for k in range(n_frames):
+            s = int(n_transl * k / (n_frames - 1))
+            act_areas = ranking.index[s:(s + n_top)]
+            is_kth = merged[info.area_column].isin(act_areas)
+            frame_inclusions.append(is_kth)
+            frame_title_exts.append("%.2d" % k)
+        # pause a bit at the end by repeating the last frame
+        frame_inclusions.append(is_kth)
+        frame_title_exts.append("  ")
+        frame_inclusions.append(is_kth)
+        frame_title_exts.append("  ")
+        frame_inclusions.append(is_kth)
+        frame_title_exts.append("  ")
+        frame_inclusions.append(is_kth)
+        frame_title_exts.append("  ")
+
+        # fast rewind (2x SPEED SAME PRICE)
+        for k in range(0, n_frames, 2):
+            print("append ", k)
+            frame_inclusions.append(frame_inclusions[n_frames - 1 - k])
+            frame_title_exts.append("  ")
+
+        for lista_index in [3, 4]:
+            plot_animated_fingerprints(
+                merged[info.get_lista_column(lista_index)],
+                merged[info.valid_votes_column],
+                merged[info.nr_of_registered_voters_column],
+                frame_inclusions,
+                "lista %d top %d%% to bottom %d%% suspects" %
+                    (lista_index, top_perc, top_perc),
+                "lista %d top %d to bottom %d suspects.gif" %
+                    (lista_index, top_perc, top_perc),
+                fingerprint_dir=FINGERPRINT_DIR,
+                quiet=True,
+                interval=50,
+                frame_title_exts=frame_title_exts,
+            )
+
+
 def process_data():
     # TODO: ... a proper random seeding strategy ...
+    # the seed mainly ensures the fuzzy vote limit based selection
     np.random.seed(1234)
 
     dfs = get_big_cleaned_data()
 
     merged, info = merge_lista_results(dfs, return_overview_cols=True)
 
-    # merged = merge_lista_results(
-    #     dfs,
-    #     lista_idxs_to_exclude=[8, 9, 10]
-    # )
-    # check_overall_entropy_values_per_row(merged)
-    # check_overall_entropy_values_per_municipality(merged)
+    check_overall_entropy_values_per_row(merged)
+    check_overall_entropy_values_per_municipality(merged)
     ranking = check_ranking(merged, info)
     print_top_k(merged, info, ranking, 20)
     plot_fingerprints(merged, info, ranking)
+    plot_animated_fingerprint_pairs(merged, info, ranking)
     return dfs, ranking
 
 

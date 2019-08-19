@@ -15,5 +15,7 @@ cd ..
 python app5_ent_in_top.py
 python explore_2018.py --quiet
 python process_data.py --quiet
+python PL/process_data.py | tee PL_processing.log
 
 jupyter nbconvert --to html --execute report.ipynb
+jupyter nbconvert --to html --execute 'Poland 2019 EP Elections.ipynb'

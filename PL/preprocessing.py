@@ -92,7 +92,7 @@ class MergedDataInfo():
 
     def __repr__(self):
         return ("MergedDataInfo(\n"
-                "    valid_votes_column: %s,\n "
+                "    valid_votes_column: %s,\n"
                 "    nr_of_registered_voters_column: %s,\n"
                 "    lista_columns: %s\n"
                 ")"

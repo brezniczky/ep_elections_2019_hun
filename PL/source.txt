@@ -1,7 +1,13 @@
 https://wybory.gov.pl/pe2019/en/dane_w_arkuszach
 
-Results of voting for candidates
-* for polling districts XLSX
+The above link does not work when directly pasted in the browser.
+Try the below and go to "Data in sheets"
+https://wybory.gov.pl/pe2019/
 
-File link:
+Then:
+
+Results of voting for candidates
+* for polling districts XLSX    (click this XLSX)
+
+Direct link to the file:
 https://wybory.gov.pl/pe2019/data/csv/wyniki_gl_na_kand_po_obwodach_xlsx.zip
