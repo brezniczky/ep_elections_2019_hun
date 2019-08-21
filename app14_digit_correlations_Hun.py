@@ -1,7 +1,6 @@
 from preprocessing import get_preprocessed_data
 from drdigit.digit_correlations import (
-    correlation_prob_coeff_df, equality_prob_coeff_df,
-    get_matrix_lambda_num, get_col_lambda_num, get_col_mean_prob,
+    correlation_prob_coeff_df, equality_prob_coeff_df, get_col_mean_prob,
     get_matrix_mean_prob
 )
 import numpy as np
@@ -26,6 +25,26 @@ def print_probs(df):
     pr_df = df.copy()
     pr_df.columns = [col[:8] for col in pr_df.columns]
     print(pr_df)
+
+
+""" Formerly considered package contents which are likely just dropped:
+    get_matrix_lambda_num, get_col_lambda_num 
+    (say they haven't officially made it there so far and likely won't.)
+"""
+def get_matrix_lambda_num(df: pd.DataFrame) -> float:
+    """ Given a df with probabilities (outside its diagonals), calculate a
+        "wavelength" ("lambda") value. It's like a 'period of recurrence' - for
+        1:10 events, it would  be 10. Just adding the reciprocal of the
+        probabilities in the matrix that df is, outside the diagonal. """
+    return sum([1 / df[r][c] for r in df.index for c in df.columns if r != c])
+
+
+def get_col_lambda_num(df, col_name) -> float:
+    """ Similar to get_matrix_lambda_num, just a specified column.
+        Division by zero problems are intentionally left unhandled.
+    """
+    s = df[df.index != col_name][col_name]
+    return sum(1 / s)
 
 
 def check_correlations():
