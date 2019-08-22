@@ -1,4 +1,4 @@
-from PL.preprocessing import (get_big_cleaned_data, merge_lista_results,
+from PL.preprocessing import (get_data_sheets, merge_lista_results,
                               MergedDataInfo)
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_rows, get_feasible_groups
@@ -10,17 +10,17 @@ import numpy as np
 
 
 """
-Run the script wiht LL_ITERATIONS set to 5000 to get < 10% probabilities.
+Run the script with LL_ITERATIONS set to 5000 to get << 10% probabilities.
 """
 
 SEED = 1234
 LL_ITERATIONS = 1000
 FINGERPRINT_DIR = "fingerprints_Poland"
 
-SAMPLE_RATIO = None # for a bit of robustness asseessment, set to e.g. 0.95
+SAMPLE_RATIO = None  # for a bit of robustness assessment, set to e.g. 0.95
 
 
-# Per row checks yield a considerable
+# Per row checks yield a considerable statistic
 
 # raise the min req. to
 # 200 for a 5.1%
@@ -48,6 +48,7 @@ SAMPLE_RATIO = None # for a bit of robustness asseessment, set to e.g. 0.95
 
 
 def _apply_bootstrap(feasible_lista):
+    """ Utility for a bit of bootstrapping based robustness assessment. """
     if SAMPLE_RATIO is not None:
         # ended up giving in to bootstrap style (i.e. with replacement)
         indexes = sorted(np.random.choice(range(len(feasible_lista)),
@@ -59,11 +60,12 @@ def _apply_bootstrap(feasible_lista):
 
 
 def check_overall_entropy_values_per_row(merged):
+    """ Here we find that a 'per row' filtered lista 4 becomes suspicious. """
     np.random.seed(SEED)
 
     print("Relaxed (by row municipality filtering) entropy tests")
-    # # most "lista"s cannot be tested in this way since their values are too low
-    for lista_index in [3, 4]:  #  [1, 2, 3, 4, 5, 6, 7]:
+    # most "lista"s cannot be tested in this way since their values are too low
+    for lista_index in [3, 4]:  # [1, 2, 3, 4, 5, 6, 7]:
         print("Testing lista %d ..." % lista_index)
         row_feasible_lista = merged.iloc[:, [0, lista_index]]
         row_feasible_lista = get_feasible_rows(row_feasible_lista, 300, [1])
@@ -83,14 +85,14 @@ def check_overall_entropy_values_per_row(merged):
             )
             print("likelihood", test_lista.likelihood)
             print("p-value", test_lista.p)
-            # gives >50% and 14.4% for lista 3 and 4, respectively
-            # basically good p-values except for the winning lista
         else:
             print("No feasible wards were found.")
         print()
 
 
 def check_overall_entropy_values_per_municipality(merged):
+    # This gave good, uninteresting p-values (>0.8)
+
     np.random.seed(1234)
 
     # let's take a look at lista 3 and 4 with the stricter restriction
@@ -210,6 +212,7 @@ def plot_animated_fingerprint_pairs(merged, info: MergedDataInfo, ranking):
             is_kth = merged[info.area_column].isin(act_areas)
             frame_inclusions.append(is_kth)
             frame_title_exts.append("%.2d" % k)
+
         # pause a bit at the end by repeating the last frame
         frame_inclusions.append(is_kth)
         frame_title_exts.append("  ")
@@ -243,17 +246,19 @@ def plot_animated_fingerprint_pairs(merged, info: MergedDataInfo, ranking):
             )
 
 
-def process_data():
+def process_data(do_slow_things=True):
     # TODO: ... a proper random seeding strategy ...
     # the seed mainly ensures the fuzzy vote limit based selection
     np.random.seed(1234)
 
-    dfs = get_big_cleaned_data()
+    dfs = get_data_sheets()
 
     merged, info = merge_lista_results(dfs, return_overview_cols=True)
 
-    check_overall_entropy_values_per_row(merged)
-    check_overall_entropy_values_per_municipality(merged)
+    if do_slow_things:
+        check_overall_entropy_values_per_row(merged)
+        check_overall_entropy_values_per_municipality(merged)
+
     ranking = check_ranking(merged, info)
     print_top_k(merged, info, ranking, 20)
     plot_fingerprints(merged, info, ranking)
