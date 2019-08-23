@@ -1,11 +1,10 @@
 from PL.preprocessing import (get_data_sheets, merge_lista_results,
                               MergedDataInfo)
-from drdigit.digit_entropy_distribution import LodigeTest
-from drdigit.digit_filtering import get_feasible_rows, get_feasible_groups
-from drdigit.scoring import get_group_scores
-from drdigit.fingerprint_plots import (
-    plot_fingerprint, plot_animated_fingerprints
-)
+from drdigit import (LodigeTest,
+                     get_feasible_rows, get_feasible_groups,
+                     get_group_scores, plot_fingerprint,
+                     plot_animated_fingerprints,
+                     set_option)
 import numpy as np
 
 
@@ -267,4 +266,5 @@ def process_data(do_slow_things=True):
 
 
 if __name__ == "__main__":
+    set_option(physical_cache_path=".drdigit_cache")
     dfs, ranking = process_data()
