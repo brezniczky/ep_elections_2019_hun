@@ -143,7 +143,13 @@ degree of a reference/baseline:
 Contributions
 -------------
 
-Are always welcome, there is a drdigit Gitter room https://gitter.im/drdigit/community.
+Are always welcome, there is a DrDigit package Gitter room:
+https://gitter.im/drdigit/community where we can discuss what you are 
+interested in, or just feel free to open/comment on an issue or open a pull 
+request!
+
+Remark: I am trying to mostly comply with PEP8 here but it is not yet 
+ensured via CI.
 
 
 Acknowledgements
