@@ -28,13 +28,16 @@ Hungarian elections
 #### Data involved (Kaggle links)
 
 The source of 2014 data, also increasingly used as 2018 data: 
+
 https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results
 
 Alternative 2018 data (less verbose, insufficient for fingerprint plots - my 
 bad):
+
 https://www.kaggle.com/brezniczky/hungarian-parliamentary-elections-2018-dataset
 
 2019 data:
+
 https://www.kaggle.com/brezniczky/hungarian-ep-elections-data-2019
 
 
@@ -146,5 +149,5 @@ Are always welcome, there is a drdigit Gitter room https://gitter.im/drdigit/com
 Acknowledgements
 ----------------
 
-Many thanks so far for the data to Miklós Vázsonyi, András Kálmán and Florian 
+Many thanks so far for the data and the inspiration to Miklós Vázsonyi, for the data to András Kálmán and Florian 
 Stagliano! 
