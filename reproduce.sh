@@ -5,7 +5,9 @@
 # To the author's knowledge, any difference experienced should
 # be down to numeric arithmetic subtleties.
 
+rm -r venv  # clean slate
 virtualenv venv -p python3
+echo `pwd` > venv/lib/python3.5/site-packages/drdigit.pth
 source venv/bin/activate
 pip install -r requirements.txt
 cd AndrasKalman
