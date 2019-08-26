@@ -87,19 +87,9 @@ def run_simulation(bottom_n,
         probabilities.append(test.p)
         cdfs.append(test.cdf)
 
-    # beware: this all hinges on a "by coincidence" independence
-    # the seed is reset each time a new ward count is encountered by
-    # the individual ward entropy cdf generator
-    #
-    # however, by the time we get to this point, all of them should
-    # have been encountered at least once (the ward counts never change)
-    # due to the actual entropy log likelihood probability calculations
-    # so no more resets, "seeds" are taking control now:
-    # (and yes, some reconsiderations are due in the longer run, if any)
-
     # each test should say the same anyway, pick the last
     actual_likelihood = test.likelihood
-    print("Actual (mean) likelihood prob:", actual_likelihood)
+    print("Actual (mean) likelihood:", actual_likelihood)
     print("Seeds:", seeds)
     print("Likelihood probabilities:", probabilities)
 
