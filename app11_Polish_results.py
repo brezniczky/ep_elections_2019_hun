@@ -15,7 +15,7 @@ from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_distribution_charts \
     import plot_party_vote_by_digit_relationships
 from drdigit.digit_filtering import get_feasible_subseries
-from PL.preprocessing import get_big_cleaned_data, merge_lista_results
+from PL.preprocessing import get_data_sheets, merge_lista_results
 
 
 cols = [
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     # # check_likelihoods(df, self_test=True)
     # print("Real test")
     # check_likelihoods(df)
-    dfs = get_big_cleaned_data()
+    dfs = get_data_sheets()
     merged = merge_lista_results(
         dfs,
         lista_idxs_to_exclude=[8, 9, 10]
