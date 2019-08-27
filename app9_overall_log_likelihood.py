@@ -6,7 +6,7 @@ the n least likely candidates.
 import numpy as np
 import pandas as pd
 from preprocessing import get_preprocessed_data
-from app5_ent_in_top import plot_entropy_distribution_of
+from app5_ent_in_top import plot_entropy_distribution
 from arguments import is_quiet, save_output, load_output
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_groups
@@ -100,9 +100,9 @@ def run_simulation(bottom_n,
 def plot_summary():
     actual_likelihood, probabilities, sample = load_results()
     finite_sample = sample[~np.isinf(sample )]
-    plot_entropy_distribution_of(
+    plot_entropy_distribution(
         actual_likelihood,
-        probabilities,
+        np.mean(probabilities),
         finite_sample,
         is_quiet=is_quiet()
     )

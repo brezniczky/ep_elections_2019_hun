@@ -23,9 +23,9 @@ from preprocessing import get_preprocessed_data
 from digit_stat_data import get_last_digit_stats
 from scipy.stats import entropy
 import pandas as pd
-import matplotlib.pyplot as plt
 from typing import List
 from arguments import is_quiet, load_output, save_output
+from drdigit import plot_entropy_distribution
 
 
 def total_freq_ent(counts):
@@ -137,32 +137,10 @@ def load_results():
     return actual_total_ent, probabilities, entropies
 
 
-def plot_entropy_distribution_of(actual_total_ent: float,
-                                 probabilities: List[float],
-                                 entropies: List[float],
-                                 save_filename = None,
-                                 is_quiet=False):
-    # welcome to the late night boilerplate horror show
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    h = ax.hist(entropies, bins = 40)
-    ax.axvline(x=actual_total_ent, color="red")
-    _, disp_y = ax.transAxes.transform((0, 1))
-    disp_y -= 20
-    x1, y = ax.transData.inverted().transform((10, disp_y))
-    x2, _ = ax.transData.inverted().transform((0, disp_y))
-    ax.text(actual_total_ent + x1 - x2, y,
-            u"P \u2248 %.2f %%" % (np.mean(probabilities) * 100))
-    if save_filename is not None:
-        plt.savefig(save_filename)
-    if not is_quiet:
-        plt.show()
-
-
-def plot_entropy_distribution():
+def plot_app5_entropy_distribution():
     actual_total_ent, probabilities, entropies = load_results()
-    plot_entropy_distribution_of(actual_total_ent,
-                                 probabilities, entropies, is_quiet=is_quiet())
+    plot_entropy_distribution(actual_total_ent, np.mean(probabilities),
+                              entropies, is_quiet=is_quiet())
 
 
 if __name__ == "__main__":
@@ -213,7 +191,7 @@ if __name__ == "__main__":
 
     save_results(actual_total_ent, probabilities, all_entropies)
 
-    plot_entropy_distribution()
+    plot_app5_entropy_distribution()
 
 
 """
