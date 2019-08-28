@@ -7,7 +7,7 @@ cffi==1.12.3
 cycler==0.10.0
 decorator==4.4.0
 defusedxml==0.6.0
-drdigit-brezniczky==0.0.8
+drdigit-brezniczky==0.0.9
 entrypoints==0.3
 importlib-metadata==0.19
 ipdb==0.12

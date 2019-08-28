@@ -4,8 +4,10 @@ from drdigit import (LodigeTest,
                      get_feasible_rows, get_feasible_groups,
                      get_group_scores, plot_fingerprint,
                      plot_animated_fingerprints,
+                     plot_entropy_distribution,
                      set_option)
 import numpy as np
+from arguments import is_quiet
 
 
 """
@@ -13,7 +15,7 @@ Run the script with LL_ITERATIONS set to 5000 to get << 10% probabilities.
 """
 
 SEED = 1234
-LL_ITERATIONS = 1000
+LL_ITERATIONS = 50000
 FINGERPRINT_DIR = "fingerprints_Poland"
 
 SAMPLE_RATIO = None  # for a bit of robustness assessment, set to e.g. 0.95
@@ -21,14 +23,14 @@ SAMPLE_RATIO = None  # for a bit of robustness assessment, set to e.g. 0.95
 
 # Per row checks yield a considerable statistic
 
-# raise the min req. to
-# 200 for a 5.1%
-# or 300 and get 2.6%
-# on lista 4
-# clear sign of tampering
-# p-value 0.0344  with 5k  iterations
-# while lista 3 gets p-value 0.7078
+# min req. values now yield changed probabilities
+# (the underlying MC was changed for performance benefits)
+# now using 50k LL iterations:
 
+#        Lista 3   Lista 4
+# 100 -   71.66%     6.5%  .
+# 200 -   62.93%     0.29% **
+# 300 -   87.44%     6.92% .
 
 # of course IF there was to be any cheating - you would definitely want to waste
 # your cheating capacity where it is worth it or it is needed
@@ -38,12 +40,6 @@ SAMPLE_RATIO = None  # for a bit of robustness assessment, set to e.g. 0.95
 # so ... each ward - counted by probably the same number of people - controls
 # more votes, gives a better ROI in case of ... embedding/blackmailing vote
 # counters? hacking?
-
-
-# TODO:
-# however, it would be worthwhile to restrict to the 300+ lista 4 votes, 100+
-# lista 4 votes, and examine lista 4 probability - likely those were dragged
-# down
 
 
 def _apply_bootstrap(feasible_lista):
@@ -67,7 +63,7 @@ def check_overall_entropy_values_per_row(merged):
     for lista_index in [3, 4]:  # [1, 2, 3, 4, 5, 6, 7]:
         print("Testing lista %d ..." % lista_index)
         row_feasible_lista = merged.iloc[:, [0, lista_index]]
-        row_feasible_lista = get_feasible_rows(row_feasible_lista, 300, [1])
+        row_feasible_lista = get_feasible_rows(row_feasible_lista, 100, [1])
 
         row_feasible_lista = _apply_bootstrap(row_feasible_lista)
 
@@ -80,17 +76,25 @@ def check_overall_entropy_values_per_row(merged):
                 digits=row_feasible_lista.iloc[:, 1] % 10,
                 group_ids=row_feasible_lista.iloc[:, 0],
                 bottom_n=20,
-                ll_iterations=LL_ITERATIONS
+                ll_iterations=LL_ITERATIONS,
+                avoid_inf=True  # prevent lista 4 -Inf LL
             )
-            print("likelihood", test_lista.likelihood)
-            print("p-value", test_lista.p)
+            print("likelihood:", test_lista.likelihood)
+            print("p-value: %.2f", test_lista.p)
+            if not is_quiet():
+                plot_entropy_distribution(
+                    test_lista.likelihood,
+                    test_lista.p,
+                    test_lista.cdf.sample,
+                    title="Lista %d (selected per ward)" % lista_index
+                )
         else:
             print("No feasible wards were found.")
         print()
 
 
 def check_overall_entropy_values_per_municipality(merged):
-    # This gave good, uninteresting p-values (>0.8)
+    # This gave good, uninteresting p-values (>0.6)
 
     np.random.seed(1234)
 
@@ -112,12 +116,18 @@ def check_overall_entropy_values_per_municipality(merged):
             city_feasible_lista.iloc[:, lista_index] % 10,
             city_feasible_lista.iloc[:, 0],
             bottom_n=20,
-            ll_iterations=LL_ITERATIONS
+            ll_iterations=LL_ITERATIONS,
+            avoid_inf=True,  # lista 4 has a nasty value in this scenario
         )
-        likelihood = test.likelihood
-        print("likelihood:" % likelihood)
-        p = test.p
-        print("p-value: %.2f" % p)
+        print("likelihood:", test.likelihood)
+        if not is_quiet():
+            plot_entropy_distribution(
+                test.likelihood,
+                test.p,
+                test.cdf.sample,
+                title="Lista %d (selected per municipality)" % lista_index,
+            )
+        print("p-value: %.2f" % test.p)
 
 
 def check_ranking(merged, info):
@@ -160,7 +170,8 @@ def print_top_k(merged, info, ranking, k):
         print(printed_df)
 
 
-def plot_PL_fingerprint(merged, info, areas, group_desc, lista_index):
+def plot_PL_fingerprint(merged, info, areas, group_desc, lista_index,
+                        save: bool=False):
     act_df = merged[merged[info.area_column].isin(areas)]
     plot_fingerprint(
         party_votes=act_df[info.get_lista_column(lista_index)],
@@ -169,8 +180,9 @@ def plot_PL_fingerprint(merged, info, areas, group_desc, lista_index):
         title="Poland %s, 2019 EP, lista %d" %
               (group_desc, lista_index),
         fingerprint_dir=FINGERPRINT_DIR,
-        filename="%s lista %d.png" % (group_desc, lista_index),
-        quiet=True,
+        filename="%s lista %d.png" % (group_desc, lista_index)
+                 if save else None,
+        quiet=is_quiet(),
     )
 
 
@@ -192,7 +204,8 @@ def plot_fingerprints(merged, info: MergedDataInfo, ranking):
 
     for areas, group_desc in plot_params:
         for lista_index in [1, 2, 3, 4]:
-            plot_PL_fingerprint(merged, info, areas, group_desc, lista_index)
+            plot_PL_fingerprint(merged, info, areas, group_desc, lista_index,
+                                save=True)
 
 
 def plot_animated_fingerprint_pairs(merged, info: MergedDataInfo, ranking):
