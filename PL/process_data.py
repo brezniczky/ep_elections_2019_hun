@@ -55,13 +55,13 @@ def _apply_bootstrap(feasible_lista):
 
 
 def check_overall_entropy_values_per_row(merged):
-    """ Here we find that a 'per row' filtered lista 4 becomes suspicious. """
+    """ Here we find that a 'per row' filtered Lista 4 becomes suspicious. """
     np.random.seed(SEED)
 
     print("Relaxed (by row municipality filtering) entropy tests")
     # most "lista"s cannot be tested in this way since their values are too low
     for lista_index in [3, 4]:  # [1, 2, 3, 4, 5, 6, 7]:
-        print("Testing lista %d ..." % lista_index)
+        print("Testing Lista %d ..." % lista_index)
         row_feasible_lista = merged.iloc[:, [0, lista_index]]
         row_feasible_lista = get_feasible_rows(row_feasible_lista, 100, [1])
 
@@ -77,10 +77,10 @@ def check_overall_entropy_values_per_row(merged):
                 group_ids=row_feasible_lista.iloc[:, 0],
                 bottom_n=20,
                 ll_iterations=LL_ITERATIONS,
-                avoid_inf=True  # prevent lista 4 -Inf LL
+                avoid_inf=True  # prevent Lista 4 -Inf LL
             )
             print("likelihood:", test_lista.likelihood)
-            print("p-value: %.2f", test_lista.p)
+            print("p-value: %.2f" % test_lista.p)
             if not is_quiet():
                 plot_entropy_distribution(
                     test_lista.likelihood,
@@ -106,7 +106,7 @@ def check_overall_entropy_values_per_municipality(merged):
             value_colname=merged.columns[lista_index],
             group_colname=merged.columns[0]
         )
-        print("%d feasible settlements were identified for lista %d" %
+        print("%d feasible settlements were identified for Lista %d" %
               (len(feasible_settlements), lista_index))
         feasible_settlements = _apply_bootstrap(feasible_settlements)
         city_feasible_lista = \
@@ -117,7 +117,7 @@ def check_overall_entropy_values_per_municipality(merged):
             city_feasible_lista.iloc[:, 0],
             bottom_n=20,
             ll_iterations=LL_ITERATIONS,
-            avoid_inf=True,  # lista 4 has a nasty value in this scenario
+            avoid_inf=True,  # Lista 4 has a nasty value in this scenario
         )
         print("likelihood:", test.likelihood)
         if not is_quiet():
@@ -177,7 +177,7 @@ def plot_PL_fingerprint(merged, info, areas, group_desc, lista_index,
         party_votes=act_df[info.get_lista_column(lista_index)],
         valid_votes=act_df[info.valid_votes_column],
         registered_voters=act_df[info.nr_of_registered_voters_column],
-        title="Poland %s, 2019 EP, lista %d" %
+        title="Poland %s, 2019 EP, Lista %d" %
               (group_desc, lista_index),
         fingerprint_dir=FINGERPRINT_DIR,
         filename="%s lista %d.png" % (group_desc, lista_index)
