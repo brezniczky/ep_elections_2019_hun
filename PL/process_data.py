@@ -279,5 +279,4 @@ def process_data(do_slow_things=True):
 
 
 if __name__ == "__main__":
-    set_option(physical_cache_path=".drdigit_cache")
     dfs, ranking = process_data()

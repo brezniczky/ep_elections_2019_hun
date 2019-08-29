@@ -5,7 +5,10 @@
 # To the author's knowledge, any difference experienced should
 # be down to numeric arithmetic subtleties.
 
-rm -r venv  # clean slate
+# clean slate
+rm -r .drdigit_cache
+rm -r venv
+
 virtualenv venv -p python3
 echo `pwd` > venv/lib/python3.5/site-packages/drdigit.pth
 source venv/bin/activate
@@ -19,5 +22,5 @@ python app5_ent_in_top.py --quiet
 python process_data.py --quiet
 python PL/process_data.py --quiet | tee PL_processing.log
 
-jupyter nbconvert --to html --execute report.ipynb
-jupyter nbconvert --to html --execute 'Poland 2019 EP Elections.ipynb'
+jupyter nbconvert --to html --execute report.ipynb --ExecutePreprocessor.timeout=600
+jupyter nbconvert --to html --execute 'Poland 2019 EP Elections.ipynb' --ExecutePreprocessor.timeout=600
