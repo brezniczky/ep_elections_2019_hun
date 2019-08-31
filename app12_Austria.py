@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     np.random.seed(1234)
 
-    for limit in [100]: # [100, 500, 1000]:
+    for limit in [100]:  # [100, 500, 1000]:
         def s():
             return np.random.choice(range(10), len(df)) - 5
 
@@ -52,6 +52,6 @@ if __name__ == "__main__":
     ok = (col1 >= 100) & (col2 >= 100) & (col3 >= 100)
 
     for party in ["ÖVP", "SPÖ", "FPÖ", "GRÜNE", "NEOS",
-                "KPÖ", "EUROPA"]:
+                  "KPÖ", "EUROPA"]:
         plot_party_vote_by_digit_relationships(df, party,
                                                max_votes=600)

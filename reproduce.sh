@@ -24,3 +24,4 @@ python PL/process_data.py --quiet | tee PL_processing.log
 
 jupyter nbconvert --to html --execute report.ipynb --ExecutePreprocessor.timeout=600
 jupyter nbconvert --to html --execute 'Poland 2019 EP Elections.ipynb' --ExecutePreprocessor.timeout=600
+jupyter nbconvert --to html --execute 'Austria 2019 EP Elections.ipynb' --ExecutePreprocessor.timeout=600
