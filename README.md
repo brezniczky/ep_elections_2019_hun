@@ -130,8 +130,10 @@ There is a quick analysis on the Austrian data as well.
 At the minute it's yet to be put on Kaggle.
 
 [A quick assessment of the 2019 Austrian EP election results](
-https://nbviewer.jupyter.org/github/brezniczky/ep_elections_2019_hun/blob/master/Austria%202019%20EP%20Elections.html.ipynb
+https://nbviewer.jupyter.org/github/brezniczky/ep_elections_2019_hun/blob/master/Austria%202019%20EP%20Elections.ipynb
 )
+
+It is also hosted on [Kaggle](https://www.kaggle.com/brezniczky/austria-2019-ep-elections-doctoring-quick-check), you can fork it, play with it, delve into the devilish details - you know :)
 
 
 Data
@@ -143,7 +145,7 @@ degree of a reference/baseline:
 | Election | Repo data | Kaggle link |
 | -------- | --------- | ----------- |
 | Poland 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/PL)|[Link](https://www.kaggle.com/brezniczky/2019-european-parliament-election-in-poland-data)|
-| Austria 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/AT)||
+| Austria 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/AT)|[Link](https://www.kaggle.com/brezniczky/austrian-ep-elections-data-2019)|
 | Germany 2019 EP (Berlin, Munich also for 2014)| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/DE)||
 | Czechia 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/CZ)||
 | Hungary 2014-2018 General| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/AndrasKalman)|[Link](https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results)|
