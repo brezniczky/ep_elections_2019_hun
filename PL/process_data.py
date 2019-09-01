@@ -1,11 +1,10 @@
 from PL.preprocessing import (get_data_sheets, merge_lista_results,
                               MergedDataInfo)
 from drdigit import (LodigeTest,
-                     get_feasible_rows, get_feasible_groups,
+                     filter_df,
                      get_group_scores, plot_fingerprint,
                      plot_animated_fingerprints,
-                     plot_entropy_distribution,
-                     set_option)
+                     plot_entropy_distribution)
 import numpy as np
 from arguments import is_quiet
 
@@ -63,8 +62,10 @@ def check_overall_entropy_values_per_row(merged):
     for lista_index in [3, 4]:  # [1, 2, 3, 4, 5, 6, 7]:
         print("Testing Lista %d ..." % lista_index)
         row_feasible_lista = merged.iloc[:, [0, lista_index]]
-        row_feasible_lista = get_feasible_rows(row_feasible_lista, 100, [1])
-
+        row_feasible_lista = filter_df(
+            row_feasible_lista, min_value=100,
+            value_columns=[merged.columns[lista_index]]
+        )
         row_feasible_lista = _apply_bootstrap(row_feasible_lista)
 
         if len(row_feasible_lista) > 0:
@@ -101,16 +102,18 @@ def check_overall_entropy_values_per_municipality(merged):
     # let's take a look at lista 3 and 4 with the stricter restriction
     print("Stricter (\"municipality ~ city\") entropy tests")
     for lista_index in [3, 4]:
-        feasible_settlements = get_feasible_groups(
-            merged, 8, 50,
-            value_colname=merged.columns[lista_index],
-            group_colname=merged.columns[0]
+        city_feasible_lista = filter_df(
+            merged,
+            group_column=merged.columns[0], min_group_size=8,
+            value_columns=[merged.columns[lista_index]], min_value=50,
         )
+        feasible_settlements = set(city_feasible_lista.iloc[:, 0])
+        feasible_settlements = _apply_bootstrap(feasible_settlements)
         print("%d feasible settlements were identified for Lista %d" %
               (len(feasible_settlements), lista_index))
-        feasible_settlements = _apply_bootstrap(feasible_settlements)
-        city_feasible_lista = \
-            merged[merged.iloc[:, 0].isin(feasible_settlements)]
+        city_feasible_lista = city_feasible_lista[
+            city_feasible_lista.iloc[:, 0].isin(feasible_settlements)
+        ]
         print("These involve %d wards" % len(city_feasible_lista))
         test = LodigeTest(
             city_feasible_lista.iloc[:, lista_index] % 10,
@@ -131,11 +134,10 @@ def check_overall_entropy_values_per_municipality(merged):
 
 
 def check_ranking(merged, info):
-    # TODO: should possibly row filter before this
-    feasible_df = get_feasible_rows(
+    feasible_df = filter_df(
         merged,
-        100,
-        [list(merged.columns).index(info.get_lista_column(4))]
+        min_value=100,
+        value_columns=[info.get_lista_column(4)]
     )
 
     scores = get_group_scores(feasible_df[info.area_column],
