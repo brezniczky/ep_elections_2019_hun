@@ -113,7 +113,13 @@ def _get_df(year):
     return df_functions[year]()
 
 
-def plot_fingerprints_for_year(parties, year, save):
+def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True):
+
+    def reduce_name(s):
+        if len(s) > 20:
+            s = s[:20] + "..."
+        return s
+
     df = _get_df(year)
     for party in parties:
         df_top_90 = df[
@@ -126,20 +132,24 @@ def plot_fingerprints_for_year(parties, year, save):
         plot_fingerprint(df_top_91_to_bottom[party],
                          df_top_91_to_bottom["Ervenyes"],
                          df_top_91_to_bottom["Nevjegyzekben"],
-                         ("%d least suspicious" % year,
-                          "Figure_%d_%s_top_91_to_bottom.png" %
+                         title="%d %s least suspicious" % (year,
+                                                           reduce_name(party)),
+                         filename=("Figure_%d_%s_top_91_to_bottom.png" %
                                    (year, party))
                                    if save else None,
                          zoom_onto=party in ZOOM_ONTO,
-                         fingerprint_dir=FINGERPRINT_DIR)
+                         fingerprint_dir=FINGERPRINT_DIR,
+                         quiet=is_quiet())
         plot_fingerprint(df_top_90[party],
                          df_top_90["Ervenyes"],
                          df_top_90["Nevjegyzekben"],
-                         ("%d most suspicious" % year,
-                          "Figure_%d_%s_top_90.png" % (year, party))
+                         title="%d %s most suspicious" %
+                               (year, reduce_name(party)),
+                         filename=("Figure_%d_%s_top_90.png" % (year, party))
                                   if save else None,
                          zoom_onto=party in ZOOM_ONTO,
-                         fingerprint_dir=FINGERPRINT_DIR)
+                         fingerprint_dir=FINGERPRINT_DIR,
+                         quiet=is_quiet())
 
 
 def plot_2010_fingerprints(parties=PARTIES_2010, save=True):
