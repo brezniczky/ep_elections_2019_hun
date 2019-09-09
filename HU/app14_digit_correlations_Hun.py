@@ -7,14 +7,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-from arguments import is_quiet
+from arguments import is_quiet, DEFAULT_OUTPUT_DIRECTORY
 
 
 relevant_cols = ["Nevjegyzekben", "Ervenyes", "Fidesz", "Jobbik",
                  "LMP", "MSZP", "DK", "Momentum"]
 
 ACT_FILENAME = "app14_valid_votes_coincidences.csv"
-BASELINE_DIR = "app14_simulated_baseline"
+BASELINE_DIR = os.path.join(DEFAULT_OUTPUT_DIRECTORY,
+                            "app14_simulated_baseline")
 BASELINE_FILENAME_FORMAT = os.path.join(
     BASELINE_DIR, "app14_valid_votes_coincidences_baseline_%d.csv"
 )
@@ -28,7 +29,7 @@ def print_probs(df):
 
 
 """ Formerly considered package contents which are likely just dropped:
-    get_matrix_lambda_num, get_col_lambda_num 
+    get_matrix_lambda_num, get_col_lambda_num
     (say they haven't officially made it there so far and likely won't.)
 """
 def get_matrix_lambda_num(df: pd.DataFrame) -> float:
@@ -288,6 +289,7 @@ def plot_equality_tests():
 
 
 def get_baseline_probs():
+    require_simulations()
 
     for i in range(N_BASELINE_REPEATS):
         df = pd.read_csv(get_baseline_filename(i))
@@ -296,14 +298,14 @@ def get_baseline_probs():
             if sum(df["Fidesz_mean_prob"].values == 0) > 0:
                 import ipdb; ipdb.set_trace()
             if sum(df["Fidesz_mean_prob"].values == 0) > 0:
-                import ipdb;
+                import ipdb; ipdb.set_trace()
             Fid_probs = np.log(df["Fidesz_mean_prob"].values)
             Erv_probs = np.log(df["Erv_mean_prob"].values)
         else:
             if sum(df["Fidesz_mean_prob"].values == 0) > 0:
                 import ipdb; ipdb.set_trace()
             if sum(df["Fidesz_mean_prob"].values == 0) > 0:
-                import ipdb;
+                import ipdb; ipdb.set_trace()
             Fid_probs += np.log(df["Fidesz_mean_prob"].values)
             Erv_probs += np.log(df["Erv_mean_prob"].values)
 
