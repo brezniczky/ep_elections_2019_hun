@@ -14,7 +14,7 @@ MODULE_NAMES = [
 def run_modules():
     for mod_name in MODULE_NAMES:
         print("Running", mod_name)
-        runpy.run_module(mod_name, run_name='__main__')
+        runpy.run_module("HU." + mod_name, run_name='__main__')
 
 
 if __name__ == "__main__":

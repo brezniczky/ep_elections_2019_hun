@@ -6,7 +6,7 @@ the n least likely candidates.
 import numpy as np
 import pandas as pd
 from preprocessing import get_preprocessed_data
-from app5_ent_in_top import plot_entropy_distribution
+from HU.app5_ent_in_top import plot_entropy_distribution
 from arguments import is_quiet, save_output, load_output
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_groups

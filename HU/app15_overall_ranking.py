@@ -1,7 +1,7 @@
 import pandas as pd
-import app6_comparative as app6
-import app8_prob_of_twin_digits as app8
-import app14_digit_correlations_Hun as app14
+import HU.app6_comparative as app6
+import HU.app8_prob_of_twin_digits as app8
+import HU.app14_digit_correlations_Hun as app14
 from arguments import save_output
 
 

@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
-import app15_overall_ranking as app15
-from arguments import save_output
+import HU.app15_overall_ranking as app15
+from arguments import save_output, is_quiet
 
 # todo: 1. a degree amount of refactoring :) :(
 
@@ -128,8 +128,8 @@ def plot_fingerprints_for_year(parties, year, save):
                          df_top_91_to_bottom["Nevjegyzekben"],
                          ("%d least suspicious" % year,
                           "Figure_%d_%s_top_91_to_bottom.png" %
-                          (year, party))
-                         if save else None,
+                                   (year, party))
+                                   if save else None,
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR)
         plot_fingerprint(df_top_90[party],
@@ -137,7 +137,7 @@ def plot_fingerprints_for_year(parties, year, save):
                          df_top_90["Nevjegyzekben"],
                          ("%d most suspicious" % year,
                           "Figure_%d_%s_top_90.png" % (year, party))
-                         if save else None,
+                                  if save else None,
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR)
 

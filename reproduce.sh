@@ -18,8 +18,8 @@ unzip -o hungarian-parliamentary-elections-results.zip
 cd ..
 
 echo "Running app5_ent_in_top.py"
-python app5_ent_in_top.py --quiet
-python process_data.py --quiet
+python HU/app5_ent_in_top.py --quiet
+python HU/process_data.py --quiet
 python PL/process_data.py --quiet | tee PL_processing.log
 
 jupyter nbconvert --to html --execute report.ipynb --ExecutePreprocessor.timeout=600
