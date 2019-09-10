@@ -150,7 +150,7 @@ degree of a reference/baseline:
 | Czechia 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/CZ)||
 | Hungary 2010 General| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/HU/2010)||
 | Hungary 2014-2018 General| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/HU/AndrasKalman)|[Link](https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results)|
-| Hungary 2018 General (alternative)| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/2018) | [Link](https://www.kaggle.com/brezniczky/hungarian-parliamentary-elections-2018-dataset)|
+| Hungary 2018 General (alternative)| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/HU/2018) | [Link](https://www.kaggle.com/brezniczky/hungarian-parliamentary-elections-2018-dataset)|
 | Hungary 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/blob/master/HU/EP_2019_szavaz_k_ri_eredm_ny.xlsx)|[Link](https://www.kaggle.com/brezniczky/hungarian-ep-elections-data-2019)|
 
 

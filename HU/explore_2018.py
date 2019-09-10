@@ -8,7 +8,7 @@ from arguments import is_quiet, save_output
 
 def load_2018_fidesz():
     FIDESZ_NO = 13
-    df = pd.read_csv("2018/parties_20180415.csv", delimiter=";")
+    df = pd.read_csv("HU/2018/parties_20180415.csv", delimiter=";")
     df["ld"] = df.Votes.apply(lambda x: x % 10)
 
     def get_settlement(x):
