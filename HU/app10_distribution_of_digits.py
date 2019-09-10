@@ -9,7 +9,7 @@ TODO:
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from preprocessing import get_preprocessed_data
+from HU.preprocessing import get_preprocessed_data
 from drdigit.digit_distribution_charts import (
     plot_party_vote_by_digit_relationships, USE_MEAN_DIGIT_GROUP
 )

@@ -1,5 +1,5 @@
 import pandas as pd
-from preprocessing import get_preprocessed_data
+from HU.preprocessing import get_preprocessed_data
 from AndrasKalman.load import load_2014
 from HU.explore_2018 import load_2018_fidesz
 from drdigit.twin_digits import prob_of_twins

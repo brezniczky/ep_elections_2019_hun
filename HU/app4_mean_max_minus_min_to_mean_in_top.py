@@ -3,7 +3,7 @@
 
 import numpy as np
 from datetime import datetime
-from preprocessing import get_preprocessed_data
+from HU.preprocessing import get_preprocessed_data
 from digit_stat_data import get_last_digit_stats
 
 

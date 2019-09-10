@@ -1,7 +1,5 @@
-import os.path
 import pandas as pd
-import numpy as np
-from cleaning import get_cleaned_data
+from HU.cleaning import get_cleaned_data
 
 
 def get_preprocessed_data(add_last_digits: bool=True) -> pd.DataFrame:

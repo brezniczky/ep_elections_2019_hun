@@ -1,5 +1,5 @@
-from cleaning import get_2014_cleaned_data, get_2010_cleaned_data
-from app16_fingerprint_plots import plot_municipality
+from HU.cleaning import get_2014_cleaned_data, get_2010_cleaned_data
+from HU.app16_fingerprint_plots import plot_municipality
 
 plot_municipality("Miskolc", 'Fidesz', 2014, highlight_last_digit=0)
 

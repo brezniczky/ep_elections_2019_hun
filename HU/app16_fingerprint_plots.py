@@ -1,7 +1,7 @@
-from preprocessing import get_preprocessed_data
-from cleaning import (get_2010_cleaned_data,
-                      get_2014_cleaned_data,
-                      get_2018_cleaned_data)
+from HU.preprocessing import get_preprocessed_data
+from HU.cleaning import (get_2010_cleaned_data,
+                         get_2014_cleaned_data,
+                         get_2018_cleaned_data)
 from drdigit.fingerprint_plots import plot_fingerprint
 from fingerprint_plots import plot_fingerprint_diff
 import matplotlib.pyplot as plt
