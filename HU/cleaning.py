@@ -79,7 +79,7 @@ def get_2014_cleaned_data():
     probably the total_voted = 0 is incorrect
 
     """
-    with open("AndrasKalman/wards_2014-2018-04-19T16-32-08.json", "r") as f:
+    with open("HU/AndrasKalman/wards_2014-2018-04-19T16-32-08.json", "r") as f:
         jd = json.load(f)
 
     dicts = []
@@ -148,7 +148,7 @@ def get_2018_cleaned_data():
     probably the total_voted = 0 is incorrect
 
     """
-    with open("AndrasKalman/wards_2018-2018-04-16T08-44-21.json", "r") as f:
+    with open("HU/AndrasKalman/wards_2018-2018-04-16T08-44-21.json", "r") as f:
         jd = json.load(f)
 
     dicts = []

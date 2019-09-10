@@ -148,7 +148,7 @@ degree of a reference/baseline:
 | Austria 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/AT)|[Link](https://www.kaggle.com/brezniczky/austrian-ep-elections-data-2019)|
 | Germany 2019 EP (Berlin, Munich also for 2014)| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/DE)||
 | Czechia 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/CZ)||
-| Hungary 2014-2018 General| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/AndrasKalman)|[Link](https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results)|
+| Hungary 2014-2018 General| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/HU/AndrasKalman)|[Link](https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results)|
 | Hungary 2018 General (alternative)| [Link](https://github.com/brezniczky/ep_elections_2019_hun/tree/master/2018) | [Link](https://www.kaggle.com/brezniczky/hungarian-parliamentary-elections-2018-dataset)|
 | Hungary 2019 EP| [Link](https://github.com/brezniczky/ep_elections_2019_hun/blob/master/HU/EP_2019_szavaz_k_ri_eredm_ny.xlsx)|[Link](https://www.kaggle.com/brezniczky/hungarian-ep-elections-data-2019)|
 

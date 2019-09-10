@@ -15,7 +15,7 @@ entropy is likely to reduce.
 
 And this we can hopefully catch with a reasonable accuracy.
 """
-from AndrasKalman.load import load_2014, plot_location
+from HU.AndrasKalman.load import load_2014, plot_location
 import pandas as pd
 import numpy as np
 from drdigit.digit_entropy_distribution import get_entropy, prob_of_entr

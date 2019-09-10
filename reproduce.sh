@@ -13,9 +13,9 @@ virtualenv venv -p python3
 echo `pwd` > venv/lib/python3.5/site-packages/drdigit.pth
 source venv/bin/activate
 pip install -r requirements.txt
-cd AndrasKalman
+cd HU/AndrasKalman
 unzip -o hungarian-parliamentary-elections-results.zip
-cd ..
+cd ../..
 
 echo "Running app5_ent_in_top.py"
 python HU/app5_ent_in_top.py --quiet
