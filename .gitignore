@@ -6,3 +6,10 @@ app14_simulated_baseline/*
 venv/*
 fingerprints/*
 2010/scraped
+.idea
+.drdigit_cache
+fingerprints
+fingerprints_Poland
+*__pycache__
+output/*
+.ipynb_checkpoints/
