@@ -200,6 +200,6 @@ def get_2018_cleaned_data():
 
 
 def get_2010_cleaned_data():
-    df = pd.read_csv("2010/hun_2010_general_elections_list.csv")
+    df = pd.read_csv("HU/2010/hun_2010_general_elections_list.csv")
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
     return df
