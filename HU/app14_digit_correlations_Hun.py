@@ -212,7 +212,6 @@ def check_equalities_2(settlement_filter=None, df=None):
         row["n_wards"] = len(df_act)
         row["min_ervenyes"] = act_min_Ervenyes
         ans_rows.append(row)
-        print(row)
 
     return pd.DataFrame(ans_rows)
 
