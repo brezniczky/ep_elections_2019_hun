@@ -29,7 +29,9 @@ cd ../..
 echo "Running app5_ent_in_top.py"
 python HU/app5_ent_in_top.py --quiet $1
 source venv/bin/activate
+echo "Processing HU data"
 python HU/process_data.py --quiet $1
+echo "Processing PL data"
 python PL/process_data.py --quiet $1 | tee PL_processing.log
 
 if [ "$#" == 0 ] || [ $1 != "--quick" ]

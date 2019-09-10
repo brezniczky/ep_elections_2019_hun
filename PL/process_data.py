@@ -6,7 +6,8 @@ from drdigit import (LodigeTest,
                      plot_animated_fingerprints,
                      plot_entropy_distribution)
 import numpy as np
-from arguments import is_quiet
+from arguments import is_quiet, is_quick, get_output_dir
+import os
 
 
 """
@@ -14,8 +15,8 @@ Run the script with LL_ITERATIONS set to 5000 to get << 10% probabilities.
 """
 
 SEED = 1234
-LL_ITERATIONS = 50000
-FINGERPRINT_DIR = "fingerprints_Poland"
+LL_ITERATIONS = 50000 if not is_quick() else 1000
+FINGERPRINT_DIR = os.path.join(get_output_dir(), "fingerprints_Poland")
 
 SAMPLE_RATIO = None  # for a bit of robustness assessment, set to e.g. 0.95
 
@@ -202,6 +203,13 @@ def plot_fingerprints(merged, info: MergedDataInfo, ranking):
         [ranking.index[int(n / 4):], "top 25% excluded"],
         [ranking.index[:int(n / 2)], "top 50%"],
         [ranking.index[int(n / 2):], "top 50% excluded"],
+    ] if not is_quick() else [
+        [ranking.index[:int(n / 8)], "top 12.5%"],
+        [ranking.index[int(n / 8):], "top 12.5% excluded"],
+    ]
+
+    lista_indexes = [1, 2, 3, 4] if not is_quick() else [
+        3, 4
     ]
 
     for areas, group_desc in plot_params:
@@ -213,10 +221,12 @@ def plot_fingerprints(merged, info: MergedDataInfo, ranking):
 def plot_animated_fingerprint_pairs(merged, info: MergedDataInfo, ranking):
     n = len(ranking)
 
+    top_percentages = [25, 33, 50] if not is_quick() else [25]
+    n_frames = 20 if not is_quick else 2
+
     for top_perc in [25, 33, 50]:
         n_top = int(n * top_perc / 100)
         n_transl = n - n_top
-        n_frames = 20
 
         frame_inclusions = []
         frame_title_exts = []
