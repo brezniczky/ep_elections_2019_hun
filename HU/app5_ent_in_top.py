@@ -24,7 +24,7 @@ from digit_stat_data import get_last_digit_stats
 from scipy.stats import entropy
 import pandas as pd
 from typing import List
-from arguments import is_quiet, load_output, save_output
+from arguments import is_quiet, load_output, save_output, is_quick
 from drdigit import plot_entropy_distribution
 
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     N_TOP_WEIRDEST = 20
     MIN_VOTERS_THRESHOLD = 100
-    N_ITERATIONS = 1000
+    N_ITERATIONS = 1000 if not is_quick() else 5
     SEEDS = [1234, 1235, 1236, 1237]
 
     county_town_ent = (county_town_digit_sums

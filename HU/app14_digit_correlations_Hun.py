@@ -7,19 +7,19 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-from arguments import is_quiet, DEFAULT_OUTPUT_DIRECTORY
+from arguments import is_quiet, is_quick, get_output_dir
 
 
 relevant_cols = ["Nevjegyzekben", "Ervenyes", "Fidesz", "Jobbik",
                  "LMP", "MSZP", "DK", "Momentum"]
 
 ACT_FILENAME = "app14_valid_votes_coincidences.csv"
-BASELINE_DIR = os.path.join(DEFAULT_OUTPUT_DIRECTORY,
+BASELINE_DIR = os.path.join(get_output_dir(),
                             "app14_simulated_baseline")
 BASELINE_FILENAME_FORMAT = os.path.join(
     BASELINE_DIR, "app14_valid_votes_coincidences_baseline_%d.csv"
 )
-N_BASELINE_REPEATS = 200
+N_BASELINE_REPEATS = 200 if not is_quick() else 5
 
 
 def print_probs(df):
