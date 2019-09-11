@@ -23,7 +23,7 @@ MMT; WT
 """
 import numpy as np
 from HU.preprocessing import get_preprocessed_data
-from digit_stat_data import (
+from HU.digit_stat_data import (
     get_suspects2, get_last_digit_stats,
     MAX_TO_MEAN_THRESHOLD, MIN_VOTERS_THRESHOLD
 )

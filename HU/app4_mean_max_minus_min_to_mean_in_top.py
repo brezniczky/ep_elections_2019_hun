@@ -4,7 +4,7 @@
 import numpy as np
 from datetime import datetime
 from HU.preprocessing import get_preprocessed_data
-from digit_stat_data import get_last_digit_stats
+from HU.digit_stat_data import get_last_digit_stats
 
 
 df = get_preprocessed_data()

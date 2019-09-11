@@ -13,8 +13,8 @@ In its very draft and fragmented state here it is as a note to self.
 import numpy as np
 import matplotlib.pyplot as plt
 from HU.preprocessing import get_preprocessed_data
-from digit_stat_data import (get_last_digit_stats, get_suspects2,
-                             MAX_TO_MEAN_THRESHOLD, MIN_VOTERS_THRESHOLD)
+from HU.digit_stat_data import (get_last_digit_stats, get_suspects2,
+                                MAX_TO_MEAN_THRESHOLD, MIN_VOTERS_THRESHOLD)
 from arguments import save_output
 
 

@@ -15,7 +15,6 @@ def _translate_capital_district_name(col):
 def get_merged_data() -> pd.DataFrame:
     if not output_exists("merged.csv"):
         filename = r'HU/EP_2019_szavaz_k_ri_eredm_ny.xlsx'
-        # filename = r'short.xlsx'
         print("file: %s" % filename)
         print("reading sheet names ...")
         xls = pd.ExcelFile(filename)
