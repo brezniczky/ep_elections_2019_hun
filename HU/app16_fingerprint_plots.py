@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import os
 import HU.app15_overall_ranking as app15
-from arguments import save_output, is_quiet
+from arguments import save_output, is_quiet, get_output_dir, is_quick
 
 # todo: 1. a degree amount of refactoring :) :(
 
@@ -19,7 +19,7 @@ N_TOP = 90
 CHECK_DOWNSAMPLED = False
 
 
-FINGERPRINT_DIR = "fingerprints"
+FINGERPRINT_DIR = os.path.join(get_output_dir(), "fingerprints")
 
 
 PARTIES_2010 = ["Fidesz-KDNP", "Jobbik", "LMP", 'MSZP', "MDF", "MIÉP",
@@ -150,6 +150,8 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True):
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR,
                          quiet=is_quiet())
+        if is_quick():
+            break
 
 
 def plot_2010_fingerprints(parties=PARTIES_2010, save=True):
@@ -355,9 +357,10 @@ def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
 if __name__ == "__main__":
     if not os.path.exists(FINGERPRINT_DIR):
         os.mkdir(FINGERPRINT_DIR)
-    plot_2010_fingerprints()
-    plot_2014_fingerprints()
-    plot_2018_fingerprints()
+    if not is_quick():
+        plot_2010_fingerprints()
+        plot_2014_fingerprints()
+        plot_2018_fingerprints()
     plot_2019_fingerprints()
 
     plot_fingerprint_diffs(show=False)
