@@ -2,8 +2,8 @@ from HU.preprocessing import get_preprocessed_data
 from HU.cleaning import (get_2010_cleaned_data,
                          get_2014_cleaned_data,
                          get_2018_cleaned_data)
-from drdigit.fingerprint_plots import plot_fingerprint
-from fingerprint_plots import plot_fingerprint_diff
+from HU.fingerprint_plots import plot_fingerprint_diff
+from drdigit import plot_fingerprint
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -113,21 +113,20 @@ def _get_df(year):
     return df_functions[year]()
 
 
-def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True):
+def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
+                               plot_comparative=True):
 
     def reduce_name(s):
-        if len(s) > 20:
+        if reduce_party_name and len(s) > 20:
             s = s[:20] + "..."
         return s
 
     df = _get_df(year)
     for party in parties:
-        df_top_90 = df[
-            df.Telepules.isin(_get_ranking().iloc[:N_TOP].Telepules)
-        ]
-        df_top_91_to_bottom = df[
-            df.Telepules.isin(_get_ranking().iloc[N_TOP:].Telepules)
-        ]
+        top_municipalities = _get_ranking().iloc[:N_TOP].Telepules
+        bottom_municipalities = _get_ranking().iloc[N_TOP:].Telepules
+        df_top_90 = df[df.Telepules.isin(top_municipalities)]
+        df_top_91_to_bottom = df[df.Telepules.isin(bottom_municipalities)]
 
         plot_fingerprint(df_top_91_to_bottom[party],
                          df_top_91_to_bottom["Ervenyes"],
@@ -150,6 +149,13 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True):
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR,
                          quiet=is_quiet())
+        if plot_comparative:
+            plot_fingerprint_diff(df, party,
+                                  top_municipalities, bottom_municipalities,
+                                  show=not is_quiet(),
+                                  filename=("Figure_%d_%s_diff.png" %
+                                            (year, party))
+                                            if save else None)
         if is_quick():
             break
 
@@ -187,6 +193,8 @@ def plot_fingerprint_diffs(show: bool):
                               filename=filename(2010, party_2010),
                               top_municipalities=top_municipalities,
                               bottom_municipalities=bottom_municipalities)
+        if is_quick():
+            return
 
     df_2014 = get_2014_cleaned_data()
     for party_2014 in PARTIES_2014:
@@ -363,7 +371,8 @@ if __name__ == "__main__":
         plot_2018_fingerprints()
     plot_2019_fingerprints()
 
-    plot_fingerprint_diffs(show=False)
+    plot_fingerprint_diffs(show=not is_quiet())
+
     df_suspect = (list_suspects_near_2019_fingerprint(
         SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
         SUSPECT_CENTROID_X_RAD,

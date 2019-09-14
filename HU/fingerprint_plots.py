@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
+from drdigit import plot_overlaid_fingerprints
 
 
 def plot_histogram2d(d_2_1, d_1_2, binx, biny, show=True, filename=None):
     # plot a numpy histogram2d result via matplotlib
 
-    # TODO: quiet mode mutually exclusively with filename
     # plt.pcolormesh(binx, biny, d_1_2, alpha=0.5)
 
     # couldn't even try out the , shading="gouraud" due to a
@@ -65,11 +65,8 @@ def get_diffs(x1, y1, w1, x2, y2, w2):
     return v1 * is_v1_only, v2 * is_v2_only, x1, y1
 
 
-def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
+def print_fingerprint_diff_stats(df, party, top_municipalities, bottom_municipalities,
                           show=True, filename=None, ):
-
-    # https://matplotlib.org/3.1.1/gallery/images_contours_and_fields/quadmesh_demo.html
-    # https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram2d.html
     df_top = df[
         df.Telepules.isin(top_municipalities)
     ]
@@ -77,15 +74,6 @@ def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
         df.Telepules.isin(bottom_municipalities)
     ]
 
-    def votes_to_coords(df, party):
-        # x: turnout, y: winning vote proportion, weight
-        # looks like it needs to be transposed when playing with np.histogram2d
-        return (df[party] / df["Ervenyes"],
-                df["Ervenyes"] / df["Nevjegyzekben"],
-                df[party])
-
-    x1, y1, w1 = votes_to_coords(df_bottom, party)
-    x2, y2, w2 = votes_to_coords(df_top, party)
     s1 = sum(df_top[party])
     s2 = sum(df_bottom[party])
     print("votes won when not susp", s2, "susp", s1, "ratio", s1 / s2)
@@ -110,5 +98,67 @@ def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
           (np.std(df2[party] * (len(df2) ** 0.5)) / np.sum(df2[party]))
           )
 
-    d_1_2, d_2_1, binx, biny = get_diffs(x1, y1, w1, x2, y2, w2)
-    plot_histogram2d(d_1_2, d_2_1, binx, biny, show, filename)
+
+def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
+                          show=True, filename=None, ):
+
+    # # https://matplotlib.org/3.1.1/gallery/images_contours_and_fields/quadmesh_demo.html
+    # # https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram2d.html
+    df1 = df[
+        df.Telepules.isin(top_municipalities)
+    ]
+    df2 = df[
+        df.Telepules.isin(bottom_municipalities)
+    ]
+
+    # def votes_to_coords(df, party):
+    #     # x: turnout, y: winning vote proportion, weight
+    #     # looks like it needs to be transposed when playing with np.histogram2d
+    #     return (df[party] / df["Ervenyes"],
+    #             df["Ervenyes"] / df["Nevjegyzekben"],
+    #             df[party])
+    #
+    # x1, y1, w1 = votes_to_coords(df1, party)
+    # x2, y2, w2 = votes_to_coords(df2, party)
+    #
+    # d_1_2, d_2_1, binx, biny = get_diffs(x1, y1, w1, x2, y2, w2)
+    # plot_histogram2d(d_1_2, d_2_1, binx, biny, show, filename)
+
+    plot_overlaid_fingerprints(
+        party_votes=[df1[party], df2[party]],
+        valid_votes=[df1["Ervenyes"], df2["Ervenyes"]],
+        registered_voters=[df1["Nevjegyzekben"], df2["Nevjegyzekben"]],
+        quiet=not show,
+        filename=filename,
+        title="%s most/least difference" % party,
+        legend_strings=["most", "least"]
+    )
+
+
+def plot_comparative(values1, values2):
+
+    col1 = np.array([0.3, 0.5, 0.9])
+    col2 = np.array([0.8, 0.5, 0.3])
+
+    def colormap_from_intensity(values, col):
+        return np.array([
+            [col * value for value in row]
+            for row in values
+        ])
+
+    map = (colormap_from_intensity(values1, col1) +
+           colormap_from_intensity(values2, col2)) / 2
+
+    plt.imshow(map)
+    plt.show()
+
+
+if __name__ == "__main__":
+    import numpy.random as rnd
+    rnd.seed(1234)
+    values1 = (rnd.uniform(0, 1, 30 * 30) *
+               np.arange(0, 1, 1 / 900)).reshape((30, 30))
+    values2 = (rnd.uniform(0, 1, 30 * 30) *
+               np.arange(1, 0, -1 / 900)).reshape((30, 30))
+
+    plot_comparative(values1, values2)
