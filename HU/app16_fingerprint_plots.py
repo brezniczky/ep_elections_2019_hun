@@ -2,7 +2,10 @@ from HU.preprocessing import get_preprocessed_data
 from HU.cleaning import (get_2010_cleaned_data,
                          get_2014_cleaned_data,
                          get_2018_cleaned_data)
-from HU.fingerprint_plots import plot_fingerprint_diff
+from HU.fingerprint_plots import (
+    plot_fingerprint_diff,
+    print_fingerprint_diff_stats,
+)
 from drdigit import plot_fingerprint
 import matplotlib.pyplot as plt
 import numpy as np
@@ -150,12 +153,20 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
                          fingerprint_dir=FINGERPRINT_DIR,
                          quiet=is_quiet())
         if plot_comparative:
+            print("plot_comparative")
             plot_fingerprint_diff(df, party,
                                   top_municipalities, bottom_municipalities,
                                   show=not is_quiet(),
                                   filename=("Figure_%d_%s_diff.png" %
                                             (year, party))
-                                            if save else None)
+                                            if save else None,
+                                  fingerprint_dir=FINGERPRINT_DIR)
+            if not is_quiet():
+                print_fingerprint_diff_stats(df, party,
+                                             top_municipalities,
+                                             bottom_municipalities)
+        else:
+            print("NO plot_comparative")
         if is_quick():
             break
 
@@ -174,54 +185,6 @@ def plot_2018_fingerprints(parties=PARTIES_2018, save=True):
 
 def plot_2019_fingerprints(parties=PARTIES_2019, save=True):
     plot_fingerprints_for_year(parties, 2019, save)
-
-
-def plot_fingerprint_diffs(show: bool):
-    print("Fingerprint differences")
-    top_municipalities = _get_ranking().iloc[:N_TOP].Telepules
-    bottom_municipalities = _get_ranking().iloc[N_TOP:].Telepules
-
-    def filename(year, party):
-        return os.path.join(FINGERPRINT_DIR,
-                            "diff_%d_%s.png" % (year, party))
-
-    df_2010 = get_2010_cleaned_data()
-    for party_2010 in PARTIES_2010:
-        print("2010", party_2010)
-        plot_fingerprint_diff(df_2010, party_2010,
-                              show=show,
-                              filename=filename(2010, party_2010),
-                              top_municipalities=top_municipalities,
-                              bottom_municipalities=bottom_municipalities)
-        if is_quick():
-            return
-
-    df_2014 = get_2014_cleaned_data()
-    for party_2014 in PARTIES_2014:
-        print("2014", party_2014)
-        plot_fingerprint_diff(df_2014, party_2014,
-                              show=show,
-                              filename=filename(2014, party_2014),
-                              top_municipalities=top_municipalities,
-                              bottom_municipalities=bottom_municipalities)
-
-    df_2018 = get_2018_cleaned_data()
-    for party_2018 in PARTIES_2018:
-        print("2018", party_2018)
-        plot_fingerprint_diff(df_2018, party_2018,
-                              show=show,
-                              filename=filename(2018, party_2018),
-                              top_municipalities=top_municipalities,
-                              bottom_municipalities=bottom_municipalities)
-
-    df_2019 = get_preprocessed_data()
-    for party_2019 in PARTIES_2019:
-        print("2019", party_2019)
-        plot_fingerprint_diff(df_2019, party_2019,
-                              show=show,
-                              filename=filename(2019, party_2019),
-                              top_municipalities=top_municipalities,
-                              bottom_municipalities=bottom_municipalities)
 
 
 def _select_2019_prime_suspect_wards(df, point, r_x, r_y):
@@ -370,8 +333,6 @@ if __name__ == "__main__":
         plot_2014_fingerprints()
         plot_2018_fingerprints()
     plot_2019_fingerprints()
-
-    plot_fingerprint_diffs(show=not is_quiet())
 
     df_suspect = (list_suspects_near_2019_fingerprint(
         SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,

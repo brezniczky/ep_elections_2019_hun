@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
@@ -65,8 +66,8 @@ def get_diffs(x1, y1, w1, x2, y2, w2):
     return v1 * is_v1_only, v2 * is_v2_only, x1, y1
 
 
-def print_fingerprint_diff_stats(df, party, top_municipalities, bottom_municipalities,
-                          show=True, filename=None, ):
+def print_fingerprint_diff_stats(df, party, top_municipalities,
+                                 bottom_municipalities):
     df_top = df[
         df.Telepules.isin(top_municipalities)
     ]
@@ -100,7 +101,7 @@ def print_fingerprint_diff_stats(df, party, top_municipalities, bottom_municipal
 
 
 def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
-                          show=True, filename=None, ):
+                          show=True, filename=None, fingerprint_dir=None):
 
     # # https://matplotlib.org/3.1.1/gallery/images_contours_and_fields/quadmesh_demo.html
     # # https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram2d.html
@@ -111,18 +112,8 @@ def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
         df.Telepules.isin(bottom_municipalities)
     ]
 
-    # def votes_to_coords(df, party):
-    #     # x: turnout, y: winning vote proportion, weight
-    #     # looks like it needs to be transposed when playing with np.histogram2d
-    #     return (df[party] / df["Ervenyes"],
-    #             df["Ervenyes"] / df["Nevjegyzekben"],
-    #             df[party])
-    #
-    # x1, y1, w1 = votes_to_coords(df1, party)
-    # x2, y2, w2 = votes_to_coords(df2, party)
-    #
-    # d_1_2, d_2_1, binx, biny = get_diffs(x1, y1, w1, x2, y2, w2)
-    # plot_histogram2d(d_1_2, d_2_1, binx, biny, show, filename)
+    if fingerprint_dir is not None:
+        filename = os.path.join(fingerprint_dir, filename)
 
     plot_overlaid_fingerprints(
         party_votes=[df1[party], df2[party]],
