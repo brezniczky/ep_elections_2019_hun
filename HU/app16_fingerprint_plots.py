@@ -13,6 +13,7 @@ import pandas as pd
 import os
 import HU.app15_overall_ranking as app15
 from arguments import save_output, is_quiet, get_output_dir, is_quick
+from IPython.display import HTML, display
 
 # todo: 1. a degree amount of refactoring :) :(
 
@@ -117,7 +118,8 @@ def _get_df(year):
 
 
 def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
-                               plot_comparative=True):
+                               plot_comparative=True, print_details=False,
+                               print_perc_advantage=True):
 
     def reduce_name(s):
         if reduce_party_name and len(s) > 20:
@@ -153,38 +155,84 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
                          fingerprint_dir=FINGERPRINT_DIR,
                          quiet=is_quiet())
         if plot_comparative:
-            print("plot_comparative")
-            plot_fingerprint_diff(df, party,
-                                  top_municipalities, bottom_municipalities,
-                                  show=not is_quiet(),
-                                  filename=("Figure_%d_%s_diff.png" %
-                                            (year, party))
-                                            if save else None,
-                                  fingerprint_dir=FINGERPRINT_DIR)
-            if not is_quiet():
+            res = plot_fingerprint_diff(
+                df, party, top_municipalities, bottom_municipalities,
+                title="%d %s most/least diff." %
+                    (year, reduce_name(party)),
+                show=not is_quiet(),
+                filename=("Figure_%d_%s_diff.png" %
+                          (year, reduce_name(party)))
+                          if save else None,
+                fingerprint_dir=FINGERPRINT_DIR
+                                if save else None
+            )
+            # TODO: refactor
+            if print_perc_advantage:
+                extra_votes = (res[1][0] - res[1][1])
+                perc_advantage = (extra_votes /
+                                  df["Ervenyes"].sum() * 100)
+                final_percentage = (df[party].sum() /
+                                    df["Ervenyes"].sum() * 100)
+
+                display(HTML("Est. percentage points repr. by difference: "
+                             "<b>%.2f %%</b><br/>" % perc_advantage))
+                display(HTML("Final actual performance: "
+                         "<b>%.2f %%</b><br/>" % final_percentage))
+                display(HTML("Extra votes in difference area (1000s): "
+                         "<b>%.1f</b><br/>" % (extra_votes / 1000)))
+                top_fpr, bottom_fpr = res[0][0], res[0][1]
+                x_weight_vec = np.arange(0.005, 1.005, 0.01)
+                y_weight_vec = 1 - np.arange(0.005, 1.005, 0.01)
+                top_fpr_total = sum(top_fpr.flatten())
+                bottom_fpr_total = sum(bottom_fpr.flatten())
+                top_turnout = sum(top_fpr.dot(x_weight_vec)) / top_fpr_total
+                top_vote_share  = \
+                    (sum(np.transpose(top_fpr).dot(y_weight_vec)) /
+                     top_fpr_total)
+                bottom_turnout = \
+                    sum(bottom_fpr.dot(x_weight_vec)) / bottom_fpr_total
+                bottom_vote_share  = \
+                    (sum(np.transpose(bottom_fpr).dot(y_weight_vec)) /
+                     bottom_fpr_total)
+                display(HTML("Vote share (gained, lost): "
+                             "<b>%.1f %%, %.1f %%</b><br/>" % (
+                    top_vote_share * 100, bottom_vote_share * 100
+                )))
+                display(HTML("Turnout (gained, lost): "
+                             "<b>%.1f %%, %.1f %%</b><br/>" % (
+                    top_turnout * 100, bottom_turnout * 100
+                )))
+
+            if print_details:
                 print_fingerprint_diff_stats(df, party,
                                              top_municipalities,
                                              bottom_municipalities)
-        else:
-            print("NO plot_comparative")
         if is_quick():
             break
 
 
-def plot_2010_fingerprints(parties=PARTIES_2010, save=True):
-    plot_fingerprints_for_year(parties, 2010, save)
+def plot_2010_fingerprints(parties=PARTIES_2010, save=True,
+                           print_perc_advantage=True):
+    plot_fingerprints_for_year(parties, 2010, save,
+                               print_perc_advantage=print_perc_advantage)
 
 
-def plot_2014_fingerprints(parties=PARTIES_2014, save=True):
-    plot_fingerprints_for_year(parties, 2014, save)
+def plot_2014_fingerprints(parties=PARTIES_2014, save=True,
+                           print_perc_advantage=True):
+    plot_fingerprints_for_year(parties, 2014, save,
+                               print_perc_advantage=print_perc_advantage)
 
 
-def plot_2018_fingerprints(parties=PARTIES_2018, save=True):
-    plot_fingerprints_for_year(parties, 2018, save)
+def plot_2018_fingerprints(parties=PARTIES_2018, save=True,
+                           print_perc_advantage=True):
+    plot_fingerprints_for_year(parties, 2018, save,
+                               print_perc_advantage=print_perc_advantage)
 
 
-def plot_2019_fingerprints(parties=PARTIES_2019, save=True):
-    plot_fingerprints_for_year(parties, 2019, save)
+def plot_2019_fingerprints(parties=PARTIES_2019, save=True,
+                           print_perc_advantage=True):
+    plot_fingerprints_for_year(parties, 2019, save,
+                               print_perc_advantage=print_perc_advantage)
 
 
 def _select_2019_prime_suspect_wards(df, point, r_x, r_y):
@@ -329,10 +377,10 @@ if __name__ == "__main__":
     if not os.path.exists(FINGERPRINT_DIR):
         os.mkdir(FINGERPRINT_DIR)
     if not is_quick():
-        plot_2010_fingerprints()
-        plot_2014_fingerprints()
-        plot_2018_fingerprints()
-    plot_2019_fingerprints()
+        plot_2010_fingerprints(print_perc_advantage=False)
+        plot_2014_fingerprints(print_perc_advantage=False)
+        plot_2018_fingerprints(print_perc_advantage=False)
+    plot_2019_fingerprints(print_perc_advantage=False)
 
     df_suspect = (list_suspects_near_2019_fingerprint(
         SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,

@@ -101,7 +101,8 @@ def print_fingerprint_diff_stats(df, party, top_municipalities,
 
 
 def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
-                          show=True, filename=None, fingerprint_dir=None):
+                          title="", show=True,
+                          filename=None, fingerprint_dir=None):
 
     # # https://matplotlib.org/3.1.1/gallery/images_contours_and_fields/quadmesh_demo.html
     # # https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram2d.html
@@ -112,18 +113,20 @@ def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
         df.Telepules.isin(bottom_municipalities)
     ]
 
-    if fingerprint_dir is not None:
+    if fingerprint_dir is not None and filename is not None:
         filename = os.path.join(fingerprint_dir, filename)
 
-    plot_overlaid_fingerprints(
+    ans = plot_overlaid_fingerprints(
         party_votes=[df1[party], df2[party]],
         valid_votes=[df1["Ervenyes"], df2["Ervenyes"]],
         registered_voters=[df1["Nevjegyzekben"], df2["Nevjegyzekben"]],
         quiet=not show,
         filename=filename,
-        title="%s most/least difference" % party,
+        title=title,
         legend_strings=["most", "least"]
     )
+
+    return ans
 
 
 def plot_comparative(values1, values2):
