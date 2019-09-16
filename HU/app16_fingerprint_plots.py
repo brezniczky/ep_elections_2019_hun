@@ -174,12 +174,17 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
                 final_percentage = (df[party].sum() /
                                     df["Ervenyes"].sum() * 100)
 
-                display(HTML("Est. percentage points repr. by difference: "
-                             "<b>%.2f %%</b><br/>" % perc_advantage))
-                display(HTML("Final actual performance: "
-                         "<b>%.2f %%</b><br/>" % final_percentage))
-                display(HTML("Extra votes in difference area (1000s): "
-                         "<b>%.1f</b><br/>" % (extra_votes / 1000)))
+                html = []
+                html.append("<table>")
+                html.append("<tr><th>Statistic</th><th>Value</th>"
+                            "<th>2nd value</th></tr>")
+                html.append("<tr><td>Est. percentage points repr. "
+                             "by difference</td><td>"
+                             "%.2f %%</td></tr>" % perc_advantage)
+                html.append("<tr><td>Extra votes in difference area "
+                            "(1000s)</td>"
+                            "<td>%.1f</td></tr>" %
+                            (extra_votes / 1000))
                 top_fpr, bottom_fpr = res[0][0], res[0][1]
                 x_weight_vec = np.arange(0.005, 1.005, 0.01)
                 y_weight_vec = 1 - np.arange(0.005, 1.005, 0.01)
@@ -194,14 +199,18 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
                 bottom_vote_share  = \
                     (sum(np.transpose(bottom_fpr).dot(y_weight_vec)) /
                      bottom_fpr_total)
-                display(HTML("Vote share (gained, lost): "
-                             "<b>%.1f %%, %.1f %%</b><br/>" % (
+                html.append("<tr><td>Turnout (gained at, lost at)</td>"
+                            "<td>%.1f %%</td><td>%.1f %%</td><tr/>" % (
+                                top_turnout * 100, bottom_turnout * 100
+                            ))
+                html.append("<tr><td>Vote share (gained, lost)</td>"
+                            "<td>%.1f %%</td><td>%.1f %%</td></tr>" % (
                     top_vote_share * 100, bottom_vote_share * 100
-                )))
-                display(HTML("Turnout (gained, lost): "
-                             "<b>%.1f %%, %.1f %%</b><br/>" % (
-                    top_turnout * 100, bottom_turnout * 100
-                )))
+                ))
+                html.append("<tr><td>Final actual performance</td><td>"
+                            "%.1f %%</td></tr>" % final_percentage)
+                html.append("</table>")
+                display(HTML("\n".join(html)))
 
             if print_details:
                 print_fingerprint_diff_stats(df, party,
