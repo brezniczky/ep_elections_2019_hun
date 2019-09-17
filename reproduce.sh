@@ -17,6 +17,8 @@
 # clean slate
 rm -r .drdigit_cache
 rm -r venv
+rm -r output
+rm -r quick_output
 
 virtualenv venv -p python3
 echo `pwd` > venv/lib/python3.5/site-packages/drdigit.pth
@@ -38,6 +40,7 @@ if [ "$#" == 0 ] || [ $1 != "--quick" ]
 then
     echo "updating HTML notebooks ..."
     jupyter nbconvert --to html --execute report.ipynb --ExecutePreprocessor.timeout=600
+    jupyter nbconvert --to html --execute 'Hungary 2019 EP Elections.ipynb' --ExecutePreprocessor.timeout=600
     jupyter nbconvert --to html --execute 'Poland 2019 EP Elections.ipynb' --ExecutePreprocessor.timeout=600
     jupyter nbconvert --to html --execute 'Austria 2019 EP Elections.ipynb' --ExecutePreprocessor.timeout=600
 fi
