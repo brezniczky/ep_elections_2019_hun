@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>report</title>
+<title>Hungary 2019 EP Elections</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -16324,7 +16324,7 @@ I remember many of us standing in front of a projection screen, waiting for the 
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id="methodology"></a></p>
-<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3><p>The methodology is based on that for large enough vote counts, the last digit values can be considered close to i.i.d. uniformly distributed choices of the 10 possible digits in case of a fair, regular situation. A best effort towards this was made by restricting the examinations to the sufficiently sizeable electoral municipalities.</p>
+<h3 id="Methodology">Methodology<a class="anchor-link" href="#Methodology">&#182;</a></h3><p>The methodology is based on that for large enough vote counts, the last digit values can be considered close to i.i.d. uniformly distributed choices of the 10 possible digits in case of a fair, regular situation. A best effort towards this was made by restricting the examinations to the sufficiently sizeable electoral municipalities. The amount of deviation from expected usual statistical properties of this are considered to increase suspicion, but are not considered to be an evidence, only as a helpful vehicle for zooming onto likely more problematic areas. This then results in visible distortions in case of the top suspects, which then seems to confirm the correctness of the approach.</p>
 <h4 id="Entropy-p-values">Entropy p-values<a class="anchor-link" href="#Entropy-p-values">&#182;</a></h4><p>Originally some home made metric ($(n_{most frequent digit} - n_{least frequent digit}) / (n_{total  digits}$) was used to see how big the fluctuation in digit distributions is. However, while it was pointing towards largely the same geographic areas, and helped with the beginnings of the exploration, it can be fragile and non-standard, so a different, more mature/central one forms the basis of statistics.</p>
 <p>The standard information entropy (python scipy.stats.entropy) formula is used <a href="#ref_6">[6]</a>:</p>
 $${\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}$$<p>(where the $b=e$, i.e. $log_b$ is $ln$). This is probably much better-known and if in the need of improving the accuracy of the report e.g. in case of doubt, it should with a better potential allow for constructing more convincing arguments based on existing, mature mathematical results, rather than a home made metric.</p>
@@ -16335,7 +16335,7 @@ $${\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\m
 <p>The problems experienced while sorting have led to the construction of the entropy p-values, technically p-values of the possible entropy levels of a multinomial distribution depicting possible outcomes of n draws of 10 elements.</p>
 <p>The items in the simulation were left ranked in ascending entropy order in the first case (app5). Utilizing the below p-values could almost surely improve on the quality of the findings here - see the app9... files, and the below paragraphs for more information.</p>
 <h4 id="Entropy-and-simulations">Entropy and simulations<a class="anchor-link" href="#Entropy-and-simulations">&#182;</a></h4><p>Whilst individual entropy p-values are interesting, and can reflect on where the problem, if any, may be concentrated, it is a good idea to confirm their overall significance given the bigger picture. Any rare event will happen occasionally if we are to sample long enough, and while there are apparently well more than one &lt; 5% events, there are over 3100 municipalities involved - it is always a good idea to confirm, perhaps in this way, whether it is anything really unusual that seems to have been localized, or it is simply large numbers at play.</p>
-<p>Entropy values were combined together to describe the overall likeliness via a likelihood function as well. This measure here is calculated as the logarithm of the individual municipality probabilities added up. A simulation (four times, with four different random seeds) is taking place to obtain a sample of these from uniform last digit distributions for municipalities that are sufficiently large. The distribution is then used as the basis of determining a p-value for the log likelihood value of the actual data.</p>
+<p>Entropy values were combined together to describe the overall likeliness via a likelihood function as well. This measure here is calculated as the logarithms of the individual municipality probabilities added up. A simulation (four times, with four different random seeds) is taking place to obtain a sample of these from uniform last digit distributions for municipalities that are sufficiently large. The distribution is then used as the basis of determining a p-value for the log likelihood value of the actual data.</p>
 <h4 id="Twin-digits">Twin digits<a class="anchor-link" href="#Twin-digits">&#182;</a></h4><p>This has been verified using Poisson distribution p-values. <a href="#ref_7">[7]</a>
 The associated probability value was the $P(repeats \ge actual repeats)$.</p>
 
@@ -16367,7 +16367,7 @@ $$p_k = exp(\overline {ln(P(X_{w_k}=actual_{b, p}(k)) \text{ for } (b, p) \in (B
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Fingerprint-plots">Fingerprint plots<a class="anchor-link" href="#Fingerprint-plots">&#182;</a></h4><p>The fingerprint plots are weighted versions of the election forensic fingerprints introduced in <a href="#ref_8">8</a> (<strong>TODO: verify</strong>).</p>
 <p>The data points of $(turnout, vote share)$ are weighted by the vote counts, so these are vote distributions over the $(turnout, vote share)$ plane. This weighted histogram is then blurred using Gaussian kernel density estimation. The singular fingerprint plots display these in a normalized form.</p>
-<p>The difference plots follow these steps applied to the constituent fingerprints first. Then these are scaled back from the noramlized form to be in the vote count dimension by a simple multiplication, within this, the difference of the corresponding histogram bins is calculated (first from second, above this is top suspect area vote distribution reduced by that of the less suspect areas). The resulting histograms are normalized together so that they remain comparable. Theen the negative values are painted in red, the poisitive (suspect) ones in blue.</p>
+<p>The difference plots follow these steps applied to the constituent fingerprints first. Then these are scaled back from the noramlized form to be in the vote count dimension by a simple multiplication, within this, the difference of the corresponding histogram bins is calculated (first from second, above this is top suspect area vote distribution reduced by that of the less suspect areas). The resulting histograms are normalized together so that they remain comparable. Then the negative values are painted in red, the positive (suspect) ones in blue.</p>
 
 </div>
 </div>
@@ -16376,9 +16376,59 @@ $$p_k = exp(\overline {ln(P(X_{w_k}=actual_{b, p}(k)) \text{ for } (b, p) \in (B
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id="political_significance"></a></p>
-<h3 id="About-the-political-significance-of-the-results">About the political significance of the results<a class="anchor-link" href="#About-the-political-significance-of-the-results">&#182;</a></h3><p>The Hungarian elections have kept warranting the Fidesz party a "2/3" governing position. This distinguished majority has allowed the party to carry out modifications of very high importance without confirmation from the opposition, rendering them speaking puppets in the Parliament, both interesting and infuriating to watch.</p>
+<h3 id="About-the-political-significance-of-the-results">About the political significance of the results<a class="anchor-link" href="#About-the-political-significance-of-the-results">&#182;</a></h3><p>The Hungarian elections have kept warranting the Fidesz party a "2/3" governing position. This supermajority has allowed the party to carry out modifications of very high importance without confirmation from the opposition, rendering them speaking puppets in the Parliament, both interesting and infuriating to watch.</p>
 <p>However - interestingly, by coincidence - this has kept being a very fragile "2/3". Even the loss of a single parliamentary mandate would have broken this fragile "2/3" position (result of 49.27% of the votes in 2018 <a href="ref_1">[1]</a>). Fidesz has barely hit the threshold in 2014 and 2018.</p>
 <p>Could they have gained this effectively huge advantage by - perhaps repeat, "administrative mistakes"?</p>
+<p>Furthermore, even the 2010 supermajority is hugely doubtful then.</p>
+<p>Given the numbers from Wikipedia <a href="#ref_10">[10]</a>, the supermajority depended on largely 75,000 votes:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="mi">263</span> <span class="o">/</span> <span class="mi">386</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2706292</span> <span class="o">+</span> <span class="mi">990428</span> <span class="o">+</span> <span class="mi">855436</span> <span class="o">+</span> <span class="mi">383876</span> <span class="o">+</span> <span class="mi">136895</span> <span class="o">+</span> <span class="mi">45863</span> <span class="o">+</span> <span class="mi">5606</span> <span class="o">+</span> <span class="mi">4117</span> <span class="o">+</span> <span class="mi">4018</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>75348.03713298799</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>whilst even the above, albeit rough, fingerprint plots suggest a degree of influence of over 220,000 votes on the votes of the Fidesz party alone.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Personal-connection-with-the-issue">Personal connection with the issue<a class="anchor-link" href="#Personal-connection-with-the-issue">&#182;</a></h3><p>The author has been confronted with the situation in Eger on multiple occasions for various bonds with the area. In certain wards, people feel like as if they have almost never seen an actual, living Fidesz voter (this does change when it comes to the vote counters). And yet, they are the majority. Isn't it strange?
 Eger has come out (without particular intention) as a likely candidate for tampering on multiple occasions in the above, especially in 2019.</p>
 <p>Thanks to Miklós Vázsonyi from Platon Party for inspiring to statistically check on the votes - even a quick look at Eger's results made it very difficult to miss a "poker" of numbers ending with 9's among the 2019 Fidesz votes in Eger ... so it seemed the quality of err... data processing has become worse (except if it has always been questionnable, but hopefully not).</p>
@@ -16435,8 +16485,8 @@ Not only on grounds of suspicion about others' work - it would be very interesti
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p><a id="ref_1"></a>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election</a></p>
-<p><a id="ref_2"></a>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary</a></p>
+<h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><p><a id="ref_1"></a>[1] <a href="https://en.wikipedia.org/wiki/2018_Hungarian_parliamentary_election">2018 Hungarian parliamentary election (Wikipedia)</a></p>
+<p><a id="ref_2"></a>[2] <a href="https://en.wikipedia.org/wiki/2019_European_Parliament_election_in_Hungary">2019 European Parliament election in Hungary (Wikipedia)</a></p>
 <p><a id="ref_3"></a>[3] <a href="https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s">https://hu.wikipedia.org/wiki/2014-es_magyarorsz%C3%A1gi_%C3%B6nkorm%C3%A1nyzati_v%C3%A1laszt%C3%A1s</a></p>
 <p><a id="ref_4"></a>[4] <a href="https://www.facebook.com/platonpart/">https://www.facebook.com/platonpart/</a></p>
 <p><a id="ref_5"></a>[5] <a href="https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results">https://www.kaggle.com/akalman/hungarian-parliamentary-elections-results</a></p>
@@ -16444,6 +16494,7 @@ Not only on grounds of suspicion about others' work - it would be very interesti
 <p><a id="ref_7"></a>[7] <a href="https://en.wikipedia.org/wiki/Poisson_distribution">https://en.wikipedia.org/wiki/Poisson_distribution</a></p>
 <p><a id="ref_8"></a>[8] <a href="https://projects.iq.harvard.edu/gov2126/files/beber_scacco_electionfraud.pdf">What the Numbers Say: A Digit-Based Test for Election Fraud Using New Data from Nigeria</a></p>
 <p><a id="ref_9"></a>[9] <a href="https://www.pnas.org/content/109/41/16469">Statistical detection of systematic election irregularities</a></p>
+<p><a id="ref_10"></a>[10] <a href="https://en.wikipedia.org/wiki/2010_Hungarian_parliamentary_election">2010 Hungarian parliamentary election (Wikipedia)</a></p>
 
 </div>
 </div>
@@ -16466,7 +16517,7 @@ This is so as the p value is calculable as $p=\sum{p_{c_i} p_{d_i}} = \sum 0.1 p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> rpy2.ipython
@@ -16482,7 +16533,7 @@ This is so as the p value is calculable as $p=\sum{p_{c_i} p_{d_i}} = \sum 0.1 p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">R</span> <span class="o">-</span><span class="n">i</span> <span class="n">ld_Fidesz_freqs</span><span class="p">,</span><span class="n">ld_Erv_freqs</span>
@@ -16575,7 +16626,7 @@ The below charts show (both contain 10 replots each with a different random 10-w
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
