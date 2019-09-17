@@ -199,16 +199,19 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
                 bottom_vote_share  = \
                     (sum(np.transpose(bottom_fpr).dot(y_weight_vec)) /
                      bottom_fpr_total)
-                html.append("<tr><td>Turnout (gained at, lost at)</td>"
-                            "<td>%.1f %%</td><td>%.1f %%</td><tr/>" % (
-                                top_turnout * 100, bottom_turnout * 100
-                            ))
-                html.append("<tr><td>Vote share (gained, lost)</td>"
-                            "<td>%.1f %%</td><td>%.1f %%</td></tr>" % (
-                    top_vote_share * 100, bottom_vote_share * 100
-                ))
-                html.append("<tr><td>Final actual performance</td><td>"
-                            "%.1f %%</td></tr>" % final_percentage)
+                # these seem wrong (incorrect values) and are not added back
+                # until a future review
+
+                # html.append("<tr><td>Turnout (gained at, lost at)</td>"
+                #             "<td>%.1f %%</td><td>%.1f %%</td><tr/>" % (
+                #                 top_turnout * 100, bottom_turnout * 100
+                #             ))
+                # html.append("<tr><td>Vote share (gained, lost)</td>"
+                #             "<td>%.1f %%</td><td>%.1f %%</td></tr>" % (
+                #     top_vote_share * 100, bottom_vote_share * 100
+                # ))
+                # html.append("<tr><td>Final actual performance</td><td>"
+                #             "%.1f %%</td></tr>" % final_percentage)
                 html.append("</table>")
                 display(HTML("\n".join(html)))
 
