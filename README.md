@@ -23,7 +23,7 @@ Hungarian elections
 
 #### Analysis
 
-[Irregularities in recent (2018-2019) Hungarian election data](https://nbviewer.jupyter.org/github/brezniczky/ep_elections_2019_hun/blob/master/report.ipynb)
+[Irregularities in recent (2018-2019) Hungarian election data](http://htmlpreview.github.io/?https://github.com/brezniczky/ep_elections_2019_hun/blob/master/report.html)
 
 #### Data involved (Kaggle links)
 
