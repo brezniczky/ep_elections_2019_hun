@@ -176,8 +176,8 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
 
                 html = []
                 html.append("<table>")
-                html.append("<tr><th>Statistic</th><th>Value</th>"
-                            "<th>2nd value</th></tr>")
+                html.append("<tr><th>Statistic</th><th>Value</th>")
+                            # "<th>2nd value</th></tr>")
                 html.append("<tr><td>Est. percentage points repr. "
                              "by difference</td><td>"
                              "%.2f %%</td></tr>" % perc_advantage)

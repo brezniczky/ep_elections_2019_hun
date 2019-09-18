@@ -116,15 +116,23 @@ def plot_fingerprint_diff(df, party, top_municipalities, bottom_municipalities,
     if fingerprint_dir is not None and filename is not None:
         filename = os.path.join(fingerprint_dir, filename)
 
+    # pass in argments in reverse order to have a better coloring for the
+    # scenario - needs a bit of tweaking afterwards
     ans = plot_overlaid_fingerprints(
-        party_votes=[df1[party], df2[party]],
-        valid_votes=[df1["Ervenyes"], df2["Ervenyes"]],
-        registered_voters=[df1["Nevjegyzekben"], df2["Nevjegyzekben"]],
+        party_votes=[df2[party], df1[party]],
+        valid_votes=[df2["Ervenyes"], df1["Ervenyes"]],
+        registered_voters=[df2["Nevjegyzekben"], df1["Nevjegyzekben"]],
         quiet=not show,
         filename=filename,
         title=title,
-        legend_strings=["most", "least"]
+        legend_strings=["least", "most"]
     )
+
+    hists, votes, vote_pcts = ans
+    hists.reverse()
+    votes.reverse()
+    vote_pcts.reverse()
+    ans = hists, votes, vote_pcts
 
     return ans
 
