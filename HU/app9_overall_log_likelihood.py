@@ -10,6 +10,7 @@ from HU.app5_ent_in_top import plot_entropy_distribution
 from arguments import is_quiet, save_output, load_output
 from drdigit.digit_entropy_distribution import LodigeTest
 from drdigit.digit_filtering import get_feasible_groups
+import HU.robustness
 
 
 # TODO: remove via refactoring into dependency

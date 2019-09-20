@@ -14,6 +14,7 @@ import os
 import HU.app15_overall_ranking as app15
 from arguments import save_output, is_quiet, get_output_dir, is_quick
 from IPython.display import HTML, display
+import HU.robustness
 
 # todo: 1. a degree amount of refactoring :) :(
 

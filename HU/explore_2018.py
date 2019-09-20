@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from drdigit.digit_entropy_distribution import prob_of_entr, get_entropy
 from arguments import is_quiet, save_output
+import HU.robustness
 
 
 def load_2018_fidesz():

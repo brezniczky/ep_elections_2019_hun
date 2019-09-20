@@ -1,3 +1,4 @@
+from typing import Callable
 import pandas as pd
 import numpy as np
 import json
@@ -12,7 +13,30 @@ def _translate_capital_district_name(col):
     return col
 
 
-def get_merged_data() -> pd.DataFrame:
+ProcessingHook = Callable[[pd.DataFrame, Callable], pd.DataFrame]
+
+
+_CLEANING_HOOKS = []  # type: List[ProcessingHook]
+
+
+def _apply_processing_hooks(df, f):
+    for hook in _CLEANING_HOOKS:
+        df = hook(df, f)
+    return df
+
+
+def add_processing_hook(hook: Callable[[pd.DataFrame], pd.DataFrame]) -> None:
+    global _CLEANING_HOOKS
+    _CLEANING_HOOKS.append(hook)
+
+
+def _get_merged_data() -> pd.DataFrame:
+    """ Merges 2019 merged data if needed or retrieves the version
+        already cached on disk
+
+        Hidden as it does not respect hooks which could be confusing.
+        (This could be easily relaxed via requiring idempotency from hooks.)
+    """
     if not output_exists("merged.csv"):
         filename = r'HU/EP_2019_szavaz_k_ri_eredm_ny.xlsx'
         print("file: %s" % filename)
@@ -35,29 +59,37 @@ def get_merged_data() -> pd.DataFrame:
     return df
 
 
-def get_cleaned_data():
+def get_2019_cleaned_data():
     if not output_exists("cleaned.csv"):
-        df = get_merged_data()
+        df = _get_merged_data()
         """ there is a mostly NaN row (someone left a total count in)
             --> remove!
         """
         df.columns = [
-            "Unnamed", "Megye", "Telepules", "Szavazokor", "Nevjegyzekben", "Megjelent",
-            "Belyegzetlen", "Lebelyegzett", "Elteres megjelentektol", "Ervenytelen", "Ervenyes",
-            "MSZP", "MKKP", "Jobbik", "Fidesz", "Momentum", "DK", "Mi Hazank", "Munkaspart", "LMP"
+            "Unnamed", "Megye", "Telepules", "Szavazokor", "Nevjegyzekben",
+            "Megjelent", "Belyegzetlen", "Lebelyegzett",
+            "Elteres megjelentektol", "Ervenytelen", "Ervenyes",
+            # parties
+            "MSZP", "MKKP", "Jobbik", "Fidesz", "Momentum", "DK",
+            "Mi Hazank", "Munkaspart", "LMP"
         ]
 
         # There is a mostly NAN line at the end of the Budapest sheet, remove it
         nan_line_idxs = np.where(np.isnan(df.Ervenyes))
         if len(nan_line_idxs) != 1 or (nan_line_idxs[0] != 1405):
-            raise Exception("Only a certain NaN line was expected, please check the data.")
+            raise Exception("Only a certain NaN line was expected, please "
+                            "check the data.")
         df.drop(nan_line_idxs[0], inplace=True)
         save_output(df, "cleaned.csv")
     else:
         df = load_output("cleaned.csv")
 
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
+    df = _apply_processing_hooks(df, get_2019_cleaned_data)
     return df
+
+
+get_cleaned_data = get_2019_cleaned_data
 
 
 def get_2014_cleaned_data():
@@ -125,6 +157,7 @@ def get_2014_cleaned_data():
 
     df = pd.DataFrame(dicts)
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
+    df = _apply_processing_hooks(df, get_2014_cleaned_data)
     return df
 
 
@@ -195,10 +228,12 @@ def get_2018_cleaned_data():
 
     df = pd.DataFrame(dicts)
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
+    df = _apply_processing_hooks(df, get_2018_cleaned_data)
     return df
 
 
 def get_2010_cleaned_data():
     df = pd.read_csv("HU/2010/hun_2010_general_elections_list.csv")
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
+    df = _apply_processing_hooks(df, get_2010_cleaned_data)
     return df

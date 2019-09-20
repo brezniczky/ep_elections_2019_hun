@@ -25,10 +25,9 @@ Hungarian elections
 
 [Irregularities in recent (2018-2019) Hungarian election data](https://github.com/brezniczky/ep_elections_2019_hun/blob/master/Hungary%202019%20EP%20Elections.ipynb)
 
-Alternative link (sometimes GitHub is not feeling well, MathJax formulae currently don't render well here):
+Alternative link (sometimes GitHub is not feeling well, MathJax formulae currently don't render well in this version, but this file should work if opened from your repository copy):
 
-[HTML version Irregularities in recent (2018-2019) Hungarian election data](https://htmlpreview.github.io/?https://github.com/brezniczky/ep_elections_2019_hun/blob/master/Hungary%202019%20EP%20Elections.html)
-
+[HTML version: Irregularities in recent (2018-2019) Hungarian election data](https://htmlpreview.github.io/?https://github.com/brezniczky/ep_elections_2019_hun/blob/master/Hungary%202019%20EP%20Elections.html)
 
 #### Data involved (Kaggle links)
 
@@ -76,6 +75,21 @@ subdirectory. You can use it by
 to play with the individual steps, re-run approaches.
 Approaches 1-4 (`app1_....py`...`app4_....py`) are completely deprecated and
 excluded from the results.
+
+More fingerprint plots (as only a few of them particularly are featured in
+the report) can be generated (having activated the virtual environment) with
+
+    $ python HU/app16_fingerprint_plots.py --quiet
+
+The resulting plots are placed in a subfolder of the output directory, by
+default in `output/fingerprints`.
+
+To carry out some degree of robustness checks on the results, a jackknife-style
+subsampling is supported (even a single redo is lengthy at the minute so it's
+just a single "keep k% of the municipalities" pass). This can be configured in
+the `HU/robustness.py` file.
+While this "mode" is configured, results will be created in a postfixed output
+directory, except the rendered HTML which is just in the root (TODO).
 
 
 Plans

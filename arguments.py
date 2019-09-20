@@ -15,6 +15,7 @@ import pandas as pd
 
 DEFAULT_OUTPUT_DIRECTORY = "output"
 DEFAULT_QUICK_RUN_OUTPUT_DIRECTORY = "quick_output"
+_DEFAULT_OUTPUT_DIRECTORY_POSTFIXES = []
 
 
 def get_parsed_args():
@@ -54,12 +55,20 @@ def is_quick(args=None):
     return args.quick if "quick" in args else False
 
 
-def get_default_output_dir(args):
-    return (
+def get_default_output_dir(args=None):
+    ans = (
         DEFAULT_OUTPUT_DIRECTORY
         if not is_quick(args)
         else DEFAULT_QUICK_RUN_OUTPUT_DIRECTORY
     )
+    for postfix in _DEFAULT_OUTPUT_DIRECTORY_POSTFIXES:
+        ans += postfix
+    return ans
+
+
+def add_output_dir_postfix(postfix):
+    global _DEFAULT_OUTPUT_DIRECTORY_POSTFIXES
+    _DEFAULT_OUTPUT_DIRECTORY_POSTFIXES.append(postfix)
 
 
 def get_output_dir():

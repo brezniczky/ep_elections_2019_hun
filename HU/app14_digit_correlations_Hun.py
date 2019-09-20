@@ -1,13 +1,15 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
 from HU.preprocessing import get_preprocessed_data
 from drdigit.digit_correlations import (
     correlation_prob_coeff_df, equality_prob_coeff_df, get_col_mean_prob,
     get_matrix_mean_prob
 )
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import os
-from arguments import is_quiet, is_quick, get_output_dir
+from arguments import is_quiet, is_quick, get_output_dir, \
+                      output_exists, load_output, save_output
+import HU.robustness
 
 
 relevant_cols = ["Nevjegyzekben", "Ervenyes", "Fidesz", "Jobbik",
@@ -20,6 +22,7 @@ BASELINE_FILENAME_FORMAT = os.path.join(
     BASELINE_DIR, "app14_valid_votes_coincidences_baseline_%d.csv"
 )
 N_BASELINE_REPEATS = 200 if not is_quick() else 5
+TOP_LIST_SEED = 1234
 
 
 def print_probs(df):
@@ -221,15 +224,17 @@ def get_baseline_filename(i):
 
 
 def get_act_data():
-    if not os.path.exists(ACT_FILENAME):
+    if not output_exists(ACT_FILENAME):
         df_act = check_equalities_2()
-        df_act.to_csv(ACT_FILENAME, index=False)
+        save_output(df_act, ACT_FILENAME)
     else:
-        df_act = pd.read_csv(ACT_FILENAME)
+        df_act = load_output(ACT_FILENAME)
     return df_act
 
 
 def require_simulations():
+    preprocessed_df = get_preprocessed_data()
+
     for i in range(N_BASELINE_REPEATS):
         filename = get_baseline_filename(i)
         if os.path.exists(filename):
@@ -237,12 +242,11 @@ def require_simulations():
         if not os.path.exists(BASELINE_DIR):
             os.mkdir(BASELINE_DIR)
 
-        df = get_preprocessed_data()
-
         def random_digits_df():
             nonlocal df
             return np.random.choice(range(10), len(df))
 
+        df = preprocessed_df.copy()
         np.random.seed(1234 + i)
         df.ld_Momentum = random_digits_df()
         df.ld_DK = random_digits_df()
@@ -311,7 +315,9 @@ def get_baseline_probs():
     return np.exp((Fid_probs + Erv_probs) / N_BASELINE_REPEATS / 2)
 
 
-def get_top_list(n_top=None):
+def get_top_list(n_top=None, seed=TOP_LIST_SEED):
+    np.random.seed(seed)
+
     df_act = get_act_data()
     baseline_probs = get_baseline_probs()
 
@@ -351,7 +357,7 @@ if __name__ == "__main__":
     # check_equalities()
 
     df = check_equalities_2(
-        settlement_filter=["Eger", "Tata", "Sopron", "Gyöngyös", "Keszthely"]
+        # settlement_filter=["Eger", "Tata", "Sopron", "Gyöngyös", "Keszthely"]
     )
     if not is_quiet():
         plot_equality_tests()
