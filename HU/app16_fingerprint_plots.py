@@ -1,5 +1,6 @@
 from HU.preprocessing import get_preprocessed_data
-from HU.cleaning import (get_2010_cleaned_data,
+from HU.cleaning import (get_2006_cleaned_data,
+                         get_2010_cleaned_data,
                          get_2014_cleaned_data,
                          get_2018_cleaned_data)
 from HU.fingerprint_plots import (
@@ -25,6 +26,16 @@ CHECK_DOWNSAMPLED = False
 
 
 FINGERPRINT_DIR = os.path.join(get_output_dir(), "fingerprints")
+
+
+# The selection of parties that are interesting for the
+# examinations that take place
+
+PARTIES_2006 = ["FIDESZ-KDNP", "KERESZTÉNYDEMOKRATAPÁRT",
+                "MAGYAR DEMOKRATA FÓRUM",
+                "MIÉP - JOBBIK",
+                "MSZP",
+                "SZDSZ"]
 
 
 PARTIES_2010 = ["Fidesz-KDNP", "Jobbik", "LMP", 'MSZP', "MDF", "MIÉP",
@@ -110,6 +121,7 @@ def _get_ranking():
 
 def _get_df(year):
     df_functions = {
+        2006: get_2006_cleaned_data,
         2010: get_2010_cleaned_data,
         2014: get_2014_cleaned_data,
         2018: get_2018_cleaned_data,
@@ -120,17 +132,46 @@ def _get_df(year):
 
 def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
                                plot_comparative=True, print_details=False,
-                               print_perc_advantage=True):
+                               print_perc_advantage=True,
+                               case_insensitivity=False,
+                               exclude_capital=False,
+                               exclude_noncapital=False):
 
     def reduce_name(s):
         if reduce_party_name and len(s) > 20:
             s = s[:20] + "..."
         return s
 
+    def apply_capital_exclusions(municipality_col, exclude_capital, exclude_noncapital):
+        assert not (exclude_capital and exclude_noncapital)
+
+        if exclude_capital or exclude_noncapital:
+            is_capital = (municipality_col.str.lower().str
+                          .startswith("budapest"))
+            if exclude_noncapital:
+                return municipality_col[is_capital]
+            else:
+                return municipality_col[~is_capital]
+        return municipality_col
+
     df = _get_df(year)
     for party in parties:
         top_municipalities = _get_ranking().iloc[:N_TOP].Telepules
         bottom_municipalities = _get_ranking().iloc[N_TOP:].Telepules
+
+        top_municipalities = apply_capital_exclusions(
+            top_municipalities, exclude_capital, exclude_noncapital
+        )
+        bottom_municipalities = apply_capital_exclusions(
+            bottom_municipalities, exclude_capital, exclude_noncapital
+        )
+
+        if case_insensitivity:
+            top_municipalities = top_municipalities.str.lower()
+            bottom_municipalities = bottom_municipalities.str.lower()
+            df = df.copy()
+            df["Telepules"] = df["Telepules"].str.lower()
+
         df_top_90 = df[df.Telepules.isin(top_municipalities)]
         df_top_91_to_bottom = df[df.Telepules.isin(bottom_municipalities)]
 
@@ -224,28 +265,54 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
             break
 
 
+def plot_2006_fingerprints(parties=PARTIES_2006, save=True,
+                           print_perc_advantage=True,
+                           exclude_capital=False,
+                           exclude_noncapital=False):
+    plot_fingerprints_for_year(parties, 2006, save,
+                               print_perc_advantage=print_perc_advantage,
+                               case_insensitivity=True,
+                               exclude_capital=exclude_capital,
+                               exclude_noncapital=exclude_noncapital)
+
 def plot_2010_fingerprints(parties=PARTIES_2010, save=True,
-                           print_perc_advantage=True):
+                           print_perc_advantage=True,
+                           exclude_capital=False,
+                           exclude_noncapital=False):
     plot_fingerprints_for_year(parties, 2010, save,
-                               print_perc_advantage=print_perc_advantage)
+                               print_perc_advantage=print_perc_advantage,
+                               exclude_capital=exclude_capital,
+                               exclude_noncapital=exclude_noncapital)
 
 
 def plot_2014_fingerprints(parties=PARTIES_2014, save=True,
-                           print_perc_advantage=True):
+                           print_perc_advantage=True,
+                           exclude_capital=False,
+                           exclude_noncapital=False):
     plot_fingerprints_for_year(parties, 2014, save,
-                               print_perc_advantage=print_perc_advantage)
+                               print_perc_advantage=print_perc_advantage,
+                               exclude_capital=exclude_capital,
+                               exclude_noncapital=exclude_noncapital)
 
 
 def plot_2018_fingerprints(parties=PARTIES_2018, save=True,
-                           print_perc_advantage=True):
+                           print_perc_advantage=True,
+                           exclude_capital=False,
+                           exclude_noncapital=False):
     plot_fingerprints_for_year(parties, 2018, save,
-                               print_perc_advantage=print_perc_advantage)
+                               print_perc_advantage=print_perc_advantage,
+                               exclude_capital=exclude_capital,
+                               exclude_noncapital=exclude_noncapital)
 
 
 def plot_2019_fingerprints(parties=PARTIES_2019, save=True,
-                           print_perc_advantage=True):
+                           print_perc_advantage=True,
+                           exclude_capital=False,
+                           exclude_noncapital=False):
     plot_fingerprints_for_year(parties, 2019, save,
-                               print_perc_advantage=print_perc_advantage)
+                               print_perc_advantage=print_perc_advantage,
+                               exclude_capital=exclude_capital,
+                               exclude_noncapital=exclude_noncapital)
 
 
 def _select_2019_prime_suspect_wards(df, point, r_x, r_y):

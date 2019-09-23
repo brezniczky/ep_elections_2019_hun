@@ -13,6 +13,24 @@ def _translate_capital_district_name(col):
     return col
 
 
+def _translate_capital_district_name_2(Telepules_col):
+
+    # almost identical to what I put in AndrasKalman.load too
+
+    def convert_settlement_name(name):
+        if (name.startswith("BUDAPEST") and
+            name.endswith("ker.")
+           ):
+            # impressively, we can observe a random
+            # unuse of block capital here
+            return name.replace("ker.", " kerület")
+        else:
+            return name
+
+    return Telepules_col.apply(convert_settlement_name)
+
+
+
 ProcessingHook = Callable[[pd.DataFrame, Callable], pd.DataFrame]
 
 
@@ -236,4 +254,12 @@ def get_2010_cleaned_data():
     df = pd.read_csv("HU/2010/hun_2010_general_elections_list.csv")
     df["Telepules"] = _translate_capital_district_name(df["Telepules"])
     df = _apply_processing_hooks(df, get_2010_cleaned_data)
+    return df
+
+
+def get_2006_cleaned_data(convert_budapest_district_abbreviations=True):
+    df = pd.read_csv("HU/2006/hun_2006_general_elections_list.csv")
+    if convert_budapest_district_abbreviations:
+        df["Telepules"] = _translate_capital_district_name_2(df["Telepules"])
+    df = _apply_processing_hooks(df, get_2006_cleaned_data)
     return df
