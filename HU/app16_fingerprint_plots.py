@@ -139,7 +139,7 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
 
     def reduce_name(s):
         if reduce_party_name and len(s) > 20:
-            s = s[:20] + "..."
+            s = s[:13] + "..."
         return s
 
     def apply_capital_exclusions(municipality_col, exclude_capital, exclude_noncapital):
@@ -175,31 +175,36 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
         df_top_90 = df[df.Telepules.isin(top_municipalities)]
         df_top_91_to_bottom = df[df.Telepules.isin(bottom_municipalities)]
 
+        fig, axes = plt.subplots(nrows=1, ncols=2)
+        axes_0, axes_1 = axes
         plot_fingerprint(df_top_91_to_bottom[party],
                          df_top_91_to_bottom["Ervenyes"],
                          df_top_91_to_bottom["Nevjegyzekben"],
-                         title="%d %s least suspicious" % (year,
+                         title="%d %s\nleast suspicious" % (year,
                                                            reduce_name(party)),
                          filename=("Figure_%d_%s_top_91_to_bottom.png" %
                                    (year, party))
                                    if save else None,
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR,
-                         quiet=is_quiet())
+                         quiet=is_quiet(),
+                         axes=axes_0)
         plot_fingerprint(df_top_90[party],
                          df_top_90["Ervenyes"],
                          df_top_90["Nevjegyzekben"],
-                         title="%d %s most suspicious" %
+                         title="%d %s\nmost suspicious" %
                                (year, reduce_name(party)),
                          filename=("Figure_%d_%s_top_90.png" % (year, party))
                                   if save else None,
                          zoom_onto=party in ZOOM_ONTO,
                          fingerprint_dir=FINGERPRINT_DIR,
-                         quiet=is_quiet())
+                         quiet=is_quiet(),
+                         axes=axes_1)
+        plt.tight_layout()
         if plot_comparative:
             res = plot_fingerprint_diff(
                 df, party, top_municipalities, bottom_municipalities,
-                title="%d %s most/least diff." %
+                title="%d %s\nmost/least diff." %
                     (year, reduce_name(party)),
                 show=not is_quiet(),
                 filename=("Figure_%d_%s_diff.png" %
@@ -268,51 +273,61 @@ def plot_fingerprints_for_year(parties, year, save, reduce_party_name=True,
 def plot_2006_fingerprints(parties=PARTIES_2006, save=True,
                            print_perc_advantage=True,
                            exclude_capital=False,
-                           exclude_noncapital=False):
+                           exclude_noncapital=False,
+                           plot_comparative=True):
     plot_fingerprints_for_year(parties, 2006, save,
                                print_perc_advantage=print_perc_advantage,
                                case_insensitivity=True,
                                exclude_capital=exclude_capital,
-                               exclude_noncapital=exclude_noncapital)
+                               exclude_noncapital=exclude_noncapital,
+                               plot_comparative=plot_comparative)
 
 def plot_2010_fingerprints(parties=PARTIES_2010, save=True,
                            print_perc_advantage=True,
                            exclude_capital=False,
-                           exclude_noncapital=False):
+                           exclude_noncapital=False,
+                           plot_comparative=True):
     plot_fingerprints_for_year(parties, 2010, save,
                                print_perc_advantage=print_perc_advantage,
                                exclude_capital=exclude_capital,
-                               exclude_noncapital=exclude_noncapital)
+                               exclude_noncapital=exclude_noncapital,
+                               plot_comparative=plot_comparative)
 
 
 def plot_2014_fingerprints(parties=PARTIES_2014, save=True,
                            print_perc_advantage=True,
                            exclude_capital=False,
-                           exclude_noncapital=False):
+                           exclude_noncapital=False,
+                           plot_comparative=True):
     plot_fingerprints_for_year(parties, 2014, save,
                                print_perc_advantage=print_perc_advantage,
                                exclude_capital=exclude_capital,
-                               exclude_noncapital=exclude_noncapital)
+                               exclude_noncapital=exclude_noncapital,
+                               plot_comparative=plot_comparative)
 
 
 def plot_2018_fingerprints(parties=PARTIES_2018, save=True,
                            print_perc_advantage=True,
                            exclude_capital=False,
-                           exclude_noncapital=False):
+                           exclude_noncapital=False,
+                           plot_comparative=True):
     plot_fingerprints_for_year(parties, 2018, save,
                                print_perc_advantage=print_perc_advantage,
                                exclude_capital=exclude_capital,
-                               exclude_noncapital=exclude_noncapital)
+                               exclude_noncapital=exclude_noncapital,
+                               plot_comparative=plot_comparative)
 
 
 def plot_2019_fingerprints(parties=PARTIES_2019, save=True,
                            print_perc_advantage=True,
                            exclude_capital=False,
-                           exclude_noncapital=False):
+                           exclude_noncapital=False,
+                           plot_comparative=True):
     plot_fingerprints_for_year(parties, 2019, save,
                                print_perc_advantage=print_perc_advantage,
                                exclude_capital=exclude_capital,
-                               exclude_noncapital=exclude_noncapital)
+                               exclude_noncapital=exclude_noncapital,
+                               plot_comparative=plot_comparative)
 
 
 def _select_2019_prime_suspect_wards(df, point, r_x, r_y):
@@ -456,18 +471,19 @@ def plot_municipality(municipality_str="Budapest I.", party="Fidesz", year=2019,
 if __name__ == "__main__":
     if not os.path.exists(FINGERPRINT_DIR):
         os.mkdir(FINGERPRINT_DIR)
-    if not is_quick():
-        plot_2010_fingerprints(print_perc_advantage=False)
-        plot_2014_fingerprints(print_perc_advantage=False)
-        plot_2018_fingerprints(print_perc_advantage=False)
-    plot_2019_fingerprints(print_perc_advantage=False)
 
-    df_suspect = (list_suspects_near_2019_fingerprint(
-        SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
-        SUSPECT_CENTROID_X_RAD,
-        SUSPECT_CENTROID_Y_RAD,
-        save_generated=True
-    ))
+    # if not is_quick():
+    #     plot_2010_fingerprints(print_perc_advantage=False)
+    #     plot_2014_fingerprints(print_perc_advantage=False)
+    #     plot_2018_fingerprints(print_perc_advantage=False)
+    plot_2019_fingerprints(print_perc_advantage=False, exclude_noncapital=True, save=False)
+
+    # df_suspect = (list_suspects_near_2019_fingerprint(
+    #     SUSPECT_CENTROID_POS_TURNOUT_AND_WINNER_RATE,
+    #     SUSPECT_CENTROID_X_RAD,
+    #     SUSPECT_CENTROID_Y_RAD,
+    #     save_generated=True
+    # ))
 
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=0)
     # plot_municipality("Miskolc", "Fidesz", 2019, highlight_last_digit=5)
