@@ -27,7 +27,7 @@ Hungarian elections
 
 Alternative link (sometimes GitHub is not feeling well, MathJax formulae currently don't render well in this version, but this file should work if opened from your repository copy):
 
-[HTML version: Irregularities in recent (2018-2019) Hungarian election data](https://htmlpreview.github.io/?https://github.com/brezniczky/ep_elections_2019_hun/blob/master/Hungary%202019%20EP%20Elections.html)
+[HTML version: Irregularities in recent (2018-2019) Hungarian election data](https://brezniczky.github.io/election_fraud/Hungary%202019%20EP%20Elections.html)
 
 #### Data involved (Kaggle links)
 
